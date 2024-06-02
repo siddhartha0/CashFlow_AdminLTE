@@ -1,0 +1,180 @@
+export default class Balance {
+  constructor() {}
+
+  min = 0;
+  max = 10000;
+  duration = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "july",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  latest_Bank_Money = 0;
+  latest_Wallet_Money = 0;
+  total_Amount = 0;
+  bank_trend = 0;
+  wallet_trend = 0;
+  overall_trend = 0;
+  bank_status = "";
+  wallet_status = "";
+  overall_status = "";
+  error = "";
+  avgAmount = 0;
+  totalIncoming = 0;
+  totalOutgoing = 0;
+
+  bank_Complete_Money_History = [];
+  wallet_Complete_Money_History = [];
+
+  stats_Holder() {
+    this.duration.map((duration, i) => {
+      if (duration) {
+        const bank_Money = this.generateMoney();
+        const wallet_Money = this.generateMoney();
+
+        if (i <= this.duration.length) {
+          this.bank_Complete_Money_History.push(bank_Money);
+          this.wallet_Complete_Money_History.push(wallet_Money);
+        }
+        if (i == this.duration.length - 1) {
+          this.latest_Bank_Money = bank_Money;
+          this.latest_Wallet_Money = wallet_Money;
+          this.total_Amount = bank_Money + wallet_Money;
+        }
+      } else {
+        this.error = "";
+      }
+    });
+  }
+
+  measureHighestAmount(moneyhistory) {
+    var temp = [];
+    temp = moneyhistory;
+    var highest = 0;
+    if (moneyhistory.length > 0) {
+      const sorted = temp.sort((a, b) => (a > b ? 1 : -1));
+      highest = sorted[moneyhistory.length - 1];
+    }
+
+    return highest;
+  }
+
+  measureLowestAmount(moneyhistory) {
+    var temp = [];
+    temp = moneyhistory;
+
+    var lowest = 0;
+    if (moneyhistory.length > 0) {
+      const sorted = temp.sort((a, b) => (a > b ? 1 : -1));
+      lowest = sorted[0];
+    }
+
+    return lowest;
+  }
+
+  measureAverageMoney(moneyhistory) {
+    let sum = 0;
+    if (moneyhistory.length > 0) {
+      moneyhistory.reduce((a, b) => (sum = a + b));
+    }
+    this.avgAmount = Math.ceil(sum / moneyhistory.length);
+    return this.avgAmount;
+  }
+
+  aboveAvg(moneyHistory) {
+    var aboveAbg = 0;
+    if (moneyHistory.length > 0) {
+      moneyHistory.map((history) => {
+        if (history > this.avgAmount) {
+          aboveAbg += 1;
+        }
+      });
+    }
+    return ((aboveAbg / moneyHistory.length) * 100).toFixed(1);
+  }
+
+  belowAvg(moneyHistory) {
+    var below = 0;
+
+    if (moneyHistory.length > 0) {
+      moneyHistory.map((history) => {
+        if (history < this.avgAmount) {
+          below += 1;
+        }
+      });
+    }
+    return ((below / moneyHistory.length) * 100).toFixed(1);
+  }
+
+  generateMoney() {
+    return Math.ceil(Math.random() * (this.max - this.min) + this.min);
+  }
+
+  calculateTrends() {
+    const prevMonthMoney_Bank =
+      this.bank_Complete_Money_History[
+        this.bank_Complete_Money_History.length - 2
+      ];
+
+    const bankDifference = this.latest_Bank_Money - prevMonthMoney_Bank;
+    if (
+      bankDifference >= 0
+        ? (this.bank_status = "up")
+        : (this.bank_status = "down")
+    )
+      this.bank_trend = Math.abs(bankDifference / 100);
+
+    const prevMonthMoney_Wallet =
+      this.wallet_Complete_Money_History[
+        this.wallet_Complete_Money_History.length - 2
+      ];
+    const walletDifference = this.latest_Wallet_Money - prevMonthMoney_Wallet;
+
+    if (
+      walletDifference >= 0
+        ? (this.wallet_status = "up")
+        : (this.wallet_status = "down")
+    )
+      this.wallet_trend = Math.abs(walletDifference / 100);
+
+    const prevMonthTotalAmount = prevMonthMoney_Bank + prevMonthMoney_Wallet;
+    const difference_in_total = this.total_Amount - prevMonthTotalAmount;
+    if (
+      difference_in_total >= 0
+        ? (this.overall_status = "up")
+        : (this.overall_status = "down")
+    );
+    this.overall_trend = Math.abs(difference_in_total / 100);
+  }
+
+  calculateTotalIncoming(history) {
+    if (history && history.length > 0) {
+      history.map((money, index, array) => {
+        if (index <= array.length - 2) {
+          console.log(array[index + 1]);
+          if (money < array[index + 1]) {
+            const difference = array[index + 1] - money;
+            this.totalIncoming += difference;
+          } else {
+            const difference = money - array[index + 1];
+            this.totalOutgoing += difference;
+          }
+        }
+      });
+    }
+    console.log(this.totalIncoming, "totalIncoming");
+    console.log(this.totalOutgoing, "totaloutgoing");
+  }
+}
+
+// const cashFlow = new Balance("call from cashflow");
+// cashFlow.stats_Holder();
