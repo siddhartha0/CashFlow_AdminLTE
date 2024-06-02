@@ -4,6 +4,7 @@ import { CiBank, CiWallet } from "react-icons/ci";
 
 export default class BalanceStats extends Component {
   value = {};
+
   constructor() {
     super();
     this.value = JSON.parse(localStorage.getItem("dashboard"));

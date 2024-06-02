@@ -8,8 +8,10 @@ import Wallet from "./components/pages/Wallet.jsx";
 
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import CashFlow from "./behindTheScene/CashFlow.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  // new CashFlow().balanceCaller();
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
