@@ -1,8 +1,9 @@
 import { Component } from "react";
-import Header from "./components/header/Header";
-import NewSideBar from "./components/sidebar/NewSideBar";
+
 import { Outlet } from "react-router-dom";
 import CashFlow from "./behindTheScene/CashFlow";
+import Header from "./components/common/header/Header";
+import NewSideBar from "./components/common/sidebar/NewSideBar";
 
 export default class App extends Component {
   constructor() {

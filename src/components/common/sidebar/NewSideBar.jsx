@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import RoutesPath from "../../../const/paths/RoutesPath";
-import companyLogo from "../../assets/pics/companylogo.png";
+import companyLogo from "../../../assets/pics/companylogo.png";
 
 export default class NewSideBar extends Component {
   constructor() {
