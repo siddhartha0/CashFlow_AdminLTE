@@ -1,10 +1,10 @@
 import { Component } from "react";
-import BalanceStats from "../Dashboard/BalanceStats";
-import BalanceTrends from "../Dashboard/BalanceTrends";
-import BalanceSummary from "../Dashboard/BalanceSummary";
-import MenuOptionModel from "../../const/widget_component_model/MenuOptionModel";
-import AmountInfo from "../Dashboard/AmountInfo";
-import CashFlow from "../../behindTheScene/CashFlow";
+import BalanceStats from "../components/Dashboard/BalanceStats";
+import BalanceTrends from "../components/Dashboard/BalanceTrends";
+import BalanceSummary from "../components/Dashboard/BalanceSummary";
+import MenuOptionModel from "../const/widget_component_model/MenuOptionModel";
+import AmountInfo from "../components/Dashboard/AmountInfo";
+import CashFlow from "../behindTheScene/CashFlow";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -19,8 +19,8 @@ export default class DashBoard extends Component {
 
   render() {
     return (
-      <div className="content-wrapper p-4 ">
-        <div className="d-flex flex-column gap-4  text-black   ">
+      <div className="p-4">
+        <div className="d-flex flex-column gap-4  text-black">
           <div className=" d-flex justify-content-between">
             <div className="d-flex flex-column mb-4">
               <strong

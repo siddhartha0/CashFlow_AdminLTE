@@ -6,6 +6,6 @@ export default class Wallet extends Component {
   }
 
   render() {
-    return <div className="content-wrapper"> Wallet</div>;
+    return <> Wallet</>;
   }
 }

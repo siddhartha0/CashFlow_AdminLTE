@@ -19,7 +19,9 @@ export default class App extends Component {
       <div className="wrapper">
         <Header />
         <NewSideBar />
-        <Outlet />
+        <div className="content-wrapper">
+          <Outlet />
+        </div>
         {/* <Footer /> */}
       </div>
     );

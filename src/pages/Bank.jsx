@@ -6,6 +6,6 @@ export default class Bank extends Component {
   }
 
   render() {
-    return <div className="content-wrapper">Bank</div>;
+    return <>Bank</>;
   }
 }
