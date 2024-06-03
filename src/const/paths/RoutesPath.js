@@ -28,14 +28,12 @@ const RoutesPath = [
         id: 21,
         title: "Withdraw",
         path: "/bank/withdraw",
-
         icons: bank,
       },
       {
         id: 22,
         title: "Transfer",
         path: "/bank/transfer",
-
         icons: bank,
       },
     ],
