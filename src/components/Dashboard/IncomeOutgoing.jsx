@@ -17,18 +17,26 @@ export default class IncomeOutgoing extends Component {
     const localValue = JSON.parse(localStorage.getItem("dashboard"));
     const cashFlow = new Balance();
     label === "Bank"
-      ? cashFlow.calculateTotalIncoming(localValue.bankhistory)
-      : cashFlow.calculateTotalIncoming(localValue.walletHistory);
+      ? cashFlow.calculateTotalIncoming(localValue.bankhistory, "bank")
+      : cashFlow.calculateTotalIncoming(localValue.walletHistory, "wallet");
 
     return (
       <div className="d-flex flex-column ">
+        {/* <div></div> */}
         <div>
           <p className="text-lg text-uppercase">Income & expense</p>
         </div>
         <div className="d-flex  justify-content-between">
           <div>
             <StatsComps title="Total Incoming " amount={cashFlow.totalIncoming}>
-              <SmallLineChart />
+              <SmallLineChart
+                data={
+                  label === "Bank"
+                    ? cashFlow.total_bank_Incoming_Amount
+                    : cashFlow.total_wallet_Incoming_Amount
+                }
+                label={label}
+              />
             </StatsComps>
           </div>
 

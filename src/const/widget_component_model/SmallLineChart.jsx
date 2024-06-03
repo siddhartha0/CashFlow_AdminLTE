@@ -1,20 +1,28 @@
 import { Component } from "react";
 import ReactApexChart from "react-apexcharts";
+import PropTypes from "prop-types";
 
 export default class SmallLineChart extends Component {
-  constructor() {
+  static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.any),
+    label: PropTypes.string,
+  };
+
+  constructor(props) {
     super();
+    const { data, label } = props;
+
     this.state = {
       series5: [
         {
-          data: [25, 66, 41, 89, 63, 25, 44, 12, 36, 9, 54],
+          data: data,
         },
       ],
       options5: {
         chart: {
-          type: "bar",
+          type: "area",
           width: 100,
-          height: 35,
+          height: 10,
           sparkline: {
             enabled: true,
           },
@@ -24,7 +32,7 @@ export default class SmallLineChart extends Component {
             columnWidth: "80%",
           },
         },
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        // labels: [1, 2],
         xaxis: {
           crosshairs: {
             width: 1,
@@ -32,17 +40,17 @@ export default class SmallLineChart extends Component {
         },
         tooltip: {
           fixed: {
-            enabled: false,
+            enabled: true,
           },
           x: {
             show: false,
           },
           y: {
-            // title: {
-            //   formatter: function (seriesName) {
-            //     return "";
-            //   },
-            // },
+            title: {
+              formatter: function () {
+                return label;
+              },
+            },
           },
           marker: {
             show: false,
@@ -57,7 +65,7 @@ export default class SmallLineChart extends Component {
       <div>
         <ReactApexChart
           options={this.state.options5}
-          series={this.state.series5}
+          series={this.state?.series5}
           type="area"
           height={35}
           width={100}
