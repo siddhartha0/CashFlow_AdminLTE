@@ -1,12 +1,12 @@
 import { Component } from "react";
-import BalanceStats from "../components/Dashboard/BalanceStats";
-import BalanceTrends from "../components/Dashboard/BalanceTrends";
-import BalanceSummary from "../components/Dashboard/BalanceSummary";
-import MenuOptionModel from "../const/widget_component_model/MenuOptionModel";
-import AmountInfo from "../components/Dashboard/AmountInfo";
-import IncomeOutgoing from "../components/Dashboard/IncomeOutgoing";
-import { PickPlatform } from "../const/PickPlatForm";
-import { PickDate } from "../const/PickDate";
+import BalanceStats from "../../components/Dashboard/BalanceStats";
+import BalanceTrends from "../../components/Dashboard/BalanceTrends";
+import BalanceSummary from "../../components/Dashboard/BalanceSummary";
+import MenuOptionModel from "../../const/widget_component_model/MenuOptionModel";
+import AmountInfo from "../../components/Dashboard/AmountInfo";
+import IncomeOutgoing from "../../components/Dashboard/IncomeOutgoing";
+import { PickPlatform } from "../../const/PickPlatForm";
+import { PickDate } from "../../const/PickDate";
 
 export default class DashBoard extends Component {
   constructor() {

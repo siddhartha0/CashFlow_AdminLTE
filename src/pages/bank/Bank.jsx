@@ -1,6 +1,6 @@
 import { Component } from "react";
-import TransactionTable from "../components/bank/TransactionTable";
-import { transactions } from "../behindTheScene/api/bank";
+import TransactionTable from "../../components/bank/TransactionTable";
+import { transactions } from "../../behindTheScene/api/bank";
 import ReactApexChart from "react-apexcharts";
 
 export default class Bank extends Component {
