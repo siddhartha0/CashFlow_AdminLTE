@@ -4,23 +4,42 @@ import BalanceTrends from "../components/Dashboard/BalanceTrends";
 import BalanceSummary from "../components/Dashboard/BalanceSummary";
 import MenuOptionModel from "../const/widget_component_model/MenuOptionModel";
 import AmountInfo from "../components/Dashboard/AmountInfo";
-import CashFlow from "../behindTheScene/CashFlow";
+import IncomeOutgoing from "../components/Dashboard/IncomeOutgoing";
+import { PickPlatform } from "../const/PickPlatForm";
+import { PickDate } from "../const/PickDate";
 
 export default class DashBoard extends Component {
   constructor() {
     super();
     this.state = {
       date: new Date(),
+      selectedPlatform: "Bank",
+      selectedDate: "overall",
     };
+    this.selectPlatform = this.selectPlatform.bind(this);
+    this.pickDate = this.pickDate.bind(this);
   }
-  componentDidMount() {
-    new CashFlow().balanceCaller();
+
+  selectPlatform(e) {
+    const value = e.target.value;
+    this.setState({
+      ...this.state,
+      selectedPlatform: value,
+    });
+  }
+
+  pickDate(e) {
+    const value = e.target.value;
+    this.setState({
+      ...this.state,
+      selectedDate: value,
+    });
   }
 
   render() {
     return (
       <div className="p-4">
-        <div className="d-flex flex-column gap-4  text-black">
+        <div className="d-flex flex-column gap-4  text-black ">
           <div className=" d-flex justify-content-between">
             <div className="d-flex flex-column mb-4">
               <strong
@@ -41,7 +60,11 @@ export default class DashBoard extends Component {
             </div>
 
             <div className="col-sm-2 float-sm-right">
-              <MenuOptionModel className="breadcrumb float-sm-right" />
+              <MenuOptionModel
+                className="breadcrumb float-sm-right"
+                option={PickDate}
+                PickPlatform={this.pickDate}
+              />
             </div>
           </div>
 
@@ -105,6 +128,27 @@ export default class DashBoard extends Component {
               }}
             >
               <AmountInfo header="Wallet Amount Summary" label="Wallet" />
+            </div>
+          </div>
+
+          <div
+            className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 "
+            style={{
+              background: "#FFFFFF",
+              borderRadius: "16px",
+              backdropFilter: "blur(5px)",
+              border: " 1px solid rgba(255, 255, 255, 0.3)",
+            }}
+          >
+            <div className="col-md-2 ">
+              <MenuOptionModel
+                className="breadcrumb float-sm-right"
+                option={PickPlatform}
+                PickPlatform={this.selectPlatform}
+              />
+            </div>
+            <div className=" mt-2 ml-2 col-md-9  text-capitalize ">
+              <IncomeOutgoing label={this.state.selectedPlatform} />
             </div>
           </div>
         </div>

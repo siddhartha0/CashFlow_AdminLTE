@@ -19,7 +19,6 @@ import WalletLayout from "./pages/WalletLayout.jsx";
 import Business from "./pages/Business.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // new CashFlow().balanceCaller();
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
@@ -28,7 +27,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/bank" element={<Banklayout />}>
             <Route index element={<Bank />} />
-
             <Route path="transfer" element={<Transfer />} />
             <Route path="deposit" element={<Deposit />} />
             <Route path="withdraw" element={<Withdraw />} />
@@ -36,7 +34,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/wallet" element={<WalletLayout />}>
             <Route index element={<Wallet />} />
-
             <Route path="/wallet/deposit" element={<WalletDeposit />} />
             <Route path="/wallet/transfer" element={<WalletTransfer />} />
             <Route path="/wallet/withdraw" element={<WalletWithDraw />} />

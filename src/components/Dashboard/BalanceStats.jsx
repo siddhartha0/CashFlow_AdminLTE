@@ -41,7 +41,7 @@ export default class BalanceStats extends Component {
                 options={this.state.options}
                 series={this.state.series}
                 type="donut"
-                width="300"
+                width="280"
               />
             </div>
 
@@ -67,13 +67,13 @@ export default class BalanceStats extends Component {
             width: ".5px",
             height: "277px",
             marginTop: "15px",
-            position: "absolute",
-            right: "240px",
+            // marginRight: "4px",
+
             background: "#DDDFE1",
           }}
         />
 
-        <div className="m-2 p-2 d-flex  flex-column gap-4 text-sm  relative">
+        <div className="mt-2 p-2 d-flex  flex-column gap-4 text-sm  relative">
           <div className="d-flex flex-column text-lg">
             <CiBank className="text-xl place-self-start text-hold" />
 
