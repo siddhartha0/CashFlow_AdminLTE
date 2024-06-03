@@ -1,15 +1,31 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class MenuOptionModel extends Component {
+  static propTypes = {
+    option: PropTypes.array,
+    PickPlatform: PropTypes.func,
+  };
+
+  selectValue(e) {
+    console.log(e.target.value);
+  }
+
   render() {
+    const { option, PickPlatform } = this.props;
     return (
-      <div className="input-group mb-3">
-        <select className="custom-select" id="inputGroupSelect01">
-          <option selected>overall</option>
-          <option value="0">June-July</option>
-          <option value="1">May-June</option>
-          <option value="2">April-May</option>
-          <option value="3">March-April</option>
+      <div className="input-group mb-3 ">
+        <select
+          className="custom-select"
+          id="inputGroupSelect01"
+          onChange={(e) => PickPlatform(e)}
+          // value={selectedPlatform}
+        >
+          {option?.map((opt) => (
+            <option key={opt?.title} value={opt.value}>
+              {opt.title}
+            </option>
+          ))}
         </select>
       </div>
     );

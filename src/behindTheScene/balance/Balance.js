@@ -35,6 +35,12 @@ export default class Balance {
   bank_Complete_Money_History = [];
   wallet_Complete_Money_History = [];
 
+  total_bank_Incoming_Amount = [];
+  total_bank_Spent_Amount = [];
+
+  total_wallet_Incoming_Amount = [];
+  total_wallet_Spent_Amount = [];
+
   stats_Holder() {
     this.duration.map((duration, i) => {
       if (duration) {
@@ -156,14 +162,18 @@ export default class Balance {
     this.overall_trend = Math.abs(difference_in_total / 100);
   }
 
-  calculateTotalIncoming(history) {
+  calculateTotalIncoming(history, label) {
     if (history && history.length > 0) {
       history.map((money, index, array) => {
         if (index <= array.length - 2) {
-          console.log(array[index + 1]);
           if (money < array[index + 1]) {
             const difference = array[index + 1] - money;
             this.totalIncoming += difference;
+            if (label === "bank") {
+              this.total_bank_Incoming_Amount.push(array[index + 1]);
+            } else {
+              this.total_wallet_Incoming_Amount.push(array[index + 1]);
+            }
           } else {
             const difference = money - array[index + 1];
             this.totalOutgoing += difference;
@@ -171,8 +181,12 @@ export default class Balance {
         }
       });
     }
-    console.log(this.totalIncoming, "totalIncoming");
-    console.log(this.totalOutgoing, "totaloutgoing");
+
+    // return this.totalIncoming;
+    // }
+    // console.log(this.totalIncoming, "totalIncoming");
+    // console.log(this.total_bank_Incoming_Amount, "Incoming Array");
+    // console.log(this.totalOutgoing, "totaloutgoing");
   }
 }
 
