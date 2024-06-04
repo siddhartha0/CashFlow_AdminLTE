@@ -7,6 +7,7 @@ function check() {
     console.log(balance.bank_Complete_Money_History);
     balance.calculateTotalIncoming(balance.bank_Complete_Money_History);
   }
+  balance.mapIncomeSource();
 }
 
 check();
