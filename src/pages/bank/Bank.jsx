@@ -1,7 +1,7 @@
 import { Component } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
-import { transactions } from "../../behindTheScene/api/bank";
 import ReactApexChart from "react-apexcharts";
+import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 
 export default class Bank extends Component {
   constructor() {
@@ -52,90 +52,94 @@ export default class Bank extends Component {
   }
 
   render() {
-    const getTotalTransaction = (type) => {
+    const transactions = generateRandomTransactions(15);
+
+    const getTotalTransaction = (status) => {
       let total = transactions
-        .filter((transaction) => transaction.type === type)
+        .filter((transaction) => transaction.status === status)
         .reduce((sum, transaction) => sum + transaction.amount, 0);
 
       return total.toLocaleString();
     };
 
     return (
-      <div className="row">
-        <div class="col-lg-3">
-          <div class="info-box mb-3 bg-dark">
-            <span class="info-box-icon">
-              <i class="fas fa-tag"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Bank Balance</span>
-              <span class="info-box-number">
-                {getTotalTransaction("deposit")}
+      <>
+        <div className="row">
+          <div class="col-lg-3">
+            <div class="info-box mb-3 bg-dark">
+              <span class="info-box-icon">
+                <i class="fas fa-tag"></i>
               </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Bank Balance</span>
+                <span class="info-box-number">
+                  {getTotalTransaction("deposit")}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div class="info-box mb-3 bg-warning">
-            <span class="info-box-icon">
-              <i class="far fa-heart"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Deposit</span>
-              <span class="info-box-number">
-                {getTotalTransaction("deposit")}
+            <div class="info-box mb-3 bg-warning">
+              <span class="info-box-icon">
+                <i class="far fa-heart"></i>
               </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Total Deposit</span>
+                <span class="info-box-number">
+                  {getTotalTransaction("deposit")}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div class="info-box mb-3 bg-danger">
-            <span class="info-box-icon">
-              <i class="far fa-comment"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Withdraw</span>
-              <span class="info-box-number">
-                {getTotalTransaction("withdraw")}
+            <div class="info-box mb-3 bg-danger">
+              <span class="info-box-icon">
+                <i class="far fa-comment"></i>
               </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Total Withdraw</span>
+                <span class="info-box-number">
+                  {getTotalTransaction("withdraw")}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div class="info-box mb-3 bg-secondary">
-            <span class="info-box-icon">
-              <i class="far fa-heart"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Transfer</span>
-              <span class="info-box-number">
-                {getTotalTransaction("transfer")}
+            <div class="info-box mb-3 bg-secondary">
+              <span class="info-box-icon">
+                <i class="far fa-heart"></i>
               </span>
+              <div class="info-box-content">
+                <span class="info-box-text">Total Transfer</span>
+                <span class="info-box-number">
+                  {getTotalTransaction("transfer")}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-lg-9">
-          <div className="card p-3">
-            <ReactApexChart
-              options={this.state.options}
-              series={this.state.series}
-              type="bar"
-              height={420}
+          <div className="col-lg-9">
+            <div className="custom-card p-3">
+              <ReactApexChart
+                options={this.state.options}
+                series={this.state.series}
+                type="bar"
+                height={420}
+              />
+            </div>
+          </div>
+          <div className="col-lg-6">
+            <TransactionTable
+              transactions={transactions}
+              status="deposit"
+              title="Deposit History"
+            />
+          </div>
+          <div className="col-lg-6">
+            <TransactionTable
+              transactions={transactions}
+              status="withdraw"
+              title="Withdraw History"
             />
           </div>
         </div>
-        <div className="col-lg-6">
-          <TransactionTable
-            transactions={transactions}
-            type="deposit"
-            title="Deposit History"
-          />
-        </div>
-        <div className="col-lg-6">
-          <TransactionTable
-            transactions={transactions}
-            type="withdraw"
-            title="Withdraw History"
-          />
-        </div>
-      </div>
+      </>
     );
   }
 }
