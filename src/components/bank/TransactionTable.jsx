@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import DynamicTable from "../../const/widget_component_model/DynamicTable";
 
 class TransactionTable extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class TransactionTable extends Component {
   };
 
   getFilteredTransactions = () => {
-    const { transactions, type } = this.props;
+    const { transactions, status } = this.props;
     const { selectedOption } = this.state;
 
     const today = new Date();
@@ -29,7 +30,7 @@ class TransactionTable extends Component {
         (selectedOption === "option1" && isToday) ||
         (selectedOption === "option2" && isYesterday);
 
-      return isSelectedDate && transaction.type === type;
+      return isSelectedDate && transaction.status === status;
     });
   };
 
@@ -38,8 +39,16 @@ class TransactionTable extends Component {
     const { selectedOption } = this.state;
     const filteredTransactions = this.getFilteredTransactions();
 
+    const headers = [
+      { key: "account", label: "Account" },
+      { key: "bank", label: "Bank" },
+      { key: "amount", label: "Amount" },
+      { key: "type", label: "Type" },
+      { key: "remarks", label: "Remarks" },
+    ];
+
     return (
-      <div className="card">
+      <div className="custom-card">
         <div className="card-header">
           <h3 className="card-title mt-2">{title}</h3>
           <div className="card-tools">
@@ -80,26 +89,7 @@ class TransactionTable extends Component {
 
         <div className="card-body p-0">
           {filteredTransactions.length > 0 ? (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th style={{ width: "5px" }}>#</th>
-                  <th>Bank Account</th>
-                  <th>Purpose</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTransactions.map((transaction, index) => (
-                  <tr key={transaction.id}>
-                    <td>{index + 1}.</td>
-                    <td>{transaction.account}</td>
-                    <td>{transaction.purpose}</td>
-                    <td>{transaction.amount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <DynamicTable data={filteredTransactions} headers={headers} />
           ) : (
             <div className="p-3 text-center">No transactions found</div>
           )}
