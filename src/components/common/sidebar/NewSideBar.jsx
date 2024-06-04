@@ -74,7 +74,7 @@ export default class NewSideBar extends Component {
                         <li className="nav-item" key={child.id}>
                           <NavLink to={child.path} className="nav-link">
                             <img
-                              src={routes.icons}
+                              src={child.icons}
                               className="fas nav-icon "
                               alt=""
                             />
