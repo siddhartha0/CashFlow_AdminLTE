@@ -42,12 +42,6 @@ export default class SingleLineChart extends Component {
             3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4,
             5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
           ],
-          labels: {
-            show: false,
-            formatter: function (val) {
-              return "Day " + val;
-            },
-          },
         },
       },
     };
