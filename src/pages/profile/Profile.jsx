@@ -1,6 +1,6 @@
 import { Component } from "react";
-import UserDetail from "../../components/Profile/UserDetail";
-import SavingGoals from "../../components/Profile/SavingGoals";
+import UserDetail from "../../components/profile/UserDetail";
+import SavingGoals from "../../components/profile/SavingGoals";
 // import CreditScore from "../../components/Profile/CreditScore";
 
 export default class Profile extends Component {
