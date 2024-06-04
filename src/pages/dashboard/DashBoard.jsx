@@ -19,6 +19,7 @@ export default class DashBoard extends Component {
       selectedDate: "overall",
       transactionType: "income",
     };
+
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
@@ -91,68 +92,28 @@ export default class DashBoard extends Component {
                 >
                   <BalanceStats />
                 </div>
-                <div
-                  className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4"
-                  style={{
-                    background: "#FFFFFF",
-                    borderRadius: "16px",
-                    backdropFilter: "blur(5px)",
-                    border: " 1px solid rgba(255, 255, 255, 0.3)",
-                  }}
-                >
+                <div className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4 custom-card">
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div
-                className="col col-md-6 row-8  p-4 text-capitalize "
-                style={{
-                  background: "#FFFFFF",
-                  borderRadius: "16px",
-                  backdropFilter: "blur(5px)",
-                  border: " 1px solid rgba(255, 255, 255, 0.3)",
-                }}
-              >
+              <div className="col col-md-6 row-8  p-4 text-capitalize custom-card">
                 <BalanceSummary />
               </div>
             </div>
           </div>
 
           <div className=" d-flex  mt-4 ml-2  ">
-            <div
-              className="col col-md-6   p-4 text-capitalize "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-6   p-4 text-capitalize custom-card">
               <AmountInfo header="Bank Amount Summary" label="Bank" />
             </div>
-            <div
-              className="col col-md-6 row-8  p-4 text-capitalize ml-4 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
               <AmountInfo header="Wallet Amount Summary" label="Wallet" />
             </div>
           </div>
 
           <div className="d-flex">
-            <div
-              className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 custom-card">
               <div className="col-md-2 ">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
@@ -165,17 +126,7 @@ export default class DashBoard extends Component {
               </div>
             </div>
 
-            <div
-              className="col col-md-4 d-flex flex-column  p-4 mt-4 ml-3 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                maxHeight: "650px",
-                overflowY: "scroll",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-4 d-flex flex-column  p-4 mt-4 ml-3 custom-card ">
               <div className="col-md-5 ">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
