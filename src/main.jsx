@@ -34,9 +34,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/wallet" element={<WalletLayout />}>
             <Route index element={<Wallet />} />
-            <Route path="/wallet/deposit" element={<WalletDeposit />} />
-            <Route path="/wallet/transfer" element={<WalletTransfer />} />
-            <Route path="/wallet/withdraw" element={<WalletWithDraw />} />
+            <Route path="deposit" element={<WalletDeposit />} />
+            <Route path="transfer" element={<WalletTransfer />} />
+            <Route path="withdraw" element={<WalletWithDraw />} />
           </Route>
 
           <Route path="/business" element={<Business />} />
