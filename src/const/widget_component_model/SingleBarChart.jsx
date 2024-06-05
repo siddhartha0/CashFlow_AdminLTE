@@ -13,6 +13,14 @@ export default class SingleBarChart extends Component {
         },
       ],
       options: {
+        title: {
+          text: `Monthly Total ${name}`,
+          floating: true,
+          align: "left",
+          style: {
+            color: "#444",
+          },
+        },
         chart: {
           height: 350,
           type: "bar",
@@ -39,7 +47,7 @@ export default class SingleBarChart extends Component {
 
         xaxis: {
           categories: label,
-          position: "top",
+          position: "bottom",
           axisBorder: {
             show: false,
           },
@@ -76,22 +84,13 @@ export default class SingleBarChart extends Component {
             },
           },
         },
-        title: {
-          text: `Monthly Total ${name}`,
-          floating: true,
-          offsetY: 330,
-          align: "center",
-          style: {
-            color: "#444",
-          },
-        },
       },
     };
   }
 
   render() {
     return (
-      <div>
+      <div className="custom-card">
         <div id="chart">
           <ReactApexChart
             options={this.state.options}
