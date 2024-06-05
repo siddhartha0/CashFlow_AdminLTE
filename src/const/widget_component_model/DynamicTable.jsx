@@ -69,6 +69,39 @@ class DynamicTable extends Component {
                 <td key={key}>{item[key]}</td>
               ))}
             </tr>
+          
+          <tbody>
+            {currentItems.map((item, index) => (
+              <tr key={item.id}>
+                <td>{indexOfFirstItem + index + 1}.</td>
+                {headers.map(({ key }) => (
+                  <td key={key}>{item[key]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+       
+
+        <ul className="pagination justify-content-end mr-5 ">
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              onClick={(e) => handleClick(e, "prev")}
+            >
+              Previous
+            </a>
+          </li>
+          {pageNumbers.map((number) => (
+            <li className="page-item" key={number}>
+              <a
+                className="page-link"
+                id={number}
+                onClick={(e) => this.handleClick(e, "page")}
+              >
+                {number}
+              </a>
+            </li>
           ))}
         </tbody>
       </table>
