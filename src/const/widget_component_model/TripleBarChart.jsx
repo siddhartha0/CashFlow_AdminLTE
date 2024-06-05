@@ -54,11 +54,7 @@ export default class TripleBarChart extends Component {
         xaxis: {
           categories: label,
         },
-        yaxis: {
-          title: {
-            text: "$ (thousands)",
-          },
-        },
+
         fill: {
           opacity: 1,
         },

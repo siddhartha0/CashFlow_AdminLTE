@@ -5,10 +5,11 @@ function check() {
   balance.stats_Holder();
   if (balance.bank_Complete_Money_History) {
     console.log(balance.bank_Complete_Money_History);
-    balance.calculateTotalIncoming(balance.bank_Complete_Money_History);
+    // balance.calculateTotalIncoming(balance.bank_Complete_Money_History);
   }
   // balance.mapIncomeSource();
-  balance.calculate_Income_Expense(balance.bank_Complete_Money_History, "bank");
+  // balance.calculate_Income_Expense(balance.bank_Complete_Money_History, "bank");
+  balance.genMonthlyBalance(balance.bank_Complete_Money_History[0]);
 }
 
 check();

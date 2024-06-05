@@ -13,6 +13,14 @@ export default class SingleBarChart extends Component {
         },
       ],
       options: {
+        title: {
+          text: `Monthly Total ${name}`,
+          floating: true,
+          align: "left",
+          style: {
+            color: "#444",
+          },
+        },
         chart: {
           height: 350,
           type: "bar",
@@ -39,7 +47,7 @@ export default class SingleBarChart extends Component {
 
         xaxis: {
           categories: label,
-          position: "top",
+          position: "bottom",
           axisBorder: {
             show: false,
           },
@@ -74,15 +82,6 @@ export default class SingleBarChart extends Component {
             formatter: function (val) {
               return val;
             },
-          },
-        },
-        title: {
-          text: `Monthly Total ${name}`,
-          floating: true,
-          offsetY: 330,
-          align: "center",
-          style: {
-            color: "#444",
           },
         },
       },
