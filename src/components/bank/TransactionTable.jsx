@@ -99,6 +99,7 @@ class TransactionTable extends Component {
               data={filteredTransactions}
               headers={headers}
               total={true}
+              pageNo="5"
             />
           ) : (
             <div className="p-3 text-center">No transactions found</div>
