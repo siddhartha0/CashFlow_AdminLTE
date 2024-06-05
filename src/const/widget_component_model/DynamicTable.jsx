@@ -16,7 +16,7 @@ class DynamicTable extends Component {
   };
 
   render() {
-    const { data, headers } = this.props;
+    const { data, headers, total } = this.props;
     const { currentPage, itemsPerPage } = this.state;
 
     // Logic for displaying current items
@@ -29,6 +29,11 @@ class DynamicTable extends Component {
     for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
+
+    const totalValue = data.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
 
     if (!data || data.length === 0) {
       return <p>No data available</p>;
@@ -52,7 +57,7 @@ class DynamicTable extends Component {
     };
 
     return (
-      <div className="custom-card">
+      <>
         <table className="table">
           <thead>
             <tr>
@@ -72,6 +77,15 @@ class DynamicTable extends Component {
               </tr>
             ))}
           </tbody>
+          {total && (
+            <tfoot>
+              <tr>
+                <td colSpan={headers.length + 1}>
+                  <b>Total :</b> {totalValue.toLocaleString()}
+                </td>
+              </tr>
+            </tfoot>
+          )}
         </table>
 
         <ul className="pagination justify-content-end mr-5 ">
@@ -105,7 +119,7 @@ class DynamicTable extends Component {
             </a>
           </li>
         </ul>
-      </div>
+      </>
     );
   }
 }
