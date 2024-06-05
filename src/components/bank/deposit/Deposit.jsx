@@ -40,7 +40,10 @@ export default class Deposit extends Component {
                 {getTotalTransaction("deposit")}
               </span>
             </div>
-            <div>
+            <span className="info-box-icon">
+              <i class="fa-solid fa-money-bill-trend-up"></i>
+            </span>
+            <div className="info-box-content">
               <span className="info-box-text">Total Deposit Transactions</span>
               <span className="info-box-number">{filterData.length}</span>
             </div>
@@ -61,8 +64,7 @@ export default class Deposit extends Component {
                 name={"Deposit"}
               />
             </div>
-            <br />
-            <div className="col-12">
+            <div className="col-12 mt-4">
               <h2>Total Deposits</h2>
               <DynamicTable data={filterData} headers={headers} />
             </div>

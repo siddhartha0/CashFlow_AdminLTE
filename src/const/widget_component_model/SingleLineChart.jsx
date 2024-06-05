@@ -55,7 +55,7 @@ export default class SingleLineChart extends Component {
 
   render() {
     return (
-      <div>
+      <div className="custom-card">
         <div id="chart">
           <ReactApexChart
             options={this.state.options}
