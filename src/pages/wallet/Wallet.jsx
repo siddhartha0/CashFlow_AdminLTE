@@ -64,50 +64,50 @@ export default class Wallet extends Component {
 
     return (
       <div className="row">
-        <div class="col-lg-3">
-          <div class="info-box mb-3 bg-dark">
-            <span class="info-box-icon">
-              <i class="fas fa-tag"></i>
+        <div className="col-lg-3">
+          <div className="info-box mb-3 bg-dark">
+            <span className="info-box-icon">
+              <i className="fas fa-tag"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Bank Balance</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Bank Balance</span>
+              <span className="info-box-number">
                 {getTotalTransaction("deposit")}
               </span>
             </div>
           </div>
 
-          <div class="info-box mb-3 bg-warning">
-            <span class="info-box-icon">
-              <i class="far fa-heart"></i>
+          <div className="info-box mb-3 bg-warning">
+            <span className="info-box-icon">
+              <i className="far fa-heart"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Deposit</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Total Deposit</span>
+              <span className="info-box-number">
                 {getTotalTransaction("deposit")}
               </span>
             </div>
           </div>
 
-          <div class="info-box mb-3 bg-danger">
-            <span class="info-box-icon">
-              <i class="far fa-comment"></i>
+          <div className="info-box mb-3 bg-danger">
+            <span className="info-box-icon">
+              <i className="far fa-comment"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Withdraw</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Total Withdraw</span>
+              <span className="info-box-number">
                 {getTotalTransaction("withdraw")}
               </span>
             </div>
           </div>
 
-          <div class="info-box mb-3 bg-secondary">
-            <span class="info-box-icon">
-              <i class="far fa-heart"></i>
+          <div className="info-box mb-3 bg-secondary">
+            <span className="info-box-icon">
+              <i className="far fa-heart"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Transfer</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Total Transfer</span>
+              <span className="info-box-number">
                 {getTotalTransaction("transfer")}
               </span>
             </div>

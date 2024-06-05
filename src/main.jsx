@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DashBoard from "./pages/dashboard/DashBoard.jsx";
 import Wallet from "./pages/wallet/Wallet.jsx";
 import Transfer from "./pages/bank/Transfer.jsx";
-import Deposit from "./pages/bank/Deposit.jsx";
+import DepositPage from "./pages/bank/DepositPage.jsx";
 import Withdraw from "./pages/bank/Withdraw.jsx";
 import { Withdraw as WalletWithDraw } from "./pages/wallet/Withdraw.jsx";
 import { Deposit as WalletDeposit } from "./pages/wallet/Deposit.jsx";
@@ -32,15 +31,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/bank" element={<Banklayout />}>
             <Route index element={<Bank />} />
             <Route path="transfer" element={<Transfer />} />
-            <Route path="deposit" element={<Deposit />} />
+            <Route path="deposit" element={<DepositPage />} />
             <Route path="withdraw" element={<Withdraw />} />
           </Route>
 
           <Route path="/wallet" element={<WalletLayout />}>
             <Route index element={<Wallet />} />
-            <Route path="/wallet/deposit" element={<WalletDeposit />} />
-            <Route path="/wallet/transfer" element={<WalletTransfer />} />
-            <Route path="/wallet/withdraw" element={<WalletWithDraw />} />
+            <Route path="deposit" element={<WalletDeposit />} />
+            <Route path="transfer" element={<WalletTransfer />} />
+            <Route path="withdraw" element={<WalletWithDraw />} />
           </Route>
 
           <Route path="/business" element={<Business />} />

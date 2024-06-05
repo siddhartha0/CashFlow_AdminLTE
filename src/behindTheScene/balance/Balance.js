@@ -173,32 +173,47 @@ export default class Balance {
     this.overall_trend = Math.abs(difference_in_total / 100);
   }
 
-  calculateTotalIncoming(history, label) {
+  calculate_Income_Expense(history, label) {
     if (history && history.length > 0) {
       history.map((money, index, array) => {
+        if (index === 0) {
+          label === "bank"
+            ? this.total_bank_Incoming_Amount.push(money)
+            : this.total_wallet_Incoming_Amount.push(money);
+        }
+
         if (index <= array.length - 2) {
           if (money < array[index + 1]) {
             const difference = array[index + 1] - money;
             this.totalIncoming += difference;
             if (label === "bank") {
               if (index === 0) {
-                this.total_bank_Incoming_Amount.push(money);
+                this.total_bank_Spent_Amount.push(0);
               }
-              this.total_bank_Incoming_Amount.push(array[index + 1]);
+              this.total_bank_Spent_Amount.push(0);
+              this.total_bank_Incoming_Amount.push(difference);
             } else {
               if (index === 0) {
-                this.total_wallet_Incoming_Amount.push(money);
+                this.total_wallet_Spent_Amount.push(0);
               }
-              this.total_wallet_Incoming_Amount.push(array[index + 1]);
+              this.total_wallet_Spent_Amount.push(0);
+              this.total_wallet_Incoming_Amount.push(difference);
             }
           } else {
             const difference = money - array[index + 1];
-
             this.totalOutgoing += difference;
             if (label === "bank") {
-              this.total_bank_Spent_Amount.push(array[index + 1]);
+              if (index === 0) {
+                this.total_bank_Spent_Amount.push(0);
+              }
+              this.total_bank_Spent_Amount.push(difference);
+              this.total_bank_Incoming_Amount.push(0);
             } else {
-              this.total_wallet_Spent_Amount.push(array[index + 1]);
+              if (index === 0) {
+                this.total_wallet_Spent_Amount.push(0);
+              }
+              this.total_wallet_Spent_Amount.push(difference);
+              this.total_wallet_Incoming_Amount.push(0);
             }
           }
         }

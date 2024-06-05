@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import DynamicTable from "../../const/widget_component_model/DynamicTable";
-
+import PropTypes from "prop-types";
 class TransactionTable extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +11,12 @@ class TransactionTable extends Component {
 
   handleOptionChange = (e) => {
     this.setState({ selectedOption: e.target.id });
+  };
+
+  static propTypes = {
+    transactions: PropTypes.array,
+    status: PropTypes.string,
+    title: PropTypes.string,
   };
 
   getFilteredTransactions = () => {
@@ -89,7 +95,12 @@ class TransactionTable extends Component {
 
         <div className="card-body p-0">
           {filteredTransactions.length > 0 ? (
-            <DynamicTable data={filteredTransactions} headers={headers} />
+            <DynamicTable
+              data={filteredTransactions}
+              headers={headers}
+              total={true}
+              pageNo="5"
+            />
           ) : (
             <div className="p-3 text-center">No transactions found</div>
           )}

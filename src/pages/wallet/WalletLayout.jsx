@@ -7,11 +7,6 @@ export default class WalletLayout extends Component {
     this.state = {
       path: window.location.pathname,
     };
-    console.log(this.state.path);
-  }
-
-  componentDidMount() {
-    console.log(window.location.pathname);
   }
 
   render() {

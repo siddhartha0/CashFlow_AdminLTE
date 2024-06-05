@@ -28,7 +28,7 @@ const RoutesPath = [
         id: 21,
         title: "Withdraw",
         path: "/bank/withdraw",
-        icons: bank,
+        icons: profile,
       },
       {
         id: 22,
