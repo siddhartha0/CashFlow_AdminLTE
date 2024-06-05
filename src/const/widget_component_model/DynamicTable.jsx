@@ -5,7 +5,7 @@ class DynamicTable extends Component {
     super(props);
     this.state = {
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: this.props.pageNo,
     };
   }
 
@@ -58,7 +58,7 @@ class DynamicTable extends Component {
 
     return (
       <>
-        <table className="table">
+        <table className="table table-responsive-sm">
           <thead>
             <tr>
               <th style={{ width: "5px" }}>#</th>
