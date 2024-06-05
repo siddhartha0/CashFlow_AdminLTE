@@ -1,6 +1,20 @@
 import React, { Component } from "react";
 
 class DynamicTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 1,
+      itemsPerPage: 10,
+    };
+  }
+
+  handleClick = (event) => {
+    this.setState({
+      currentPage: Number(event.target.id),
+    });
+  };
+
   render() {
     const { data, headers, total } = this.props;
 
@@ -12,6 +26,23 @@ class DynamicTable extends Component {
     if (!data || data.length === 0) {
       return <p>No data available</p>;
     }
+
+    //handle click
+    const handleClick = (event, direction) => {
+      event.preventDefault(); // Prevent default link behavior
+
+      const { currentPage } = this.state;
+
+      if (direction === "prev" && currentPage > 1) {
+        this.setState({
+          currentPage: currentPage - 1,
+        });
+      } else if (direction === "next") {
+        this.setState({
+          currentPage: currentPage + 1,
+        });
+      }
+    };
 
     return (
       <table className="table table-responsive-sm">
