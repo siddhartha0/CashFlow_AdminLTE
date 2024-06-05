@@ -67,7 +67,7 @@ class DynamicTable extends Component {
               <tr key={item.id}>
                 <td>{indexOfFirstItem + index + 1}.</td>
                 {headers.map(({ key }) => (
-                  <td key={key}>Rs. {item[key]}</td>
+                  <td key={key}>{item[key]}</td>
                 ))}
               </tr>
             ))}
