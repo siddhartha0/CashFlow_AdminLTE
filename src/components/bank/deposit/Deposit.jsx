@@ -68,7 +68,12 @@ export default class Deposit extends Component {
             </div>
             <div className="col-12 mt-4">
               <h2>Total Deposits</h2>
-              <DynamicTable data={filterData} headers={headers} pageNo="10" />
+              <DynamicTable
+                data={filterData}
+                headers={headers}
+                pageNo="10"
+                total={true}
+              />
             </div>
           </div>
         </div>
