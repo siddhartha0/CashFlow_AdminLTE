@@ -7,12 +7,50 @@ import DynamicChart from "../../const/widget_component_model/DynamicChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 
 export default class Bank extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    this.value = JSON.parse(localStorage.getItem("dashboard"));
+
     this.state = {
-      data: [10, 20, 30, 40, 50],
-      title: "Dynamic Chart",
-      chartType: "bar",
+      series: [
+        {
+          name: "Deposit",
+          data: this.value.bankhistory,
+        },
+        {
+          name: "Withdraw",
+          data: this.value.walletHistory,
+        },
+      ],
+
+      options: {
+        chart: {
+          height: 350,
+          type: "line",
+          zoom: {
+            enabled: false,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "straight",
+        },
+        title: {
+          text: "Balance Summary",
+          align: "left",
+        },
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"],
+            opacity: 0.5,
+          },
+        },
+        xaxis: {
+          categories: this.value.label,
+        },
+      },
     };
   }
   render() {
