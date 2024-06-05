@@ -14,7 +14,7 @@ export default class MenuOptionModel extends Component {
   render() {
     const { option, PickPlatform } = this.props;
     return (
-      <div className="input-group mb-3 ">
+      <div className="input-group  ">
         <select
           className="custom-select"
           id="inputGroupSelect01"

@@ -112,31 +112,41 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className="d-flex">
-            <div className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 custom-card">
-              <div className="col-md-2 ">
+          <div className="d-flex mt-4">
+            <div className=" col-md-8 d-flex flex-column  p-4  ml-3 custom-card">
+              <div className="d-flex w-25">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
                   option={PickPlatform}
                   PickPlatform={this.selectPlatform}
                 />
               </div>
-              <div className=" mt-2 ml-2    text-capitalize ">
+              <div className=" ml-2 mb-2 mt-4    text-capitalize ">
                 <IncomeExpenseStats label={this.state.selectedPlatform} />
               </div>
             </div>
 
-            <div className="col col-md-4 d-flex flex-column  p-4 mt-4 ml-3 custom-card ">
+            <div
+              className="col col-md-4 d-flex flex-column  p-4  ml-3 custom-card "
+              style={{
+                height: "640px",
+                overflowY: "scroll",
+              }}
+            >
               <div className="col-md-5 ">
-                <MenuOptionModel
-                  className="breadcrumb float-sm-right"
-                  option={TransactionTypes}
-                  PickPlatform={this.selectTransactionTypes}
-                />
-                <IncomeExpenseHistory
-                  label={this.state.transactionType}
-                  header={this.state.selectedPlatform}
-                />
+                <div>
+                  <MenuOptionModel
+                    className="breadcrumb float-sm-right"
+                    option={TransactionTypes}
+                    PickPlatform={this.selectTransactionTypes}
+                  />
+                </div>
+                <div className="mt-4">
+                  <IncomeExpenseHistory
+                    label={this.state.transactionType}
+                    header={this.state.selectedPlatform}
+                  />
+                </div>
               </div>
             </div>
           </div>
