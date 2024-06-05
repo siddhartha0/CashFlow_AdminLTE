@@ -51,7 +51,7 @@ export default class DashBoard extends Component {
 
   render() {
     return (
-      <div className="content-wrapper p-4">
+      <div className="p-4">
         <div className="d-flex flex-column gap-4  text-black ">
           <div className=" d-flex justify-content-between">
             <div className="d-flex flex-column mb-4">

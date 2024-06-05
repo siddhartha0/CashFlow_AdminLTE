@@ -94,7 +94,7 @@ export default class Bank extends Component {
     };
 
     return (
-      <div className="content-wrapper p-3">
+      <div className="p-3">
         <div className="row">
           <div className="col-lg-3">
             {totalList.map((value, index) => (
