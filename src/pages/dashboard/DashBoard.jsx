@@ -9,6 +9,7 @@ import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
+import NewAccordian from "../../components/Dashboard/AmountInfoComps/NewAccordian";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -103,15 +104,6 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className=" d-flex  mt-4 ml-2  ">
-            <div className="col col-md-6   p-4 text-capitalize custom-card">
-              <AmountInfo header="Bank Amount Summary" label="Bank" />
-            </div>
-            <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
-              <AmountInfo header="Wallet Amount Summary" label="Wallet" />
-            </div>
-          </div>
-
           <div className="d-flex mt-4">
             <div className=" col-md-8 d-flex flex-column  p-4  ml-3 custom-card">
               <div className="d-flex w-25">
@@ -149,6 +141,19 @@ export default class DashBoard extends Component {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="custom-card p-3 mt-3">
+            <NewAccordian>
+              <div className=" d-flex   ml-2  ">
+                <div className="   p-4 text-capitalize custom-card">
+                  <AmountInfo header="Bank Amount Summary" label="Bank" />
+                </div>
+                <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
+                  <AmountInfo header="Wallet Amount Summary" label="Wallet" />
+                </div>
+              </div>
+            </NewAccordian>
           </div>
         </div>
       </div>
