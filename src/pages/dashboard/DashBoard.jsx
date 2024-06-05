@@ -52,11 +52,21 @@ export default class DashBoard extends Component {
 
   render() {
     return (
-      <div className="p-4">
-        <div className="d-flex flex-column gap-4  text-black ">
-          <div className=" d-flex justify-content-between">
-            <div className="d-flex flex-column mb-4">
+      <div className="p-4" id="dashboard_parentDiv">
+        <div
+          className="d-flex flex-column gap-4  text-black "
+          id="dashboard_Wrapper"
+        >
+          <div
+            className=" d-flex justify-content-between"
+            id="dashboard_header_ParentDiv"
+          >
+            <div
+              className="d-flex flex-column mb-4"
+              id="dashboard_Greeting_Info"
+            >
               <strong
+                id="Info"
                 className="text-xl text-uppercase"
                 style={{
                   color: "#9B4078",
@@ -64,7 +74,7 @@ export default class DashBoard extends Component {
               >
                 DashBoard
               </strong>
-              <span className="text-lg">
+              <span id="Greeting" className="text-lg">
                 {this.state.date.getHours() < 12
                   ? "Good Morning !!"
                   : this.state.date.getHours() <= 18
@@ -73,7 +83,10 @@ export default class DashBoard extends Component {
               </span>
             </div>
 
-            <div className="col-sm-2 float-sm-right">
+            <div
+              className="col-sm-2 float-sm-right"
+              id="dashboard_Date_selector"
+            >
               <MenuOptionModel
                 className="breadcrumb float-sm-right"
                 option={PickDate}
@@ -82,11 +95,11 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className="d-flex flex-column  ">
+          <div className="d-flex flex-column">
             <div className="row ">
               <div className="col-md-6">
                 <div
-                  className="col "
+                  className="col custom-card"
                   style={{
                     width: "100%",
                   }}
@@ -98,7 +111,7 @@ export default class DashBoard extends Component {
                 </div>
               </div>
 
-              <div className="col col-md-6 row-8  p-4 text-capitalize custom-card">
+              <div className="container col-md-6      p-4 text-capitalize custom-card ">
                 <BalanceSummary />
               </div>
             </div>
@@ -111,6 +124,8 @@ export default class DashBoard extends Component {
                   className="breadcrumb float-sm-right"
                   option={PickPlatform}
                   PickPlatform={this.selectPlatform}
+                  selectedPlatform={this.state.selectedPlatform}
+                  id="indi_Wallet_Bank"
                 />
               </div>
               <div className=" ml-2 mb-2 mt-4    text-capitalize ">
@@ -144,7 +159,7 @@ export default class DashBoard extends Component {
           </div>
 
           <div className="custom-card p-3 mt-3">
-            <NewAccordian>
+            <NewAccordian title="Activities">
               <div className=" d-flex   ml-2  ">
                 <div className="   p-4 text-capitalize custom-card">
                   <AmountInfo header="Bank Amount Summary" label="Bank" />

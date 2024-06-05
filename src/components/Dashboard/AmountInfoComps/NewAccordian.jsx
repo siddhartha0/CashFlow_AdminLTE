@@ -1,12 +1,22 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class NewAccordian extends Component {
+  static propTypes = {
+    children: PropTypes.any,
+    title: PropTypes.string,
+  };
   render() {
-    const { children } = this.props;
+    const { children, title } = this.props;
     return (
       <div className="card">
-        <div className="card-header">
-          <h5 className="card-title">Monthly Recap Report</h5>
+        <div
+          className="card-header"
+          style={{
+            background: "#9B4078",
+          }}
+        >
+          <h5 className="card-title text-white">{title}</h5>
           <div className="card-tools">
             <button
               type="button"

@@ -12,6 +12,7 @@ export default class TransactionStats extends Component {
     total_Income_Amount: PropTypes.array,
     total_expense_Amount: PropTypes.array,
     history: PropTypes.array,
+    colors: PropTypes.array,
   };
   render() {
     const {
@@ -21,14 +22,24 @@ export default class TransactionStats extends Component {
       total_Income_Amount,
       total_expense_Amount,
       history,
+      colors,
     } = this.props;
     const value = JSON.parse(localStorage.getItem("dashboard"));
+
     return (
       <div className="d-flex flex-column">
         <div className="d-flex  justify-content-between">
           <div>
-            <StatsComps title="Total Incoming " amount={incomeAmount}>
-              <SmallLineChart data={total_Income_Amount} label={label} />
+            <StatsComps
+              title="Total Incoming "
+              amount={incomeAmount}
+              color="#FFCB30"
+            >
+              <SmallLineChart
+                data={total_Income_Amount}
+                label={label}
+                color="#FFCB30"
+              />
             </StatsComps>
           </div>
 
@@ -43,8 +54,16 @@ export default class TransactionStats extends Component {
           />
 
           <div>
-            <StatsComps title="Total Expense " amount={expenseAmount}>
-              <SmallLineChart data={total_expense_Amount} label={label} />
+            <StatsComps
+              title="Total Expense "
+              color="#DC3545"
+              amount={expenseAmount}
+            >
+              <SmallLineChart
+                data={total_expense_Amount}
+                label={label}
+                color="#DC3545"
+              />
             </StatsComps>
           </div>
         </div>
@@ -57,6 +76,7 @@ export default class TransactionStats extends Component {
             title3="Current Balance"
             data3={history}
             label={value.label}
+            dataColors={colors}
           />
         </div>
       </div>

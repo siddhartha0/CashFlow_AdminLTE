@@ -24,16 +24,7 @@ export default class BalanceStats extends Component {
       this.value;
 
     return (
-      <div
-        className=" d-flex  flex-row shadow-md  bg-opacity-[.7] p-2 justify-evenly  rounded-xl text-capitalize "
-        style={{
-          // width: "100%",
-          background: "#FFFFFF",
-          borderRadius: "16px",
-          backdropFilter: "blur(5px)",
-          border: " 1px solid rgba(255, 255, 255, 0.3)",
-        }}
-      >
+      <div className=" d-flex  flex-row shadow-md   p-2 justify-evenly  rounded-xl text-capitalize ">
         <div className="m-2 p-2 d-flex flex-col gap-2 place-items-end">
           <div className="mt-10 gap-2 flex flex-col place-items-end ">
             <div className="donut">
@@ -67,7 +58,7 @@ export default class BalanceStats extends Component {
             width: ".5px",
             height: "277px",
             marginTop: "15px",
-            // marginRight: "4px",
+            // marginLeft: "4px",
 
             background: "#DDDFE1",
           }}
@@ -88,7 +79,7 @@ export default class BalanceStats extends Component {
           <hr
             className="text-dark text-opacity-50"
             style={{
-              width: "200px",
+              width: "155px",
               height: ".5px",
               marginTop: "20px",
               background: "#DDDFE1",

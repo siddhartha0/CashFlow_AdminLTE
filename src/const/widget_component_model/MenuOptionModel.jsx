@@ -5,6 +5,8 @@ export default class MenuOptionModel extends Component {
   static propTypes = {
     option: PropTypes.array,
     PickPlatform: PropTypes.func,
+    selectedPlatform: PropTypes.string,
+    id: PropTypes.string,
   };
 
   selectValue(e) {
@@ -12,17 +14,22 @@ export default class MenuOptionModel extends Component {
   }
 
   render() {
-    const { option, PickPlatform } = this.props;
+    const { option, PickPlatform, selectedPlatform, id } = this.props;
     return (
-      <div className="input-group  ">
+      <div className="input-group ">
         <select
-          className="custom-select"
+          className={`custom-select  ${
+            id === "indi_Wallet_Bank"
+              ? selectedPlatform === "Bank"
+                ? "bg-primary"
+                : "bg-success"
+              : ""
+          }`}
           id="inputGroupSelect01"
           onChange={(e) => PickPlatform(e)}
-          // value={selectedPlatform}
         >
           {option?.map((opt) => (
-            <option key={opt?.title} value={opt.value}>
+            <option value={opt.value} key={opt?.title} className="bg-white ">
               {opt.title}
             </option>
           ))}
