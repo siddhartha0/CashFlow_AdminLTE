@@ -1,6 +1,7 @@
 import { Component } from "react";
 import UserDetail from "../../components/profile/UserDetail";
-import SavingGoals from "../../components/profile/SavingGoals";
+import BalanceStats from "../../components/Dashboard/BalanceStats";
+// import SavingGoals from "../../components/profile/SavingGoals";
 // import CreditScore from "../../components/Profile/CreditScore";
 
 export default class Profile extends Component {
@@ -34,21 +35,18 @@ export default class Profile extends Component {
         <section className="content">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-4">
+              <div className="col-md-5 align-items-center">
                 <UserDetail />
               </div>
 
-              <div className="col-md-8">
+              <div className="col-md-7">
                 <div className="row">
                   <div className="col-md-12">
-                    <SavingGoals />
+                    {/* <SavingGoals /> */}
+                    <BalanceStats />
                   </div>
                 </div>
-                {/* <div className="row mt-4">
-                  <div className="col-md-12">
-                    <CreditScore />
-                  </div>
-                </div> */}
+               
               </div>
             </div>
           </div>
