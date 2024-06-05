@@ -22,14 +22,14 @@ export default class IncomeExpenseHistory extends Component {
     const cashFlow = new Balance();
 
     if (header === "Bank") {
-      cashFlow.calculateTotalIncoming(localValue.bankhistory);
+      cashFlow.calculate_Income_Expense(localValue.bankhistory);
       if (label === "income") {
         bankIncomeAmount = cashFlow.totalIncoming;
       } else {
         bankexpenseAmount = cashFlow.totalOutgoing;
       }
     } else {
-      cashFlow.calculateTotalIncoming(localValue.walletHistory);
+      cashFlow.calculate_Income_Expense(localValue.walletHistory);
       if (label === "income") {
         walletIncomeAmount = cashFlow.totalIncoming;
       } else {

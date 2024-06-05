@@ -1,7 +1,10 @@
 import { Component } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
-import ReactApexChart from "react-apexcharts";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
+import TotalView from "../../components/bank/TotalView";
+import BarChart from "../../const/widget_component_model/BarChart";
+import DynamicChart from "../../const/widget_component_model/DynamicChart";
+import TransactionChart from "../../components/bank/TransactionChart";
 
 export default class Bank extends Component {
   constructor() {
@@ -50,9 +53,37 @@ export default class Bank extends Component {
       },
     };
   }
-
   render() {
-    const transactions = generateRandomTransactions(15);
+    const transactions = generateRandomTransactions(100);
+
+    const totalList = [
+      {
+        data: "deposit",
+        title: "Bank Balance",
+        color: "dark",
+        icon: "fa-solid fa-building-columns",
+      },
+      {
+        data: "deposit",
+        title: "Total Deposit",
+        color: "warning",
+        icon: "fa fa-heart",
+      },
+      {
+        data: "withdraw",
+        title: "Total Withdraw",
+        color: "danger",
+        icon: "fa-solid fa-arrow-up-from-bracket",
+      },
+      {
+        data: "transfer",
+        title: "Total Transfer",
+        color: "secondary",
+        icon: "fa-solid fa-money-bill-transfer",
+      },
+    ];
+
+    console.log(transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -63,65 +94,38 @@ export default class Bank extends Component {
     };
 
     return (
-      <>
+      <div className="p-3">
         <div className="row">
-          <div class="col-lg-3">
-            <div class="info-box mb-3 bg-dark">
-              <span class="info-box-icon">
-                <i class="fas fa-tag"></i>
-              </span>
-              <div class="info-box-content">
-                <span class="info-box-text">Bank Balance</span>
-                <span class="info-box-number">
-                  {getTotalTransaction("deposit")}
-                </span>
-              </div>
-            </div>
-
-            <div class="info-box mb-3 bg-warning">
-              <span class="info-box-icon">
-                <i class="far fa-heart"></i>
-              </span>
-              <div class="info-box-content">
-                <span class="info-box-text">Total Deposit</span>
-                <span class="info-box-number">
-                  {getTotalTransaction("deposit")}
-                </span>
-              </div>
-            </div>
-
-            <div class="info-box mb-3 bg-danger">
-              <span class="info-box-icon">
-                <i class="far fa-comment"></i>
-              </span>
-              <div class="info-box-content">
-                <span class="info-box-text">Total Withdraw</span>
-                <span class="info-box-number">
-                  {getTotalTransaction("withdraw")}
-                </span>
-              </div>
-            </div>
-
-            <div class="info-box mb-3 bg-secondary">
-              <span class="info-box-icon">
-                <i class="far fa-heart"></i>
-              </span>
-              <div class="info-box-content">
-                <span class="info-box-text">Total Transfer</span>
-                <span class="info-box-number">
-                  {getTotalTransaction("transfer")}
-                </span>
-              </div>
-            </div>
+          <div className="col-lg-3">
+            {totalList.map((value, index) => (
+              <TotalView
+                data={getTotalTransaction(value.data)}
+                title={value.title}
+                color={value.color}
+                icon={value.icon}
+                key={index}
+              />
+            ))}
+            <TotalView
+              data={transactions.length}
+              title="Total Transactions"
+              color="primary"
+              icon="fa-solid fa-money-bill-trend-up"
+            />
           </div>
           <div className="col-lg-9">
             <div className="custom-card p-3">
-              <ReactApexChart
-                options={this.state.options}
-                series={this.state.series}
-                type="bar"
-                height={420}
-              />
+              <BarChart />
+              {/* <DynamicChart
+                data={this.state.data}
+                title={this.state.title}
+                chartType={this.state.chartType}
+              /> */}
+            </div>
+          </div>
+          <div className="col-lg-12">
+            <div className="custom-card p-3">
+              <TransactionChart transactions={transactions} />
             </div>
           </div>
           <div className="col-lg-6">
@@ -139,7 +143,7 @@ export default class Bank extends Component {
             />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }

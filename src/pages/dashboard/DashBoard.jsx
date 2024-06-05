@@ -19,6 +19,7 @@ export default class DashBoard extends Component {
       selectedDate: "overall",
       transactionType: "income",
     };
+
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
@@ -91,101 +92,61 @@ export default class DashBoard extends Component {
                 >
                   <BalanceStats />
                 </div>
-                <div
-                  className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4"
-                  style={{
-                    background: "#FFFFFF",
-                    borderRadius: "16px",
-                    backdropFilter: "blur(5px)",
-                    border: " 1px solid rgba(255, 255, 255, 0.3)",
-                  }}
-                >
+                <div className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4 custom-card">
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div
-                className="col col-md-6 row-8  p-4 text-capitalize "
-                style={{
-                  background: "#FFFFFF",
-                  borderRadius: "16px",
-                  backdropFilter: "blur(5px)",
-                  border: " 1px solid rgba(255, 255, 255, 0.3)",
-                }}
-              >
+              <div className="col col-md-6 row-8  p-4 text-capitalize custom-card">
                 <BalanceSummary />
               </div>
             </div>
           </div>
 
           <div className=" d-flex  mt-4 ml-2  ">
-            <div
-              className="col col-md-6   p-4 text-capitalize "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-6   p-4 text-capitalize custom-card">
               <AmountInfo header="Bank Amount Summary" label="Bank" />
             </div>
-            <div
-              className="col col-md-6 row-8  p-4 text-capitalize ml-4 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
               <AmountInfo header="Wallet Amount Summary" label="Wallet" />
             </div>
           </div>
 
-          <div className="d-flex">
-            <div
-              className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
-              <div className="col-md-2 ">
+          <div className="d-flex mt-4">
+            <div className=" col-md-8 d-flex flex-column  p-4  ml-3 custom-card">
+              <div className="d-flex w-25">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
                   option={PickPlatform}
                   PickPlatform={this.selectPlatform}
                 />
               </div>
-              <div className=" mt-2 ml-2    text-capitalize ">
+              <div className=" ml-2 mb-2 mt-4    text-capitalize ">
                 <IncomeExpenseStats label={this.state.selectedPlatform} />
               </div>
             </div>
 
             <div
-              className="col col-md-4 d-flex flex-column  p-4 mt-4 ml-3 "
+              className="col col-md-4 d-flex flex-column  p-4  ml-3 custom-card "
               style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                maxHeight: "650px",
+                height: "640px",
                 overflowY: "scroll",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
               }}
             >
               <div className="col-md-5 ">
-                <MenuOptionModel
-                  className="breadcrumb float-sm-right"
-                  option={TransactionTypes}
-                  PickPlatform={this.selectTransactionTypes}
-                />
-                <IncomeExpenseHistory
-                  label={this.state.transactionType}
-                  header={this.state.selectedPlatform}
-                />
+                <div>
+                  <MenuOptionModel
+                    className="breadcrumb float-sm-right"
+                    option={TransactionTypes}
+                    PickPlatform={this.selectTransactionTypes}
+                  />
+                </div>
+                <div className="mt-4">
+                  <IncomeExpenseHistory
+                    label={this.state.transactionType}
+                    header={this.state.selectedPlatform}
+                  />
+                </div>
               </div>
             </div>
           </div>

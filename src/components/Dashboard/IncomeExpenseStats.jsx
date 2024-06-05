@@ -16,11 +16,11 @@ export default class IncomeExpenseStats extends Component {
     const localValue = JSON.parse(localStorage.getItem("dashboard"));
     const cashFlow = new Balance();
     label === "Bank"
-      ? cashFlow.calculateTotalIncoming(localValue.bankhistory, "bank")
-      : cashFlow.calculateTotalIncoming(localValue.walletHistory, "wallet");
+      ? cashFlow.calculate_Income_Expense(localValue.bankhistory, "bank")
+      : cashFlow.calculate_Income_Expense(localValue.walletHistory, "wallet");
 
     return (
-      <div className="d-flex flex-column ">
+      <div className="d-flex flex-column  ">
         <div>
           <p className="text-lg text-uppercase">Income & expense</p>
         </div>
@@ -33,6 +33,7 @@ export default class IncomeExpenseStats extends Component {
             expenseAmount={cashFlow.totalOutgoing}
             total_Income_Amount={cashFlow.total_bank_Incoming_Amount}
             total_expense_Amount={cashFlow.total_bank_Spent_Amount}
+            history={localValue.bankhistory}
           />
         )}
 
@@ -44,6 +45,7 @@ export default class IncomeExpenseStats extends Component {
             expenseAmount={cashFlow.totalOutgoing}
             total_Income_Amount={cashFlow.total_wallet_Incoming_Amount}
             total_expense_Amount={cashFlow.total_wallet_Spent_Amount}
+            history={localValue.walletHistory}
           />
         )}
       </div>

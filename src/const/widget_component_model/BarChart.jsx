@@ -1,39 +1,61 @@
 import React, { Component } from "react";
+import ReactApexChart from "react-apexcharts";
 
-class BarChart extends Component {
+export default class BarChart extends Component {
+  constructor() {
+    super();
+    this.value = JSON.parse(localStorage.getItem("dashboard"));
+
+    this.state = {
+      series: [
+        {
+          name: "Deposit",
+          data: this.value.bankhistory,
+        },
+        {
+          name: "Withdraw",
+          data: this.value.walletHistory,
+        },
+      ],
+
+      options: {
+        chart: {
+          height: 350,
+          type: "line",
+          zoom: {
+            enabled: false,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "straight",
+        },
+        title: {
+          text: "Balance Summary",
+          align: "left",
+        },
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"],
+            opacity: 0.5,
+          },
+        },
+        xaxis: {
+          categories: this.value.label,
+        },
+      },
+    };
+  }
   render() {
     return (
-      <div className="col-md-6">
-        <div className="card card-primary card-outline">
-          <div className="card-header">
-            <h3 className="card-title">
-              <i className="far fa-chart-bar"></i>
-              Bar Chart
-            </h3>
-            <div className="card-tools">
-              <button
-                type="button"
-                className="btn btn-tool"
-                data-card-widget="collapse"
-              >
-                <i className="fas fa-minus"></i>
-              </button>
-              <button
-                type="button"
-                className="btn btn-tool"
-                data-card-widget="remove"
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <div className="card-body">
-            <div id="bar-chart" style={{ height: "300px" }}></div>
-          </div>
-        </div>
-      </div>
+      <ReactApexChart
+        options={this.state.options}
+        series={this.state.series}
+        type="bar"
+        height={420}
+      />
     );
   }
 }
-
-export default BarChart;

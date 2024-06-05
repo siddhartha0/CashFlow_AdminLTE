@@ -1,8 +1,8 @@
 import { Component } from "react";
 import StatsComps from "./StatsComps";
 import SmallLineChart from "../../../const/widget_component_model/SmallLineChart";
-import DashedLineChart from "../../../const/widget_component_model/DashedlineChart";
 import PropTypes from "prop-types";
+import TripleBarChart from "../../../const/widget_component_model/TripleBarChart";
 
 export default class TransactionStats extends Component {
   static propTypes = {
@@ -11,16 +11,18 @@ export default class TransactionStats extends Component {
     expenseAmount: PropTypes.number,
     total_Income_Amount: PropTypes.array,
     total_expense_Amount: PropTypes.array,
+    history: PropTypes.array,
   };
   render() {
     const {
       label,
-
       incomeAmount,
       expenseAmount,
       total_Income_Amount,
       total_expense_Amount,
+      history,
     } = this.props;
+    const value = JSON.parse(localStorage.getItem("dashboard"));
     return (
       <div className="d-flex flex-column">
         <div className="d-flex  justify-content-between">
@@ -47,11 +49,14 @@ export default class TransactionStats extends Component {
           </div>
         </div>
         <div>
-          <DashedLineChart
-            label1="Income"
+          <TripleBarChart
+            title1="Income"
             data1={total_Income_Amount}
-            label2="Expense"
+            title2="Expense"
             data2={total_expense_Amount}
+            title3="Current Balance"
+            data3={history}
+            label={value.label}
           />
         </div>
       </div>
