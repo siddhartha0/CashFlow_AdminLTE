@@ -54,7 +54,7 @@ export default class Bank extends Component {
     };
   }
   render() {
-    const transactions = generateRandomTransactions(50);
+    const transactions = generateRandomTransactions(100);
 
     const totalList = [
       {
