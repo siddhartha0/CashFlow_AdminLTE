@@ -95,7 +95,11 @@ class TransactionTable extends Component {
 
         <div className="card-body p-0">
           {filteredTransactions.length > 0 ? (
-            <DynamicTable data={filteredTransactions} headers={headers} />
+            <DynamicTable
+              data={filteredTransactions}
+              headers={headers}
+              total={true}
+            />
           ) : (
             <div className="p-3 text-center">No transactions found</div>
           )}

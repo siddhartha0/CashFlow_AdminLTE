@@ -1,58 +1,51 @@
 import { Component } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
-import ReactApexChart from "react-apexcharts";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
+import TotalView from "../../components/bank/TotalView";
+import BarChart from "../../const/widget_component_model/BarChart";
+import DynamicChart from "../../const/widget_component_model/DynamicChart";
+import TransactionChart from "../../components/bank/TransactionChart";
 
 export default class Bank extends Component {
-  constructor() {
-    super();
-    this.value = JSON.parse(localStorage.getItem("dashboard"));
-
+  constructor(props) {
+    super(props);
     this.state = {
-      series: [
-        {
-          name: "Deposit",
-          data: this.value.bankhistory,
-        },
-        {
-          name: "Withdraw",
-          data: this.value.walletHistory,
-        },
-      ],
-
-      options: {
-        chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: false,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "straight",
-        },
-        title: {
-          text: "Balance Summary",
-          align: "left",
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"],
-            opacity: 0.5,
-          },
-        },
-        xaxis: {
-          categories: this.value.label,
-        },
-      },
+      data: [10, 20, 30, 40, 50],
+      title: "Dynamic Chart",
+      chartType: "bar",
     };
   }
-
   render() {
-    const transactions = generateRandomTransactions(15);
+    const transactions = generateRandomTransactions(50);
+
+    const totalList = [
+      {
+        data: "deposit",
+        title: "Bank Balance",
+        color: "dark",
+        icon: "fa-solid fa-building-columns",
+      },
+      {
+        data: "deposit",
+        title: "Total Deposit",
+        color: "warning",
+        icon: "fa fa-heart",
+      },
+      {
+        data: "withdraw",
+        title: "Total Withdraw",
+        color: "danger",
+        icon: "fa-solid fa-arrow-up-from-bracket",
+      },
+      {
+        data: "transfer",
+        title: "Total Transfer",
+        color: "secondary",
+        icon: "fa-solid fa-money-bill-transfer",
+      },
+    ];
+
+    console.log(transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -63,65 +56,38 @@ export default class Bank extends Component {
     };
 
     return (
-      <>
+      <div className="content-wrapper p-3">
         <div className="row">
           <div className="col-lg-3">
-            <div className="info-box mb-3 bg-dark">
-              <span className="info-box-icon">
-                <i className="fas fa-tag"></i>
-              </span>
-              <div className="info-box-content">
-                <span className="info-box-text">Bank Balance</span>
-                <span className="info-box-number">
-                  {getTotalTransaction("deposit")}
-                </span>
-              </div>
-            </div>
-
-            <div className="info-box mb-3 bg-warning">
-              <span className="info-box-icon">
-                <i className="far fa-heart"></i>
-              </span>
-              <div className="info-box-content">
-                <span className="info-box-text">Total Deposit</span>
-                <span className="info-box-number">
-                  {getTotalTransaction("deposit")}
-                </span>
-              </div>
-            </div>
-
-            <div className="info-box mb-3 bg-danger">
-              <span className="info-box-icon">
-                <i className="far fa-comment"></i>
-              </span>
-              <div className="info-box-content">
-                <span className="info-box-text">Total Withdraw</span>
-                <span className="info-box-number">
-                  {getTotalTransaction("withdraw")}
-                </span>
-              </div>
-            </div>
-
-            <div className="info-box mb-3 bg-secondary">
-              <span className="info-box-icon">
-                <i className="far fa-heart"></i>
-              </span>
-              <div className="info-box-content">
-                <span className="info-box-text">Total Transfer</span>
-                <span className="info-box-number">
-                  {getTotalTransaction("transfer")}
-                </span>
-              </div>
-            </div>
+            {totalList.map((value, index) => (
+              <TotalView
+                data={getTotalTransaction(value.data)}
+                title={value.title}
+                color={value.color}
+                icon={value.icon}
+                key={index}
+              />
+            ))}
+            <TotalView
+              data={transactions.length}
+              title="Total Transactions"
+              color="primary"
+              icon="fa-solid fa-money-bill-trend-up"
+            />
           </div>
           <div className="col-lg-9">
             <div className="custom-card p-3">
-              <ReactApexChart
-                options={this.state.options}
-                series={this.state.series}
-                type="bar"
-                height={420}
-              />
+              <BarChart />
+              {/* <DynamicChart
+                data={this.state.data}
+                title={this.state.title}
+                chartType={this.state.chartType}
+              /> */}
+            </div>
+          </div>
+          <div className="col-lg-12">
+            <div className="custom-card p-3">
+              <TransactionChart transactions={transactions} />
             </div>
           </div>
           <div className="col-lg-6">
@@ -139,7 +105,7 @@ export default class Bank extends Component {
             />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
