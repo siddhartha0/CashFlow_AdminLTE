@@ -1,8 +1,9 @@
 import { Component } from "react";
 import UserDetail from "../../components/profile/UserDetail";
 import BalanceStats from "../../components/Dashboard/BalanceStats";
-// import SavingGoals from "../../components/profile/SavingGoals";
-// import CreditScore from "../../components/Profile/CreditScore";
+import UserAccounts from "../../components/profile/UserBankAccounts";
+import BalanceInfo from "../../components/profile/BalanceInfo";
+import UserWalletAccounts from "../../components/profile/UserWalletAccounts";
 
 export default class Profile extends Component {
   constructor() {
@@ -33,7 +34,10 @@ export default class Profile extends Component {
         {/* MAIN CONTENT STARTS FROM HERE */}
 
         <section className="content">
-          <div className="container-fluid">
+          <div className="container-fluid  ">
+            <div className="">
+              <BalanceInfo />
+              </div>
             <div className="row">
               <div className="col-md-5 align-items-center">
                 <UserDetail />
@@ -42,11 +46,19 @@ export default class Profile extends Component {
               <div className="col-md-7">
                 <div className="row">
                   <div className="col-md-12">
-                    {/* <SavingGoals /> */}
-                    <BalanceStats />
+                  <UserAccounts />
                   </div>
                 </div>
-               
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-6 align-items-center">
+              <BalanceStats />
+                
+              </div>
+              <div className="col-md-6 align-items-center">
+              <UserWalletAccounts />
+                
               </div>
             </div>
           </div>
