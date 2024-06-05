@@ -4,9 +4,11 @@ import BalanceTrends from "../../components/Dashboard/BalanceTrends";
 import BalanceSummary from "../../components/Dashboard/BalanceSummary";
 import MenuOptionModel from "../../const/widget_component_model/MenuOptionModel";
 import AmountInfo from "../../components/Dashboard/AmountInfo";
-import IncomeOutgoing from "../../components/Dashboard/IncomeOutgoing";
+import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
+import { TransactionTypes } from "../../const/TransactionTypes";
+import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -15,9 +17,12 @@ export default class DashBoard extends Component {
       date: new Date(),
       selectedPlatform: "Bank",
       selectedDate: "overall",
+      transactionType: "income",
     };
+
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
+    this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
   }
 
   selectPlatform(e) {
@@ -25,6 +30,14 @@ export default class DashBoard extends Component {
     this.setState({
       ...this.state,
       selectedPlatform: value,
+    });
+  }
+
+  selectTransactionTypes(e) {
+    const value = e.target.value;
+    this.setState({
+      ...this.state,
+      transactionType: value,
     });
   }
 
@@ -68,7 +81,7 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className="col ">
+          <div className="d-flex flex-column  ">
             <div className="row ">
               <div className="col-md-6">
                 <div
@@ -79,76 +92,62 @@ export default class DashBoard extends Component {
                 >
                   <BalanceStats />
                 </div>
-                <div
-                  className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4"
-                  style={{
-                    background: "#FFFFFF",
-                    borderRadius: "16px",
-                    backdropFilter: "blur(5px)",
-                    border: " 1px solid rgba(255, 255, 255, 0.3)",
-                  }}
-                >
+                <div className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4 custom-card">
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div
-                className="col col-md-6 row-8  p-4 text-capitalize "
-                style={{
-                  background: "#FFFFFF",
-                  borderRadius: "16px",
-                  backdropFilter: "blur(5px)",
-                  border: " 1px solid rgba(255, 255, 255, 0.3)",
-                }}
-              >
+              <div className="col col-md-6 row-8  p-4 text-capitalize custom-card">
                 <BalanceSummary />
               </div>
             </div>
           </div>
 
-          <div className="container d-flex  mt-4 ml-2  ">
-            <div
-              className="col col-md-6   p-4 text-capitalize "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+          <div className=" d-flex  mt-4 ml-2  ">
+            <div className="col col-md-6   p-4 text-capitalize custom-card">
               <AmountInfo header="Bank Amount Summary" label="Bank" />
             </div>
-            <div
-              className="col col-md-6 row-8  p-4 text-capitalize ml-4 "
-              style={{
-                background: "#FFFFFF",
-                borderRadius: "16px",
-                backdropFilter: "blur(5px)",
-                border: " 1px solid rgba(255, 255, 255, 0.3)",
-              }}
-            >
+            <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
               <AmountInfo header="Wallet Amount Summary" label="Wallet" />
             </div>
           </div>
 
-          <div
-            className="col col-md-8 d-flex flex-column  p-4 mt-4 ml-3 "
-            style={{
-              background: "#FFFFFF",
-              borderRadius: "16px",
-              backdropFilter: "blur(5px)",
-              border: " 1px solid rgba(255, 255, 255, 0.3)",
-            }}
-          >
-            <div className="col-md-2 ">
-              <MenuOptionModel
-                className="breadcrumb float-sm-right"
-                option={PickPlatform}
-                PickPlatform={this.selectPlatform}
-              />
+          <div className="d-flex mt-4">
+            <div className=" col-md-8 d-flex flex-column  p-4  ml-3 custom-card">
+              <div className="d-flex w-25">
+                <MenuOptionModel
+                  className="breadcrumb float-sm-right"
+                  option={PickPlatform}
+                  PickPlatform={this.selectPlatform}
+                />
+              </div>
+              <div className=" ml-2 mb-2 mt-4    text-capitalize ">
+                <IncomeExpenseStats label={this.state.selectedPlatform} />
+              </div>
             </div>
-            <div className=" mt-2 ml-2 col-md-9  text-capitalize ">
-              <IncomeOutgoing label={this.state.selectedPlatform} />
+
+            <div
+              className="col col-md-4 d-flex flex-column  p-4  ml-3 custom-card "
+              style={{
+                height: "640px",
+                overflowY: "scroll",
+              }}
+            >
+              <div className="col-md-5 ">
+                <div>
+                  <MenuOptionModel
+                    className="breadcrumb float-sm-right"
+                    option={TransactionTypes}
+                    PickPlatform={this.selectTransactionTypes}
+                  />
+                </div>
+                <div className="mt-4">
+                  <IncomeExpenseHistory
+                    label={this.state.transactionType}
+                    header={this.state.selectedPlatform}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

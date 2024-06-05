@@ -41,6 +41,18 @@ export default class Balance {
   total_wallet_Incoming_Amount = [];
   total_wallet_Spent_Amount = [];
 
+  incomeTypes = ["Salary", "Rent", "Borrowed Taken"];
+  expenseTypes = [
+    "Clothes",
+    "Food",
+    "Health",
+    "Travels",
+    "Entertainment",
+    "Study",
+    "Rent",
+    "Lend",
+  ];
+
   stats_Holder() {
     this.duration.map((duration, i) => {
       if (duration) {
@@ -132,12 +144,12 @@ export default class Balance {
       ];
 
     const bankDifference = this.latest_Bank_Money - prevMonthMoney_Bank;
-    if (
-      bankDifference >= 0
-        ? (this.bank_status = "up")
-        : (this.bank_status = "down")
-    )
-      this.bank_trend = Math.abs(bankDifference / 100);
+
+    bankDifference >= 0
+      ? (this.bank_status = "up")
+      : (this.bank_status = "down");
+
+    this.bank_trend = Math.abs(bankDifference / 100);
 
     const prevMonthMoney_Wallet =
       this.wallet_Complete_Money_History[
@@ -145,50 +157,127 @@ export default class Balance {
       ];
     const walletDifference = this.latest_Wallet_Money - prevMonthMoney_Wallet;
 
-    if (
-      walletDifference >= 0
-        ? (this.wallet_status = "up")
-        : (this.wallet_status = "down")
-    )
-      this.wallet_trend = Math.abs(walletDifference / 100);
+    walletDifference >= 0
+      ? (this.wallet_status = "up")
+      : (this.wallet_status = "down");
+
+    this.wallet_trend = Math.abs(walletDifference / 100);
 
     const prevMonthTotalAmount = prevMonthMoney_Bank + prevMonthMoney_Wallet;
     const difference_in_total = this.total_Amount - prevMonthTotalAmount;
-    if (
-      difference_in_total >= 0
-        ? (this.overall_status = "up")
-        : (this.overall_status = "down")
-    );
+
+    difference_in_total >= 0
+      ? (this.overall_status = "up")
+      : (this.overall_status = "down");
+
     this.overall_trend = Math.abs(difference_in_total / 100);
   }
 
-  calculateTotalIncoming(history, label) {
+  calculate_Income_Expense(history, label) {
     if (history && history.length > 0) {
       history.map((money, index, array) => {
+        if (index === 0) {
+          label === "bank"
+            ? this.total_bank_Incoming_Amount.push(money)
+            : this.total_wallet_Incoming_Amount.push(money);
+        }
+
         if (index <= array.length - 2) {
           if (money < array[index + 1]) {
             const difference = array[index + 1] - money;
             this.totalIncoming += difference;
             if (label === "bank") {
-              this.total_bank_Incoming_Amount.push(array[index + 1]);
+              if (index === 0) {
+                this.total_bank_Spent_Amount.push(0);
+              }
+              this.total_bank_Spent_Amount.push(0);
+              this.total_bank_Incoming_Amount.push(difference);
             } else {
-              this.total_wallet_Incoming_Amount.push(array[index + 1]);
+              if (index === 0) {
+                this.total_wallet_Spent_Amount.push(0);
+              }
+              this.total_wallet_Spent_Amount.push(0);
+              this.total_wallet_Incoming_Amount.push(difference);
             }
           } else {
             const difference = money - array[index + 1];
             this.totalOutgoing += difference;
+            if (label === "bank") {
+              if (index === 0) {
+                this.total_bank_Spent_Amount.push(0);
+              }
+              this.total_bank_Spent_Amount.push(difference);
+              this.total_bank_Incoming_Amount.push(0);
+            } else {
+              if (index === 0) {
+                this.total_wallet_Spent_Amount.push(0);
+              }
+              this.total_wallet_Spent_Amount.push(difference);
+              this.total_wallet_Incoming_Amount.push(0);
+            }
           }
         }
       });
     }
+  }
 
-    // return this.totalIncoming;
-    // }
-    // console.log(this.totalIncoming, "totalIncoming");
-    // console.log(this.total_bank_Incoming_Amount, "Incoming Array");
-    // console.log(this.totalOutgoing, "totaloutgoing");
+  mapIncomeSource(total) {
+    const incomeSource = [];
+    var sources = {};
+    var amount = 0;
+
+    this.incomeTypes.map((income, i, array) => {
+      if (i === 0) {
+        amount = this.genIncome(total);
+        sources = {
+          amount: amount,
+          source: income,
+        };
+        incomeSource.push(sources);
+      }
+      if (i > 0) {
+        const difference = total - amount;
+        const dividedEqually = Math.ceil(difference / (array.length - 1));
+        sources = {
+          amount: dividedEqually,
+          source: income,
+        };
+        incomeSource.push(sources);
+      }
+    });
+
+    return incomeSource;
+  }
+
+  mapExpenseSource(total) {
+    var expenseSource = [];
+    var sources = {};
+    var amount = 0;
+
+    this.expenseTypes.map((income, i, array) => {
+      if (i === 0) {
+        amount = this.genIncome(total);
+        sources = {
+          amount: amount,
+          source: income,
+        };
+        expenseSource.push(sources);
+      }
+      if (i > 0) {
+        const difference = total - amount;
+        const dividedEqually = Math.ceil(difference / (array.length - 1));
+        sources = {
+          amount: dividedEqually,
+          source: income,
+        };
+        expenseSource.push(sources);
+      }
+    });
+
+    return expenseSource;
+  }
+
+  genIncome(total) {
+    return Math.ceil(Math.random() * total);
   }
 }
-
-// const cashFlow = new Balance("call from cashflow");
-// cashFlow.stats_Holder();

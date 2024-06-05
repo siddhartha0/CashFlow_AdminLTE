@@ -1,122 +1,65 @@
-export const transactions = [
-  {
-    id: 1,
-    account: "1342432",
-    purpose: "Update software",
-    type: "deposit",
-    amount: 2324,
-    date: "2024-06-02",
-  },
-  {
-    id: 2,
-    account: "1342432",
-    purpose: "Salary",
-    type: "deposit",
-    amount: 20000,
-    date: "2024-06-02",
-  },
-  {
-    id: 3,
-    account: "1342432",
-    purpose: "Loan",
-    type: "withdraw",
-    amount: 5000,
-    date: "2024-06-03",
-  },
-  {
-    id: 4,
-    account: "1342432",
-    purpose: "Freelance",
-    type: "deposit",
-    amount: 1500,
-    date: "2024-06-03",
-  },
-  {
-    id: 5,
-    account: "1342432",
-    purpose: "Investment",
-    type: "deposit",
-    amount: 4500,
-    date: "2024-06-03",
-  },
-  {
-    id: 6,
-    account: "1342432",
-    purpose: "Savings",
-    type: "withdraw",
-    amount: 1200,
-    date: "2024-06-03",
-  },
-  {
-    id: 7,
-    account: "1342432",
-    purpose: "Freelance",
-    type: "withdraw",
-    amount: 3200,
-    date: "2024-06-02",
-  },
-  {
-    id: 8,
-    account: "1342432",
-    purpose: "Salary",
-    type: "deposit",
-    amount: 21000,
-    date: "2024-06-02",
-  },
-  {
-    id: 9,
-    account: "1342432",
-    purpose: "Bills",
-    type: "withdraw",
-    amount: 750,
-    date: "2024-06-02",
-  },
-  {
-    id: 10,
-    account: "1342432",
-    purpose: "Investment",
-    type: "withdraw",
-    amount: 5000,
-    date: "2024-06-02",
-  },
-  {
-    id: 11,
-    account: "1342432",
-    purpose: "Shopping",
-    type: "withdraw",
-    amount: 2000,
-    date: "2024-06-02",
-  },
-  {
-    id: 12,
-    account: "1342432",
-    purpose: "Bonus",
-    type: "deposit",
-    amount: 3000,
-    date: "2024-06-02",
-  },
-  {
-    id: 13,
-    account: "1342432",
-    purpose: "Update software",
-    type: "transfer",
-    amount: 2324,
-    date: "2024-06-02",
-  },
-  {
-    id: 14,
-    account: "1342432",
-    purpose: "Savings",
-    type: "deposit",
-    amount: 4000,
-    date: "2024-06-02",
-  },
-  {
-    id: 15,
-    account: "1342432",
-    purpose: "Gift",
-    type: "withdraw",
-    amount: 500,
-    date: "2024-06-02",
-  },
-];
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function generateRandomDate() {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const randomDate = Math.random() < 0.5 ? today : yesterday;
+  return randomDate.toISOString().split("T")[0];
+}
+
+export function generateRandomTransactions(numTransactions) {
+  const transactions = [];
+  const types = [
+    "wallet transfer",
+    "cash",
+    "online payment",
+    "ATM withdrawal",
+    "cheque",
+  ];
+  const status = ["deposit", "withdraw", "transfer"];
+  const banks = [
+    "Siddhartha",
+    "Everest",
+    "Nabil",
+    "Himalayan",
+    "Global",
+    "NIC Asia",
+  ];
+  const remarks = [
+    "Update software",
+    "Salary",
+    "Groceries",
+    "Rent payment",
+    "Bill payment",
+    "Refund",
+    "Rent",
+    "Allowance",
+    "Shopping",
+    "Internet payment",
+  ];
+
+  for (let i = 1; i <= numTransactions; i++) {
+    const transaction = {
+      id: i,
+      account: getRandomInt(1000000, 9999999).toString(),
+      type: getRandomElement(types),
+      status: getRandomElement(status),
+      bank: getRandomElement(banks),
+      amount: getRandomInt(100, 50000),
+      remarks: getRandomElement(remarks),
+      date: generateRandomDate(),
+    };
+
+    transactions.push(transaction);
+  }
+
+  return transactions;
+}
