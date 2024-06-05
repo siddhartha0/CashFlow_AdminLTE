@@ -5,11 +5,15 @@ export default class SingleLineChart extends Component {
   constructor(props) {
     super(props);
     const { data, label, name } = this.props;
+
+    // Ensure data array has 30 entries
+    const paddedData = this.padData(data, 30);
+
     this.state = {
       series: [
         {
           name: `${name}`,
-          data: data,
+          data: paddedData,
         },
       ],
       options: {
@@ -37,14 +41,16 @@ export default class SingleLineChart extends Component {
           },
         },
         xaxis: {
-          categories: [
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2,
-            3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4,
-            5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-          ],
+          categories: Array.from({ length: 30 }, (_, i) => i + 1),
         },
       },
     };
+  }
+
+  padData(data, length) {
+    return Array.from({ length }, (_, i) =>
+      data[i] !== undefined ? data[i] : null
+    );
   }
 
   render() {
