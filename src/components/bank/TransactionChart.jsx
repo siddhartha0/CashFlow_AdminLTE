@@ -50,8 +50,9 @@ class TransactionChart extends Component {
 
     return (
       <div>
+        <h3>Remarks</h3>
         <div className="d-flex justify-content-end">
-          <div className="col-lg-2">
+          <div className="col-lg-4">
             <div className="d-flex">
               <select
                 className="custom-select"
@@ -69,7 +70,7 @@ class TransactionChart extends Component {
         <Chart
           options={data.options}
           series={data.series}
-          type="donut"
+          type="pie"
           height={350}
         />
       </div>

@@ -15,6 +15,25 @@ class DynamicTable extends Component {
     });
   };
 
+  handleNavigationClick = (event, direction) => {
+    event.preventDefault();
+
+    const { currentPage } = this.state;
+    const totalPages = Math.ceil(
+      this.props.data.length / this.state.itemsPerPage
+    );
+
+    if (direction === "prev" && currentPage > 1) {
+      this.setState({
+        currentPage: currentPage - 1,
+      });
+    } else if (direction === "next" && currentPage < totalPages) {
+      this.setState({
+        currentPage: currentPage + 1,
+      });
+    }
+  };
+
   render() {
     const { data, headers, total } = this.props;
     const { currentPage, itemsPerPage } = this.state;
@@ -25,8 +44,9 @@ class DynamicTable extends Component {
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     // Logic for displaying page numbers
+    const totalPages = Math.ceil(data.length / itemsPerPage);
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+    for (let i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
     }
 
@@ -38,23 +58,6 @@ class DynamicTable extends Component {
     if (!data || data.length === 0) {
       return <p>No data available</p>;
     }
-
-    //handle click
-    const handleClick = (event, direction) => {
-      event.preventDefault(); // Prevent default link behavior
-
-      const { currentPage } = this.state;
-
-      if (direction === "prev" && currentPage > 1) {
-        this.setState({
-          currentPage: currentPage - 1,
-        });
-      } else if (direction === "next") {
-        this.setState({
-          currentPage: currentPage + 1,
-        });
-      }
-    };
 
     return (
       <>
@@ -88,32 +91,39 @@ class DynamicTable extends Component {
           )}
         </table>
 
-        <ul className="pagination justify-content-end mr-5 ">
-          <li className="page-item">
+        <ul className="pagination justify-content-end mr-5">
+          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
             <a
               className="page-link"
               href="#"
-              onClick={(e) => handleClick(e, "prev")}
+              onClick={(e) => this.handleNavigationClick(e, "prev")}
             >
               Previous
             </a>
           </li>
           {pageNumbers.map((number) => (
-            <li className="page-item" key={number}>
+            <li
+              className={`page-item ${currentPage === number ? "active" : ""}`}
+              key={number}
+            >
               <a
                 className="page-link"
                 id={number}
-                onClick={(e) => this.handleClick(e, "page")}
+                onClick={(e) => this.handleClick(e)}
               >
                 {number}
               </a>
             </li>
           ))}
-          <li className="page-item">
+          <li
+            className={`page-item ${
+              currentPage === totalPages ? "disabled" : ""
+            }`}
+          >
             <a
               className="page-link"
               href="#"
-              onClick={(e) => handleClick(e, "next")}
+              onClick={(e) => this.handleNavigationClick(e, "next")}
             >
               Next
             </a>

@@ -3,55 +3,12 @@ import TransactionTable from "../../components/bank/TransactionTable";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/BarChart";
-import DynamicChart from "../../const/widget_component_model/DynamicChart";
 import TransactionChart from "../../components/bank/TransactionChart";
+import BankList from "../../components/bank/BankList";
 
 export default class Bank extends Component {
   constructor() {
     super();
-    this.value = JSON.parse(localStorage.getItem("dashboard"));
-
-    this.state = {
-      series: [
-        {
-          name: "Deposit",
-          data: this.value.bankhistory,
-        },
-        {
-          name: "Withdraw",
-          data: this.value.walletHistory,
-        },
-      ],
-
-      options: {
-        chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: false,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "straight",
-        },
-        title: {
-          text: "Balance Summary",
-          align: "left",
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"],
-            opacity: 0.5,
-          },
-        },
-        xaxis: {
-          categories: this.value.label,
-        },
-      },
-    };
   }
   render() {
     const transactions = generateRandomTransactions(100);
@@ -83,7 +40,7 @@ export default class Bank extends Component {
       },
     ];
 
-    console.log(transactions);
+    // console.log("Transactions: ", transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -116,14 +73,14 @@ export default class Bank extends Component {
           <div className="col-lg-9">
             <div className="custom-card p-3">
               <BarChart />
-              {/* <DynamicChart
-                data={this.state.data}
-                title={this.state.title}
-                chartType={this.state.chartType}
-              /> */}
             </div>
           </div>
-          <div className="col-lg-12">
+          <div className="col-lg-6">
+            <div className="custom-card p-3">
+              <BankList transactions={transactions} />
+            </div>
+          </div>
+          <div className="col-lg-6">
             <div className="custom-card p-3">
               <TransactionChart transactions={transactions} />
             </div>
