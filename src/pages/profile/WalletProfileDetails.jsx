@@ -1,20 +1,21 @@
 import { Component } from "react";
 import UserDetail from "../../components/profile/UserDetail";
 import BalanceInfo from "../../components/profile/BalanceInfo";
-import MenuOptionModel from "../../const/widget_component_model/MenuOptionModel";
+
 import { PickWallet } from "../../const/PickWallet";
+import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 
 export default class BankProfileDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedBank: PickWallet[0] // Assuming PickBank is an array of bank options
+      selectedBank: PickWallet[0], // Assuming PickBank is an array of bank options
     };
   }
 
   pickDate = (selectedBank) => {
     this.setState({ selectedBank });
-  }
+  };
 
   render() {
     const { selectedBank } = this.state;
@@ -47,31 +48,31 @@ export default class BankProfileDetails extends Component {
               <BalanceInfo />
             </div>
             <div>
-            <MenuOptionModel
-              className="breadcrumb float-sm-left p-2"
-              option={PickWallet}
-              PickPlatform={this.pickWallet}
-            />
-            <div className="row">
-              <div className="col-md-5 align-items-center">
-                <UserDetail />
-              </div>
-              <div className="col-md-7">
-                <div className="row">
-                  <div className="col-md-12">
-                    <h2>{selectedBank.name}</h2>
-                    <p>{selectedBank.description}</p>
+              <MenuOptionModel
+                className="breadcrumb float-sm-left p-2"
+                option={PickWallet}
+                PickPlatform={this.pickWallet}
+              />
+              <div className="row">
+                <div className="col-md-5 align-items-center">
+                  <UserDetail />
+                </div>
+                <div className="col-md-7">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <h2>{selectedBank.name}</h2>
+                      <p>{selectedBank.description}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* <div className="row">
+              {/* <div className="row">
               <div className="col-md-6 align-items-center">
               </div>
               <div className="col-md-6 align-items-center">
               </div>
             </div> */}
-          </div>
+            </div>
           </div>
         </section>
       </div>
