@@ -17,7 +17,7 @@ class PersonalInformation extends Component {
                 alt="User profile picture"
                 style={{ width: '75px', height: '75px' }}
               />
-              <h3 className="profile-username mt-3 text-center">Luish</h3>
+              <h3 className="profile-username mt-3 text-center">John Doe</h3>
               <p className="text-mute text-center">scientist</p>
             </div>
             <div className="col-md-8 ">
