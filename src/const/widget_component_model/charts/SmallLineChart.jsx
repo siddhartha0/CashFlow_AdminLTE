@@ -6,16 +6,18 @@ export default class SmallLineChart extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.any),
     label: PropTypes.string,
+    color: PropTypes.string,
   };
 
   constructor(props) {
     super();
-    const { data, label } = props;
+    const { data, label, color } = props;
 
     this.state = {
       series5: [
         {
           data: data,
+          color: color,
         },
       ],
       options5: {
