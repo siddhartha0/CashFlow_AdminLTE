@@ -81,7 +81,7 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className="d-flex flex-column  ">
+          <div className="d-flex flex-column">
             <div className="row ">
               <div className="col-md-6">
                 <div

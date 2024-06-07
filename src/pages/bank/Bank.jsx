@@ -71,7 +71,7 @@ export default class Bank extends Component {
             />
           </div>
           <div className="col-lg-9">
-            <div className="custom-card p-3">
+            <div className="custom-card p-3 connectedSortable">
               <BarChart />
             </div>
           </div>
