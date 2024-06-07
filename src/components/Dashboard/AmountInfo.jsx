@@ -3,8 +3,8 @@ import AmountInfoComponents from "./AmountInfoComps/AmountInfoComponents";
 import { FaAngleDown, FaAngleUp, FaMinus } from "react-icons/fa6";
 import PropTypes from "prop-types";
 import Balance from "../../behindTheScene/balance/Balance";
-import PercentilePieChart from "../../const/widget_component_model/PercentilePieChart";
-import AccordianModel from "../../const/widget_component_model/AccordianModel";
+import PercentilePieChart from "../../const/widget_component_model/charts/PercentilePieChart";
+import AccordianModel from "../../const/widget_component_model/components/AccordianModel";
 
 export default class AmountInfo extends Component {
   constructor() {

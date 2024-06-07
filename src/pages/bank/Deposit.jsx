@@ -1,41 +1,25 @@
 import { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 
-export default class BalanceSummary extends Component {
-  value = {};
-
-  constructor(props) {
-    super(props);
-
+export default class Deposit extends Component {
+  constructor() {
+    super();
     this.value = JSON.parse(localStorage.getItem("dashboard"));
 
     this.state = {
       series: [
         {
-          name: "Bank",
+          name: "Deposit",
           data: this.value.bankhistory,
         },
         {
-          name: "Wallet",
+          name: "Withdraw",
           data: this.value.walletHistory,
         },
       ],
 
       options: {
         chart: {
-          events: {
-            events: {
-              events: {
-                // click: function (event, chartContext, config) {
-                //   console.log(event);
-                // },
-                dataPointSelection: function (event, chartContext, config) {
-                  console.log(config.w.config.series[config.dataPointIndex]);
-                  console.log(config.w.config.labels[config.dataPointIndex]);
-                },
-              },
-            },
-          },
           height: 350,
           type: "line",
           zoom: {
@@ -54,7 +38,7 @@ export default class BalanceSummary extends Component {
         },
         grid: {
           row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            colors: ["#f3f3f3", "transparent"],
             opacity: 0.5,
           },
         },
@@ -64,22 +48,17 @@ export default class BalanceSummary extends Component {
       },
     };
   }
-
   render() {
     return (
-      <div>
-        <div id="chart">
+      <div className="col-lg-9">
+        <div className="card p-3">
           <ReactApexChart
             options={this.state.options}
             series={this.state.series}
-            type="line"
+            type="bar"
             height={420}
-            // onClick={(data) => {
-            //   console.log(data);
-            // }}
           />
         </div>
-        <div id="html-dist"></div>
       </div>
     );
   }

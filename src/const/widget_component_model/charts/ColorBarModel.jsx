@@ -6,10 +6,11 @@ export default class ColorBarModel extends Component {
     title: PropTypes.string,
     totalAmount: PropTypes.number,
     actualAmount: PropTypes.number,
+    color: PropTypes.string,
   };
 
   render() {
-    const { title, totalAmount, actualAmount } = this.props;
+    const { title, totalAmount, actualAmount, color } = this.props;
     return (
       <div className="progress-group d-flex flex-column">
         {title}
@@ -23,9 +24,10 @@ export default class ColorBarModel extends Component {
             }}
           >
             <div
-              className="progress-bar bg-primary"
+              className="progress-bar"
               style={{
                 width: `${(actualAmount / totalAmount) * 100}px`,
+                background: color,
               }}
             ></div>
           </div>

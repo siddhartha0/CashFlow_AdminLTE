@@ -73,6 +73,7 @@ const RoutesPath = [
     path: "/business",
     icons: business,
   },
+
   {
     id: 5,
     title: "Profile",

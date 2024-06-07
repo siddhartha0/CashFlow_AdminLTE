@@ -1,5 +1,5 @@
 import { Component } from "react";
-import DynamicTable from "../../const/widget_component_model/DynamicTable";
+import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
 import PropTypes from "prop-types";
 class TransactionTable extends Component {
   constructor(props) {
