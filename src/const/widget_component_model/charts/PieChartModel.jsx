@@ -13,13 +13,17 @@ export default class PieChartModel extends Component {
       series: source.map((s) => s.amount),
       options: {
         chart: {
-          width: 150,
+          width: 10,
           type: "pie",
+        },
+        legend: {
+          show: true,
+          position: "bottom",
         },
         labels: source.map((source) => source.source),
         responsive: [
           {
-            breakpoint: 0,
+            breakpoint: 10,
             options: {
               chart: {
                 width: 0,
@@ -37,12 +41,17 @@ export default class PieChartModel extends Component {
   render() {
     return (
       <div>
-        <div id="chart">
+        <div
+          id="chart"
+          style={{
+            marginLeft: "-30px",
+          }}
+        >
           <ReactApexChart
             options={this.state.options}
             series={this.state.series}
             type="pie"
-            width={320}
+            width={300}
           />
         </div>
         <div id="html-dist"></div>

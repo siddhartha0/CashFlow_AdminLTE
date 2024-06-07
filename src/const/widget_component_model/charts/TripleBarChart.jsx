@@ -11,11 +11,13 @@ export default class TripleBarChart extends Component {
     data2: PropTypes.array,
     data3: PropTypes.array,
     label: PropTypes.array,
+    dataColors: PropTypes.array,
   };
   constructor(props) {
     super(props);
 
-    const { title1, title2, title3, data1, data2, data3, label } = props;
+    const { title1, title2, title3, data1, data2, data3, label, dataColors } =
+      props;
     this.state = {
       series: [
         {
@@ -46,6 +48,14 @@ export default class TripleBarChart extends Component {
         dataLabels: {
           enabled: false,
         },
+        grid: {
+          row: {
+            colors: ["transparent"],
+          },
+          column: {
+            colors: ["transparent"],
+          },
+        },
         stroke: {
           show: true,
           width: 2,
@@ -54,12 +64,10 @@ export default class TripleBarChart extends Component {
         xaxis: {
           categories: label,
         },
-        yaxis: {
-          title: {
-            text: "$ (thousands)",
-          },
-        },
+        colors: dataColors,
+
         fill: {
+          // colors: ["#F44336", "#E91E63", "#9C27B0"],
           opacity: 1,
         },
         tooltip: {

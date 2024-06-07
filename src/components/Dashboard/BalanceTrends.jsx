@@ -20,7 +20,7 @@ export default class BalanceTrends extends Component {
       overallTrend,
     } = this.value;
     return (
-      <div className="d-flex flex-column gap-4  ">
+      <div className="d-flex flex-column w-100 ">
         <header
           className="text-lg "
           style={{
@@ -31,13 +31,17 @@ export default class BalanceTrends extends Component {
           Balance Trends
         </header>
 
-        <div className="d-flex  w-[100%] mt-4">
-          <DisplayTrends
-            icon={<CiBank className="text-xl place-self-start text-primary" />}
-            status={bankStatus}
-            trend={bankTrend}
-            label="Bank"
-          />
+        <div className="d-flex justify-content-lg-between  mt-4">
+          <div>
+            <DisplayTrends
+              icon={
+                <CiBank className="text-xl place-self-start text-primary" />
+              }
+              status={bankStatus}
+              trend={bankTrend}
+              label="Bank"
+            />
+          </div>
 
           <hr
             className="text-dark text-opacity-50"
@@ -49,14 +53,16 @@ export default class BalanceTrends extends Component {
             }}
           />
 
-          <DisplayTrends
-            icon={
-              <CiWallet className="text-xl place-self-start text-success" />
-            }
-            status={walletStatus}
-            trend={walletTrend}
-            label="Wallet"
-          />
+          <div>
+            <DisplayTrends
+              icon={
+                <CiWallet className="text-xl place-self-start text-success" />
+              }
+              status={walletStatus}
+              trend={walletTrend}
+              label="Wallet"
+            />
+          </div>
           <hr
             className="text-dark text-opacity-50"
             style={{
@@ -66,19 +72,22 @@ export default class BalanceTrends extends Component {
               background: "#DDDFE1",
             }}
           />
-          <DisplayTrends
-            icon={
-              <TbView360
-                className="text-xl place-self-start "
-                style={{
-                  color: "#9B4078",
-                }}
-              />
-            }
-            status={overallStatus}
-            trend={overallTrend}
-            label="Overall"
-          />
+
+          <div>
+            <DisplayTrends
+              icon={
+                <TbView360
+                  className="text-xl place-self-start "
+                  style={{
+                    color: "#9B4078",
+                  }}
+                />
+              }
+              status={overallStatus}
+              trend={overallTrend}
+              label="Overall"
+            />
+          </div>
         </div>
       </div>
     );

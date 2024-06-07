@@ -1,6 +1,6 @@
 import { Component } from "react";
-import PieChartModel from "../../../const/widget_component_model/PieChartModel";
-import ColorBarModel from "../../../const/widget_component_model/ColorBarModel";
+import PieChartModel from "../../../const/widget_component_model/charts/PieChartModel";
+import ColorBarModel from "../../../const/widget_component_model/charts/ColorBarModel";
 import PropTypes from "prop-types";
 
 export default class TransactionHistory extends Component {
@@ -18,13 +18,14 @@ export default class TransactionHistory extends Component {
         {label === "income" && (
           <div>
             <PieChartModel source={cashFlow.mapIncomeSource(incomeAmount)} />
-            <div className="d-flex flex-column ">
+            <div className="d-flex flex-column mt-5">
               {cashFlow.mapIncomeSource(incomeAmount).map((source) => (
-                <div key={source.source} className="d-flex my-2">
+                <div key={source.source} className="d-flex my-2 ">
                   <ColorBarModel
                     title={source.source}
                     totalAmount={incomeAmount}
                     actualAmount={source.amount}
+                    color="#FFCB30"
                   />
                 </div>
               ))}
@@ -34,13 +35,14 @@ export default class TransactionHistory extends Component {
         {label === "expense" && (
           <div>
             <PieChartModel source={cashFlow.mapExpenseSource(expenseAmount)} />
-            <div className="d-flex flex-column ">
+            <div className="d-flex flex-column mt-5">
               {cashFlow.mapExpenseSource(expenseAmount).map((source) => (
                 <div key={source.source} className="d-flex my-2">
                   <ColorBarModel
                     title={source.source}
                     totalAmount={expenseAmount}
                     actualAmount={source.amount}
+                    color="#DC3545"
                   />
                 </div>
               ))}

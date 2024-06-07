@@ -1,45 +1,34 @@
-import { Component } from 'react'
+import  { Component } from "react";
+import UserAccountDetails from "./UserAccountDetails";
 
 export default class UserWalletAccounts extends Component {
   render() {
+    const headings = ["ID", "Wallet name", "UserID", "Status"];
+    const wallets = [
+      {
+        id: 1,
+        name: "Khalti",
+        idNumber: 984522558,
+        status: "Active",
+      },
+      {
+        id: 2,
+        name: "IME pay",
+        idNumber: 9455458445,
+        status: "Active",
+      },
+      {
+        id: 3,
+        name: "Esewa",
+        idNumber: 9845415845,
+        status: "Inactive",
+      },
+    ];
+
     return (
-        <div className="card">
-        <div className="card-header">
-          <h3 className="card-title">My Wallet Accounts</h3>
-        </div>
-      
-        <div className="card-body table-responsive p-0">
-          <table className="table table-hover text-nowrap">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Wallet name</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Nepal bank </td>
-                <td><span className="tag tag-success">Active</span></td>
-                
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Nepal bank </td>
-                <td><span className="tag tag-success">Active</span></td>
-                
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Nepal bank </td>
-                <td><span className="tag tag-success">Active</span></td>
-                
-              </tr>
-              </tbody>
-              </table>
-              </div>
-              </div>
-    )
+      <div>
+        <UserAccountDetails headings={headings} accounts={wallets} />
+      </div>
+    );
   }
 }

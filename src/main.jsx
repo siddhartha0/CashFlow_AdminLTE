@@ -44,15 +44,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/business" element={<Business />} />
 
-          <Route path="/profile" element={<ProfileLayout />} >
+          <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<Profile />} />
             <Route path="bank" element={<BankProfileDetails />} />
             <Route path="wallet" element={<WalletProfileDetails />} />
             <Route path="edit-profile" element={<EditProfile />} />
-
           </Route>
         </Route>
-
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

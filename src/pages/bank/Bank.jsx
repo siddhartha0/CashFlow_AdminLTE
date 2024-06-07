@@ -2,8 +2,7 @@ import { Component } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import TotalView from "../../components/bank/TotalView";
-import BarChart from "../../const/widget_component_model/BarChart";
-import DynamicChart from "../../const/widget_component_model/DynamicChart";
+import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 
 export default class Bank extends Component {
