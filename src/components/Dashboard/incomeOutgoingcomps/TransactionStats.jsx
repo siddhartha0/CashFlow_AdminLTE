@@ -1,8 +1,8 @@
 import { Component } from "react";
 import StatsComps from "./StatsComps";
-import SmallLineChart from "../../../const/widget_component_model/SmallLineChart";
+import SmallLineChart from "../../../const/widget_component_model/charts/SmallLineChart";
 import PropTypes from "prop-types";
-import TripleBarChart from "../../../const/widget_component_model/TripleBarChart";
+import TripleBarChart from "../../../const/widget_component_model/charts/TripleBarChart";
 
 export default class TransactionStats extends Component {
   static propTypes = {

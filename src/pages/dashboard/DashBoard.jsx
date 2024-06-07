@@ -2,14 +2,14 @@ import { Component } from "react";
 import BalanceStats from "../../components/Dashboard/BalanceStats";
 import BalanceTrends from "../../components/Dashboard/BalanceTrends";
 import BalanceSummary from "../../components/Dashboard/BalanceSummary";
-import MenuOptionModel from "../../const/widget_component_model/MenuOptionModel";
-import AmountInfo from "../../components/Dashboard/AmountInfo";
+import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import NewAccordian from "../../components/Dashboard/AmountInfoComps/NewAccordian";
+import MoreOptionalAccordianModel from "../../const/widget_component_model/components/MoreOptionalAccordianModel";
+import Activities from "../../components/Dashboard/activities/Activities";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -52,7 +52,7 @@ export default class DashBoard extends Component {
 
   render() {
     return (
-      <div className="p-4" id="dashboard_parentDiv">
+      <div className="p-1 ml-3" id="dashboard_parentDiv">
         <div
           className="d-flex flex-column gap-4  text-black "
           id="dashboard_Wrapper"
@@ -67,14 +67,14 @@ export default class DashBoard extends Component {
             >
               <strong
                 id="Info"
-                className="text-xl text-uppercase"
+                className="text-lg text-uppercase"
                 style={{
                   color: "#9B4078",
                 }}
               >
                 DashBoard
               </strong>
-              <span id="Greeting" className="text-lg">
+              <span id="Greeting" className="text-md">
                 {this.state.date.getHours() < 12
                   ? "Good Morning !!"
                   : this.state.date.getHours() <= 18
@@ -97,28 +97,36 @@ export default class DashBoard extends Component {
 
           <div className="d-flex flex-column">
             <div className="row ">
-              <div className="col-md-6">
+              <div
+                className="d-flex flex-column"
+                style={{
+                  minWidth: "480px",
+                }}
+              >
                 <div
-                  className="col custom-card"
+                  className=" custom-card card"
                   style={{
                     width: "100%",
                   }}
                 >
                   <BalanceStats />
                 </div>
-                <div className="  flex-row shadow-md  bg-opacity-[.7] p-4   rounded-xl capitalize m-2  mt-4 custom-card">
+                <div className=" d-flex p-3 mt-2 custom-card card">
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div className="container col-md-6      p-4 text-capitalize custom-card ">
+              <div className="container card col-md-6 p-4 text-capitalize custom-card ">
                 <BalanceSummary />
               </div>
             </div>
           </div>
 
-          <div className="d-flex mt-4">
-            <div className=" col-md-8 d-flex flex-column  p-4  ml-3 custom-card">
+          <section
+            className="d-flex mt-3 connectedSortable "
+            id="income_expense_ParentDiv"
+          >
+            <div className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle">
               <div className="d-flex w-25">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
@@ -128,13 +136,13 @@ export default class DashBoard extends Component {
                   id="indi_Wallet_Bank"
                 />
               </div>
-              <div className=" ml-2 mb-2 mt-4    text-capitalize ">
+              <div className=" container mb-2 mt-4 text-capitalize ">
                 <IncomeExpenseStats label={this.state.selectedPlatform} />
               </div>
             </div>
 
             <div
-              className="col col-md-4 d-flex flex-column  p-4  ml-3 custom-card "
+              className="container  card d-flex flex-column  p-4  ml-3 custom-card card-header ui-sortable-handle"
               style={{
                 height: "640px",
                 overflowY: "scroll",
@@ -156,19 +164,14 @@ export default class DashBoard extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="custom-card p-3 mt-3">
-            <NewAccordian title="Activities">
-              <div className=" d-flex   ml-2  ">
-                <div className="   p-4 text-capitalize custom-card">
-                  <AmountInfo header="Bank Amount Summary" label="Bank" />
-                </div>
-                <div className="col col-md-6 row-8  p-4 text-capitalize ml-4 custom-card">
-                  <AmountInfo header="Wallet Amount Summary" label="Wallet" />
-                </div>
+          <div className=" p-3 mt-3 connectedSortable">
+            <MoreOptionalAccordianModel title="Activities">
+              <div className=" d-flex  flex-column   ">
+                <Activities />
               </div>
-            </NewAccordian>
+            </MoreOptionalAccordianModel>
           </div>
         </div>
       </div>

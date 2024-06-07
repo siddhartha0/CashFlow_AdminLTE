@@ -24,21 +24,21 @@ export default class BalanceStats extends Component {
       this.value;
 
     return (
-      <div className=" d-flex  flex-row shadow-md   p-2 justify-evenly  rounded-xl text-capitalize ">
-        <div className="m-2 p-2 d-flex flex-col gap-2 place-items-end">
+      <div className=" d-flex  flex-row shadow-md   p-0 justify-evenly  rounded-xl text-capitalize ">
+        <div className="m-2 p-2 d-flex flex-col  place-items-end">
           <div className="mt-10 gap-2 flex flex-col place-items-end ">
             <div className="donut">
               <Chart
                 options={this.state.options}
                 series={this.state.series}
                 type="donut"
-                width="280"
+                width="260"
               />
             </div>
 
             <div className="mt-4">
               <article
-                className="text-xl  text-capitalize "
+                className="text-lg  text-capitalize "
                 style={{
                   color: "#9B4078",
                 }}
@@ -56,21 +56,19 @@ export default class BalanceStats extends Component {
           className="text-dark"
           style={{
             width: ".5px",
-            height: "277px",
+            height: "222px",
             marginTop: "15px",
-            // marginLeft: "4px",
+            marginRight: "4px",
 
             background: "#DDDFE1",
           }}
         />
 
         <div className="mt-2 p-2 d-flex  flex-column gap-4 text-sm  relative">
-          <div className="d-flex flex-column text-lg">
+          <div className="d-flex flex-column text-md">
             <CiBank className="text-xl place-self-start text-hold" />
 
-            <strong className="text-primary  text-opacity-95 mt-3 ">
-              Bank Balance:
-            </strong>
+            <strong className="text-primary  mt-3  ">Bank Balance:</strong>
 
             <span className="font-semibold text-primary  text-opacity-55 ">
               {currentBankBalance ?? 0}
@@ -79,16 +77,16 @@ export default class BalanceStats extends Component {
           <hr
             className="text-dark text-opacity-50"
             style={{
-              width: "155px",
+              width: "130px",
               height: ".5px",
-              marginTop: "20px",
+              marginTop: "22px",
               background: "#DDDFE1",
               // background: "black",
             }}
           />
 
-          <div className="mt-3">
-            <div className="d-flex flex-column text-lg  relative ">
+          <div className="mt-1">
+            <div className="d-flex flex-column text-md  relative ">
               <CiWallet className="text-xl place-self-start text-secondary" />
 
               <strong className="text-success text-opacity-95 mt-2">

@@ -1,4 +1,5 @@
 import { Component } from "react";
+import ReactApexChart from "react-apexcharts";
 
 export default class Deposit extends Component {
   constructor() {

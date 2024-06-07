@@ -1,7 +1,7 @@
 import { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
-import DynamicTable from "../../const/widget_component_model/DynamicTable";
+import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
 
 export default class Withdraw extends Component {
   constructor() {
