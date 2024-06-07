@@ -5,7 +5,7 @@ class DynamicTable extends Component {
     super(props);
     this.state = {
       currentPage: 1,
-      itemsPerPage: this.props.pageNo,
+      itemsPerPage: this.props.pageNo || 10,
     };
   }
 
@@ -98,7 +98,7 @@ class DynamicTable extends Component {
               href="#"
               onClick={(e) => this.handleNavigationClick(e, "prev")}
             >
-              Previous
+              «
             </a>
           </li>
           {pageNumbers.map((number) => (
@@ -125,7 +125,7 @@ class DynamicTable extends Component {
               href="#"
               onClick={(e) => this.handleNavigationClick(e, "next")}
             >
-              Next
+              »
             </a>
           </li>
         </ul>
