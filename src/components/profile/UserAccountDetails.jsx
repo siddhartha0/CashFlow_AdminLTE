@@ -12,15 +12,16 @@ export default class UserAccountDetails extends Component {
       })
     ).isRequired,
     headings: PropTypes.arrayOf(PropTypes.string).isRequired,
+    title: PropTypes.string.isRequired,
   };
 
   render() {
-    const { accounts, headings } = this.props;
+    const { accounts, headings, title } = this.props;
 
     return (
       <div className="card">
         <div className="card-header">
-          <h3 className="card-title">My Bank Accounts</h3>
+          <h3 className="card-title">{title}</h3>
         </div>
 
         <div className="card-body table-responsive p-0">

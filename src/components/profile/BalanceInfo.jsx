@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { Component } from 'react';
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 
 export default class BalanceInfo extends Component {
@@ -14,59 +14,44 @@ export default class BalanceInfo extends Component {
     };
 
     return (
-      <div className="row ">
-        <div className="col-lg-4 col-6  mb-3">
-          <div className="info-box  bg-success ">
-            <span className="info-box-icon">
-              <i className="fas fa-tag"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Balance</span>
-              <span className="info-box-number">
-                {getTotalTransaction("deposit")}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-4 col-6 mb-3">
-          <div className="info-box bg-success">
-            <span className="info-box-icon">
-              <i className="far fa-heart"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Bank Balance</span>
-              <span className="info-box-number">
-                {getTotalTransaction("deposit")}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-4 col-6 mb-3">
-          <div className="info-box bg-success">
-            <span className="info-box-icon">
-              <i className="far fa-comment"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Wallet Balance</span>
-              <span className="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
-            </div>
-          </div>
-        </div>
-        {/* <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
-          <div className="info-box bg-secondary">
-            <span className="info-box-icon">
-              <i className="far fa-heart"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Transfer</span>
-              <span className="info-box-number">
-                {getTotalTransaction("transfer")}
-              </span>
-            </div>
-          </div>
+      <div className="card bg-light ">
+        {/* <div className="card-header text-center bg-primary text-white">
+          <h5 className="mb-0">Balance Information</h5>
         </div> */}
+        <div className="card-body">
+          <div className="row">
+            <div className="col-lg-4 col-md-6 ">
+              <div className="card bg-success">
+                <div className="card-body text-center">
+                  <h6 className="text-white text-lg mb-0">Total Balance</h6>
+                  <h4 className="text-white mt-2">
+                    ${getTotalTransaction("deposit")}
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 ">
+              <div className="card bg-warning">
+                <div className="card-body text-center">
+                  <h6 className="text-white text-lg mb-0">Total Bank Balance</h6>
+                  <h4 className="text-white mt-2">
+                    ${getTotalTransaction("deposit")}
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 ">
+              <div className="card bg-info">
+                <div className="card-body text-center">
+                  <h6 className="text-white text-lg mb-0">Total Wallet Balance</h6>
+                  <h4 className="text-white mt-2">
+                    ${getTotalTransaction("withdraw")}
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
