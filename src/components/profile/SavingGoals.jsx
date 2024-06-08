@@ -6,6 +6,7 @@ export default class SavingGoals extends Component {
       { id: 1, name: 'Save for a house', amountSaved: 15000, targetAmount: 50000, deadline: '31-Dec-2025' },
     ],
     newGoal: { name: '', amountSaved: '', targetAmount: '', deadline: '' },
+    editingGoal: null,
     showForm: false,
   };
 
@@ -30,14 +31,35 @@ export default class SavingGoals extends Component {
     }));
   };
 
+  editGoal = (goal) => {
+    this.setState({
+      newGoal: goal,
+      editingGoal: goal.id,
+      showForm: true,
+    });
+  };
+
+  saveEditedGoal = () => {
+    this.setState(prevState => ({
+      goals: prevState.goals.map(goal => 
+        goal.id === prevState.editingGoal ? { ...prevState.newGoal, id: goal.id } : goal
+      ),
+      newGoal: { name: '', amountSaved: '', targetAmount: '', deadline: '' },
+      editingGoal: null,
+      showForm: false,
+    }));
+  };
+
   toggleForm = () => {
     this.setState(prevState => ({
-      showForm: !prevState.showForm
+      showForm: !prevState.showForm,
+      newGoal: { name: '', amountSaved: '', targetAmount: '', deadline: '' },
+      editingGoal: null,
     }));
   };
 
   render() {
-    const { goals, newGoal, showForm } = this.state;
+    const { goals, newGoal, showForm, editingGoal } = this.state;
 
     return (
       <div className="card card-info">
@@ -57,6 +79,7 @@ export default class SavingGoals extends Component {
                       <b>Deadline: </b>{goal.deadline}
                     </div>
                     <div>
+                      <button className="btn btn-sm btn-primary mr-2" onClick={() => this.editGoal(goal)}>Edit</button>
                       <button className="btn btn-sm btn-danger" onClick={() => this.deleteGoal(goal.id)}>Delete</button>
                     </div>
                   </li>
@@ -67,7 +90,7 @@ export default class SavingGoals extends Component {
           )}
           {showForm && (
             <div>
-              <h5>Add New Goal</h5>
+              <h5>{editingGoal ? 'Edit Goal' : 'Add New Goal'}</h5>
               <div className="form-group">
                 <label>Goal</label>
                 <input
@@ -108,7 +131,9 @@ export default class SavingGoals extends Component {
                   onChange={this.handleInputChange}
                 />
               </div>
-              <button className="btn btn-success" onClick={this.addGoal}>Add Goal</button>
+              <button className="btn btn-success" onClick={editingGoal ? this.saveEditedGoal : this.addGoal}>
+                {editingGoal ? 'Save Changes' : 'Add Goal'}
+              </button>
               <button className="btn btn-secondary ml-2" onClick={this.toggleForm}>Cancel</button>
             </div>
           )}
