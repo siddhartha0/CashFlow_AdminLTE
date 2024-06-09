@@ -1,13 +1,27 @@
 import { Component } from "react";
 import Chart from "react-apexcharts";
 import { CiBank, CiWallet } from "react-icons/ci";
+import PropTypes from "prop-types";
 
 export default class BalanceStats extends Component {
   value = {};
 
-  constructor() {
-    super();
+  static propTypes = {
+    pickDate: PropTypes.string,
+  };
+
+  constructor(props) {
+    super(props);
+    const { pickDate } = props;
+    console.log(pickDate);
     this.value = JSON.parse(localStorage.getItem("dashboard"));
+
+    const currentMonth = this.value.bankFullYearHistory.filter(
+      (value) => value.month.toLowerCase() === pickDate.toLowerCase()
+    );
+    console.log(this.value.bankFullYearHistory);
+    console.log(currentMonth);
+
     this.state = {
       options: {
         labels: ["Bank", "Wallet"],
@@ -22,6 +36,9 @@ export default class BalanceStats extends Component {
   render() {
     const { currentBankBalance, currentWalletBalance, totalAmount } =
       this.value;
+
+    const { pickDate } = this.props;
+    console.log(pickDate);
 
     return (
       <div className=" d-flex  flex-row shadow-md   p-0 justify-evenly  rounded-xl text-capitalize ">

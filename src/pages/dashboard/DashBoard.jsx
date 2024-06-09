@@ -118,7 +118,7 @@ export default class DashBoard extends Component {
                     width: "100%",
                   }}
                 >
-                  <BalanceStats />
+                  <BalanceStats pickDate={this.state.selectedDate} />
                 </div>
                 <div className=" d-flex p-3 mt-2 custom-card card">
                   <BalanceTrends />
