@@ -8,10 +8,13 @@ function getRandomElement(array) {
 
 function generateRandomDate() {
   const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  const currentYear = today.getFullYear();
+  const start = new Date(currentYear, 0, 1); // January 1st of the current year
+  const end = today;
 
-  const randomDate = Math.random() < 0.5 ? today : yesterday;
+  const randomTime = getRandomInt(start.getTime(), end.getTime());
+  const randomDate = new Date(randomTime);
+
   return randomDate.toISOString().split("T")[0];
 }
 

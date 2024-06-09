@@ -16,7 +16,7 @@ export default class Bank extends Component {
     });
   }
   render() {
-    const transactions = generateRandomTransactions(100);
+    const transactions = generateRandomTransactions(1000);
 
     const totalList = [
       {
@@ -45,7 +45,7 @@ export default class Bank extends Component {
       },
     ];
 
-    // console.log("Transactions: ", transactions);
+    console.log("Transactions: ", transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -59,7 +59,7 @@ export default class Bank extends Component {
       <div className="p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-3">
+            <div className="col-lg-3 col-sm-6">
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
@@ -70,12 +70,6 @@ export default class Bank extends Component {
               />
             </div>
           ))}
-          {/* <TotalView
-            data={transactions.length}
-            title="Total Transactions"
-            color="primary"
-            icon="fa-solid fa-money-bill-trend-up"
-          /> */}
         </div>
         <div className="row" id="sortable">
           <div className="col-lg-12">
