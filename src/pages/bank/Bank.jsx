@@ -10,6 +10,11 @@ export default class Bank extends Component {
   constructor() {
     super();
   }
+  componentDidMount() {
+    $(function () {
+      $("#sortable").sortable();
+    });
+  }
   render() {
     const transactions = generateRandomTransactions(100);
 
@@ -17,7 +22,7 @@ export default class Bank extends Component {
       {
         data: "deposit",
         title: "Bank Balance",
-        color: "dark",
+        color: "primary",
         icon: "fa-solid fa-building-columns",
       },
       {
@@ -53,25 +58,28 @@ export default class Bank extends Component {
     return (
       <div className="p-3">
         <div className="row">
-          <div className="col-lg-3">
-            {totalList.map((value, index) => (
+          {totalList.map((value, index) => (
+            <div className="col-lg-3">
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
                 key={index}
+                design="info-box-2"
               />
-            ))}
-            <TotalView
-              data={transactions.length}
-              title="Total Transactions"
-              color="primary"
-              icon="fa-solid fa-money-bill-trend-up"
-            />
-          </div>
-          <div className="col-lg-9">
-            <div className="custom-card p-3 connectedSortable">
+            </div>
+          ))}
+          {/* <TotalView
+            data={transactions.length}
+            title="Total Transactions"
+            color="primary"
+            icon="fa-solid fa-money-bill-trend-up"
+          /> */}
+        </div>
+        <div className="row" id="sortable">
+          <div className="col-lg-12">
+            <div className="custom-card p-3 ">
               <BarChart />
             </div>
           </div>
@@ -82,7 +90,11 @@ export default class Bank extends Component {
           </div>
           <div className="col-lg-6">
             <div className="custom-card p-3">
-              <TransactionChart transactions={transactions} />
+              <TransactionChart
+                transactions={transactions}
+                type="all"
+                title="Remarks"
+              />
             </div>
           </div>
           <div className="col-lg-6">

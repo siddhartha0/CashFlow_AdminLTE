@@ -36,7 +36,7 @@ class BankList extends Component {
     const { totals } = this.state;
 
     return (
-      <div>
+      <>
         <h3>Bank Totals</h3>
         {Object.keys(totals).length === 0 ? (
           <p>No transactions available</p>
@@ -60,7 +60,7 @@ class BankList extends Component {
             </tbody>
           </table>
         )}
-      </div>
+      </>
     );
   }
 }

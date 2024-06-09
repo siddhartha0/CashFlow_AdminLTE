@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-export class Withdraw extends Component {
+export class WalletWithdraw extends Component {
   render() {
     return <div>WaletWithDraw</div>;
   }
