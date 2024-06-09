@@ -11,11 +11,9 @@ export default class ProfileForm extends Component {
       gender: '',
       dateOfBirth: '',
     },
-    isChangesSaved: false, // Add state variable to track changes saved state
   };
 
   componentDidMount() {
-    // Fetch user profile data from backend or props and populate state
     this.setState({
       userProfile: {
         firstName: 'John',
@@ -42,10 +40,7 @@ export default class ProfileForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    // Submit the updated user profile data to the backend
     console.log('Updated Profile:', this.state.userProfile);
-    // Optionally, you can make an API call to update the user profile
-    // After successful submission, set isChangesSaved to true to show the message
     this.setState({
       isChangesSaved: true,
     });
@@ -60,7 +55,7 @@ export default class ProfileForm extends Component {
           <h3 className="card-title">Edit Profile</h3>
         </div>
         <div className="card-body">
-          {isChangesSaved && ( // Show the message when changes are saved
+          {isChangesSaved && ( 
             <div className="alert alert-success" role="alert">
               Changes saved successfully!
             </div>
