@@ -23,6 +23,19 @@ export default class BalanceSummary extends Component {
 
       options: {
         chart: {
+          events: {
+            events: {
+              events: {
+                // click: function (event, chartContext, config) {
+                //   console.log(event);
+                // },
+                dataPointSelection: function (event, chartContext, config) {
+                  console.log(config.w.config.series[config.dataPointIndex]);
+                  console.log(config.w.config.labels[config.dataPointIndex]);
+                },
+              },
+            },
+          },
           height: 350,
           type: "line",
           zoom: {
@@ -61,6 +74,9 @@ export default class BalanceSummary extends Component {
             series={this.state.series}
             type="line"
             height={420}
+            // onClick={(data) => {
+            //   console.log(data);
+            // }}
           />
         </div>
         <div id="html-dist"></div>

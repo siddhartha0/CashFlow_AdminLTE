@@ -137,6 +137,21 @@ export default class Balance {
     return Math.ceil(Math.random() * (this.max - this.min) + this.min);
   }
 
+  genMonthlyBalance(highestAmount) {
+    const totaldays = 30;
+    const monthsAmount = [];
+    for (let i = 0; i < totaldays; i++) {
+      if (i < totaldays - 1) {
+        const eachDayAmount = this.genIncome(highestAmount);
+        monthsAmount.push(eachDayAmount);
+      }
+      if (i === totaldays - 1) {
+        monthsAmount.push(highestAmount);
+      }
+    }
+    console.log(monthsAmount);
+  }
+
   calculateTrends() {
     const prevMonthMoney_Bank =
       this.bank_Complete_Money_History[

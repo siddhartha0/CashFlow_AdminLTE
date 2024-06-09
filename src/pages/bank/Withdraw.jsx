@@ -78,25 +78,25 @@ export default class Withdraw extends Component {
     return (
       <div>
         <div className="row">
-          <div class="info-box mb-3 ml-3 mr-3 bg-danger col-lg-3">
+          <div class="info-box mb-3 mr-3 bg-danger col-lg-3">
             <span class="info-box-icon">
               <i class="far fa-comment"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Withdraw</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Total Withdraw</span>
+              <span className="info-box-number">
                 {getTotalTransaction("withdraw")}
               </span>
             </div>
           </div>
 
-          <div class="info-box mb-3 mr-3 bg-warning col-lg-3">
+          <div class="info-box mb-3 bg-warning col-lg-3">
             <span class="info-box-icon">
               <i class="far fa-comment"></i>
             </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Withdraw This Month</span>
-              <span class="info-box-number">
+            <div className="info-box-content">
+              <span className="info-box-text">Total Withdraw This Month</span>
+              <span className="info-box-number">
                 {getTotalTransaction("withdraw")}
               </span>
             </div>

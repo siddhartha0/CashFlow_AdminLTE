@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import DynamicTable from "../../../const/widget_component_model/DynamicTable";
+import { Component } from "react";
+import DynamicTable from "../../../const/widget_component_model/table/DynamicTable";
 import { generateRandomTransactions } from "../../../behindTheScene/api/bank";
-import SingleBarChart from "../../../const/widget_component_model/SingleBarChart";
-import SingleLineChart from "../../../const/widget_component_model/SingleLineChart";
+import SingleBarChart from "../../../const/widget_component_model/charts/SingleBarChart";
+import SingleLineChart from "../../../const/widget_component_model/charts/SingleLineChart";
 import TotalView from "../TotalView";
 
 export default class Deposit extends Component {
@@ -68,7 +68,12 @@ export default class Deposit extends Component {
             </div>
             <div className="col-12 mt-4">
               <h2>Total Deposits</h2>
-              <DynamicTable data={filterData} headers={headers} pageNo="10" total={true}/>
+              <DynamicTable
+                data={filterData}
+                headers={headers}
+                pageNo="10"
+                total={true}
+              />
             </div>
           </div>
         </div>

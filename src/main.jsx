@@ -8,9 +8,6 @@ import Wallet from "./pages/wallet/Wallet.jsx";
 import Transfer from "./pages/bank/Transfer.jsx";
 import DepositPage from "./pages/bank/DepositPage.jsx";
 import Withdraw from "./pages/bank/Withdraw.jsx";
-import { Withdraw as WalletWithDraw } from "./pages/wallet/Withdraw.jsx";
-import { Deposit as WalletDeposit } from "./pages/wallet/Deposit.jsx";
-import { Transfer as WalletTransfer } from "./pages/wallet/Transfer.jsx";
 import Banklayout from "./pages/bank/Banklayout.jsx";
 import WalletLayout from "./pages/wallet/WalletLayout.jsx";
 import Business from "./pages/business/Business.jsx";
@@ -20,6 +17,9 @@ import BankProfileDetails from "./pages/profile/BankProfileDetails.jsx";
 import WalletProfileDetails from "./pages/profile/WalletProfileDetails.jsx";
 import EditProfile from "./pages/profile/EditProfile.jsx";
 import ProfileLayout from "./pages/profile/ProfileLayout.jsx";
+import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
+import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
+import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -39,20 +39,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route index element={<Wallet />} />
             <Route path="deposit" element={<WalletDeposit />} />
             <Route path="transfer" element={<WalletTransfer />} />
-            <Route path="withdraw" element={<WalletWithDraw />} />
+            <Route path="withdraw" element={<WalletWithdraw />} />
           </Route>
 
           <Route path="/business" element={<Business />} />
 
-          <Route path="/profile" element={<ProfileLayout />} >
+          <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<Profile />} />
             <Route path="bank" element={<BankProfileDetails />} />
             <Route path="wallet" element={<WalletProfileDetails />} />
             <Route path="edit-profile" element={<EditProfile />} />
-
           </Route>
         </Route>
-
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
