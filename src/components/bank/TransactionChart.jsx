@@ -5,7 +5,7 @@ class TransactionChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption: "deposit",
+      selectedOption: props.type === "all" ? "deposit" : props.type,
     };
   }
 
@@ -33,6 +33,7 @@ class TransactionChart extends Component {
   };
 
   render() {
+    const { type, title } = this.props;
     const { selectedOption } = this.state;
     const data = {
       series: this.getFilteredData().series,
@@ -41,17 +42,14 @@ class TransactionChart extends Component {
           type: "donut",
         },
         labels: this.getFilteredData().labels,
-        title: {
-          text: `Total Amount by Remark (${selectedOption} Transactions)`,
-          align: "left",
-        },
       },
     };
 
     return (
       <div>
-        <div className="d-flex justify-content-end">
-          <div className="col-lg-2">
+        <div className="d-flex justify-content-between">
+          <h3>{title}</h3>
+          {type === "all" && (
             <div className="d-flex">
               <select
                 className="custom-select"
@@ -64,12 +62,13 @@ class TransactionChart extends Component {
                 <option value="transfer">Transfer</option>
               </select>
             </div>
-          </div>
+          )}
         </div>
+
         <Chart
           options={data.options}
           series={data.series}
-          type="donut"
+          type="pie"
           height={350}
         />
       </div>

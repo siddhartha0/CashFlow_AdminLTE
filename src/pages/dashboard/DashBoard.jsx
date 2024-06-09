@@ -10,6 +10,7 @@ import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
 import MoreOptionalAccordianModel from "../../const/widget_component_model/components/MoreOptionalAccordianModel";
 import Activities from "../../components/Dashboard/activities/Activities";
+// import { $ } from "jquery";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -24,6 +25,12 @@ export default class DashBoard extends Component {
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
+  }
+
+  componentDidMount() {
+    $(function () {
+      $("#sortable").sortable();
+    });
   }
 
   selectPlatform(e) {
@@ -55,11 +62,13 @@ export default class DashBoard extends Component {
       <div className="p-1 ml-3" id="dashboard_parentDiv">
         <div
           className="d-flex flex-column gap-4  text-black "
-          id="dashboard_Wrapper"
+          // id="dashboard_Wrapper"
+          id="sortable"
         >
           <div
             className=" d-flex justify-content-between"
-            id="dashboard_header_ParentDiv"
+            // id="dashboard_header_ParentDiv"
+            // id="sortable"
           >
             <div
               className="d-flex flex-column mb-4"
@@ -95,7 +104,7 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column" id="sortable">
             <div className="row ">
               <div
                 className="d-flex flex-column"
@@ -122,11 +131,11 @@ export default class DashBoard extends Component {
             </div>
           </div>
 
-          <section
-            className="d-flex mt-3 connectedSortable "
-            id="income_expense_ParentDiv"
-          >
-            <div className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle">
+          <section className="d-flex mt-3 connectedSortable " id="sort">
+            <div
+              className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
+              id="sortable"
+            >
               <div className="d-flex w-25">
                 <MenuOptionModel
                   className="breadcrumb float-sm-right"
@@ -143,6 +152,7 @@ export default class DashBoard extends Component {
 
             <div
               className="container  card d-flex flex-column  p-4  ml-3 custom-card card-header ui-sortable-handle"
+              id="sortable"
               style={{
                 height: "640px",
                 overflowY: "scroll",
@@ -166,7 +176,7 @@ export default class DashBoard extends Component {
             </div>
           </section>
 
-          <div className=" p-3 mt-3 connectedSortable">
+          <div className=" p-3 mt-3 connectedSortable" id="sortable">
             <MoreOptionalAccordianModel title="Activities">
               <div className=" d-flex  flex-column   ">
                 <Activities />
