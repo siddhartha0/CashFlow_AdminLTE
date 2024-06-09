@@ -1,9 +1,9 @@
-import  { Component } from "react";
+import { Component } from "react";
 import UserAccountDetails from "./UserAccountDetails";
 
 export default class UserWalletAccounts extends Component {
   render() {
-    const headings = ["ID", "Wallet name", "UserID", "Status"];
+    const headings = ["ID", "Wallet Name", "User ID", "Status"];
     const wallets = [
       {
         id: 1,
@@ -13,7 +13,7 @@ export default class UserWalletAccounts extends Component {
       },
       {
         id: 2,
-        name: "IME pay",
+        name: "IME Pay",
         idNumber: 9455458445,
         status: "Active",
       },
@@ -26,8 +26,13 @@ export default class UserWalletAccounts extends Component {
     ];
 
     return (
-      <div>
-        <UserAccountDetails headings={headings} accounts={wallets} />
+      <div className="card mb-4">
+        <div className="card-header bg-secondary text-white">
+          <h3 className="card-title">My Wallets</h3>
+        </div>
+        <div className="card-body">
+          <UserAccountDetails headings={headings} accounts={wallets} />
+        </div>
       </div>
     );
   }
