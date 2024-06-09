@@ -5,6 +5,7 @@ import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
+// import $ from "jquery";
 
 export default class Bank extends Component {
   constructor() {
@@ -59,13 +60,12 @@ export default class Bank extends Component {
       <div className="p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-3">
+            <div className="col-lg-3" key={index}>
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
-                key={index}
                 design="info-box-2"
               />
             </div>
