@@ -40,12 +40,12 @@ export default class Bank extends Component {
         color: "danger",
         icon: "fa-solid fa-arrow-up-from-bracket",
       },
-      // {
-      //   data: "transfer",
-      //   title: "Total Transfer",
-      //   color: "secondary",
-      //   icon: "fa-solid fa-money-bill-transfer",
-      // },
+      {
+        data: "transfer",
+        title: "Total Transfer",
+        color: "secondary",
+        icon: "fa-solid fa-money-bill-transfer",
+      },
     ];
 
     // console.log("Transactions: ", transactions);
@@ -62,14 +62,17 @@ export default class Bank extends Component {
       <div className="p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-3">
+            <div className="col-lg-3" key={index}>
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
-                key={index}
-                design="info-box-2"
+                design="info-box"
+                change={getTransactionPercentageIncrease(
+                  transactions,
+                  value.data
+                )}
               />
             </div>
           ))}
