@@ -5,19 +5,22 @@ import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
+import DateWiseChart from "../../components/bank/DateWiseChart";
+import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
+
+const transactions = generateRandomTransactions(1000);
 
 export default class Bank extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
     });
   }
-  render() {
-    const transactions = generateRandomTransactions(1000);
 
+  render() {
     const totalList = [
       {
         data: "deposit",
@@ -37,15 +40,15 @@ export default class Bank extends Component {
         color: "danger",
         icon: "fa-solid fa-arrow-up-from-bracket",
       },
-      {
-        data: "transfer",
-        title: "Total Transfer",
-        color: "secondary",
-        icon: "fa-solid fa-money-bill-transfer",
-      },
+      // {
+      //   data: "transfer",
+      //   title: "Total Transfer",
+      //   color: "secondary",
+      //   icon: "fa-solid fa-money-bill-transfer",
+      // },
     ];
 
-    console.log("Transactions: ", transactions);
+    // console.log("Transactions: ", transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -59,14 +62,18 @@ export default class Bank extends Component {
       <div className="p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-3 col-sm-6">
+            <div className="col-lg-4 col-sm-6">
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
                 key={index}
-                design="info-box-2"
+                change={getTransactionPercentageIncrease(
+                  transactions,
+                  value.data
+                )}
+                design="info-box"
               />
             </div>
           ))}
@@ -75,8 +82,14 @@ export default class Bank extends Component {
           <div className="col-lg-12">
             <div className="custom-card p-3 ">
               <BarChart />
+              <DateWiseChart />
             </div>
           </div>
+          {/* <div className="col-lg-12">
+            <div className="custom-card p-3 ">
+              <DateWiseChart />
+            </div>
+          </div> */}
           <div className="col-lg-6">
             <div className="custom-card p-3">
               <BankList transactions={transactions} />
