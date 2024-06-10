@@ -20,7 +20,7 @@ export default class App extends Component {
       <div className="wrapper">
         <Header />
         <NewSideBar />
-        <div className="content-wrapper">
+        <div className="content-wrapper p-3">
           <Outlet />
         </div>
         {/* <Footer /> */}

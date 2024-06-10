@@ -28,14 +28,12 @@ const RoutesPath = [
         id: 21,
         title: "Withdraw",
         path: "/bank/withdraw",
-
-        icons: bank,
+        icons: profile,
       },
       {
         id: 22,
         title: "Transfer",
         path: "/bank/transfer",
-
         icons: bank,
       },
     ],
@@ -75,11 +73,32 @@ const RoutesPath = [
     path: "/business",
     icons: business,
   },
+
   {
     id: 5,
     title: "Profile",
     path: "/profile",
     icons: profile,
+    children: [
+      {
+        id: 50,
+        title: "Bank",
+        path: "/profile/bank",
+        icons: bank,
+      },
+      {
+        id: 51,
+        title: "Wallet",
+        path: "/profile/wallet",
+        icons: wallet,
+      },
+      {
+        id: 52,
+        title: "Edit profile",
+        path: "/profile/edit-profile",
+        icons: bank,
+      },
+    ],
   },
 ];
 

@@ -23,6 +23,9 @@ export default class NewSideBar extends Component {
         className="main-sidebar  elevation-2 "
         style={{
           height: "100vh",
+          position: "fixed",
+          top: "0",
+          overflowY: "visible",
         }}
       >
         <Link to="/" className="container">
@@ -30,7 +33,7 @@ export default class NewSideBar extends Component {
             src={companyLogo}
             alt="AdminLTE Logo"
             className=" img-circle elevation-2"
-            style={{ opacity: 0.8, heigth: "10px", width: "100px" }}
+            style={{ opacity: 0.8, heigth: "10px", width: "70px" }}
           />
           <span className="font-weight-bold ml-2 text-uppercase">Cashflow</span>
         </Link>
@@ -50,15 +53,18 @@ export default class NewSideBar extends Component {
                 >
                   <NavLink
                     to={routes.path}
-                    className={
-                      // this.state.id === routes.id
-                      "nav-link  "
-                      // : "nav-link "
-                    }
+                    className={"nav-link   "}
                     onClick={this.activeLink.bind(this, routes.id)}
                   >
-                    <img src={routes.icons} className="fas nav-icon " alt="" />
-                    <p className="ml-3">
+                    <img
+                      src={routes.icons}
+                      className="fas nav-icon  "
+                      alt=""
+                      style={{
+                        height: "28px",
+                      }}
+                    />
+                    <p className="ml-3 text-sm">
                       {routes.title}
                       {routes.children?.length > 0 ? (
                         <i className="right fas fa-angle-left"></i>
@@ -74,11 +80,11 @@ export default class NewSideBar extends Component {
                         <li className="nav-item" key={child.id}>
                           <NavLink to={child.path} className="nav-link">
                             <img
-                              src={routes.icons}
+                              src={child.icons}
                               className="fas nav-icon "
                               alt=""
                             />
-                            <p className="ml-3">{child.title}</p>
+                            <p className="ml-3 text-sm">{child.title}</p>
                           </NavLink>
                         </li>
                       ))}
