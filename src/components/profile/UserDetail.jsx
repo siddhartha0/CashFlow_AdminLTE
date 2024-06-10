@@ -48,6 +48,11 @@ class PersonalInformation extends Component {
     const { userInfo } = this.state;
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
     this.toggleModal();
+    Swal.fire({
+      title: 'Success!',
+      text: 'Your Information is updated sucessfully',
+      icon: 'success',
+    });
   };
 
   render() {
