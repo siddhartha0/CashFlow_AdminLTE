@@ -19,7 +19,11 @@ class BankList extends Component {
 
     transactions.forEach((transaction) => {
       if (!totals[transaction.bank]) {
-        totals[transaction.bank] = { deposit: 0, withdraw: 0 };
+        totals[transaction.bank] = {
+          deposit: 0,
+          withdraw: 0,
+          account: transaction.account,
+        };
       }
 
       if (transaction.status === "deposit") {
@@ -45,6 +49,7 @@ class BankList extends Component {
             <thead>
               <tr>
                 <th>Bank</th>
+                <th>Account</th>
                 <th>Total Deposit</th>
                 <th>Total Withdraw</th>
               </tr>
@@ -53,6 +58,7 @@ class BankList extends Component {
               {Object.keys(totals).map((bank) => (
                 <tr key={bank}>
                   <td>{bank}</td>
+                  <td>{totals[bank].account}</td>
                   <td>{totals[bank].deposit}</td>
                   <td>{totals[bank].withdraw}</td>
                 </tr>
