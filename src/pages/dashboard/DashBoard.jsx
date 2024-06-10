@@ -1,7 +1,7 @@
 import { Component } from "react";
-import BalanceStats from "../../components/Dashboard/BalanceStats";
+import BalanceStats from "../../components/Dashboard/stats/BalanceStats";
 import BalanceTrends from "../../components/Dashboard/BalanceTrends";
-import BalanceSummary from "../../components/Dashboard/BalanceSummary";
+import BalanceSummary from "../../components/Dashboard/balanceSummary/summary/BalanceSummary";
 import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickPlatform } from "../../const/PickPlatForm";
@@ -20,10 +20,17 @@ export default class DashBoard extends Component {
       selectedPlatform: "Bank",
       selectedDate: "overall",
       transactionType: "income",
+      currentBankAmount: 0,
+      currentWalletAmount: 0,
+      id: 0,
+      bankEachMonthHistory: [],
+      walletEachDayHistory: [],
+      overAllSelected: true,
     };
 
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
+    this.selectMonth = this.selectMonth.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
   }
 
@@ -57,9 +64,40 @@ export default class DashBoard extends Component {
     });
   }
 
+  selectMonth = (key) => {
+    const localvalue = JSON.parse(localStorage.getItem("dashboard"));
+    this.setState({
+      id: key,
+    });
+    if (key !== 0) {
+      this.setState({
+        overAllSelected: false,
+      });
+    }
+    if (key === 0) {
+      this.setState({
+        overAllSelected: true,
+      });
+    }
+    const bankAmount = localvalue.bankFullYearHistory;
+    const walletAmount = localvalue.walletFullYearHistory;
+
+    // console.log(this.localValue);
+
+    const getBank = bankAmount.filter((bank, i) => i + 1 === key);
+    const getWallet = walletAmount.filter((wallet, i) => i + 1 === key);
+
+    this.setState({
+      bankEachMonthHistory: getBank[0].eachDaysAmount,
+      walletEachDayHistory: getWallet[0].eachDaysAmount,
+      currentBankAmount: getBank[0].currentAmount,
+      currentWalletAmount: getWallet[0].currentAmount,
+    });
+  };
+
   render() {
     return (
-      <div className="p-1 ml-3" id="dashboard_parentDiv">
+      <div className="p-1 ml-3 " id="dashboard_parentDiv">
         <div
           className="d-flex flex-column gap-4  text-black "
           // id="dashboard_Wrapper"
@@ -118,7 +156,12 @@ export default class DashBoard extends Component {
                     width: "100%",
                   }}
                 >
-                  <BalanceStats />
+                  <BalanceStats
+                    pickDate={this.state.selectedDate}
+                    currentBankAmount={this.state.currentBankAmount}
+                    currentWalletAmount={this.state.currentWalletAmount}
+                    overAllSelected={this.state.overAllSelected}
+                  />
                 </div>
                 <div className=" d-flex p-3 mt-2 custom-card card">
                   <BalanceTrends />
@@ -126,7 +169,13 @@ export default class DashBoard extends Component {
               </div>
 
               <div className="container card col-md-6 p-4 text-capitalize custom-card ">
-                <BalanceSummary />
+                <BalanceSummary
+                  selectMonth={this.selectMonth}
+                  currentId={this.state.id}
+                  bankEachDaysAmount={this.state.bankEachMonthHistory}
+                  walletEachDayAmount={this.state.walletEachDayHistory}
+                  overAllSelected={this.state.id !== 0 ? false : true}
+                />
               </div>
             </div>
           </div>
