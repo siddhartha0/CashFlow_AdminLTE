@@ -1,4 +1,3 @@
-// PersonalInformation.js
 import { Component } from "react";
 import EditProfileForm from "./EditProfileForm";
 
@@ -33,6 +32,17 @@ class PersonalInformation extends Component {
     }));
   };
 
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState((prevState) => ({
+        userInfo: { ...prevState.userInfo, profilePic: reader.result },
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
     const { userInfo } = this.state;
@@ -54,7 +64,7 @@ class PersonalInformation extends Component {
           </div>
           <div className="card-body">
             <div className="d-flex flex-row justify-content-between">
-              <div className="col-md-6 d-flex flex-column align-items-center border-end border-dark ">
+              <div className="col-md-6 d-flex flex-column align-items-center border-end border-dark">
                 <img
                   className="img-fluid img-circle"
                   src={userInfo.profilePic}
@@ -97,6 +107,7 @@ class PersonalInformation extends Component {
             userInfo={userInfo}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
+            handleFileChange={this.handleFileChange}
             toggleModal={this.toggleModal}
           />
         )}

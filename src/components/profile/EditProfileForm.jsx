@@ -1,14 +1,17 @@
 import { Component } from "react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
+
 export default class EditProfileForm extends Component {
   static propTypes = {
     userInfo: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    handleFileChange: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired
-  }
+  };
+
   render() {
-    const { userInfo, handleChange, handleSubmit, toggleModal } = this.props;
+    const { userInfo, handleChange, handleSubmit, handleFileChange, toggleModal } = this.props;
 
     return (
       <div className="modal fade show" style={{ display: 'block' }}>
@@ -95,6 +98,15 @@ export default class EditProfileForm extends Component {
                     onChange={handleChange}
                   />
                 </div>
+                <div className="form-group">
+                  <label>Profile Picture</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    name="profilePic"
+                    onChange={handleFileChange}
+                  />
+                </div>
                 <button type="submit" className="btn btn-success">Save</button>
               </form>
             </div>
@@ -102,8 +114,5 @@ export default class EditProfileForm extends Component {
         </div>
       </div>
     );
-    
   }
-  
 }
-
