@@ -15,29 +15,21 @@ function check() {
       fullYearAmountInfo.push(newData);
     });
   }
-  var eachDays_Amount = [];
   var totalHistory_Of_MONEY = [];
 
   if (fullYearAmountInfo) {
-    fullYearAmountInfo.map((amount, i, arr) => {
-      console.log(amount.currentAmount);
+    fullYearAmountInfo.map((amount) => {
       const eachDayAmount = balance.genMonthlyBalance(amount.currentAmount);
       const newData = {
         month: amount.month,
         currentAmount: amount.currentAmount,
-        eachDaysAmount: [eachDays_Amount.push(eachDayAmount)],
+        eachDaysAmount: eachDayAmount,
       };
-      console.log(newData);
       totalHistory_Of_MONEY.push(newData);
     });
   }
 
   console.log(totalHistory_Of_MONEY);
-
-  // console.log(totalHistory_Of_MONEY);
-
-  // balance.mapIncomeSource();
-  // balance.calculate_Income_Expense(balance.bank_Complete_Money_History, "bank");
 }
 
 check();

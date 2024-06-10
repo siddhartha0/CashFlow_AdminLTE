@@ -62,18 +62,14 @@ export default class Bank extends Component {
       <div className="p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-4 col-sm-6">
+            <div className="col-lg-3">
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
                 key={index}
-                change={getTransactionPercentageIncrease(
-                  transactions,
-                  value.data
-                )}
-                design="info-box"
+                design="info-box-2"
               />
             </div>
           ))}

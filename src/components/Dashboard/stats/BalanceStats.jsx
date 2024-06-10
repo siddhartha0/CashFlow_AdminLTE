@@ -1,27 +1,42 @@
 import { Component } from "react";
 import Chart from "react-apexcharts";
 import { CiBank, CiWallet } from "react-icons/ci";
+import PropTypes from "prop-types";
+import DounoughtProps from "./DonoughtProps";
 
 export default class BalanceStats extends Component {
   value = {};
 
-  constructor() {
-    super();
+  static propTypes = {
+    pickDate: PropTypes.string,
+    currentBankAmount: PropTypes.number,
+    currentWalletAmount: PropTypes.number,
+    overAllSelected: PropTypes.bool,
+  };
+
+  constructor(props) {
+    super(props);
+    const { pickDate } = props;
+    console.log(pickDate);
     this.value = JSON.parse(localStorage.getItem("dashboard"));
-    this.state = {
-      options: {
-        labels: ["Bank", "Wallet"],
-      },
-      series: [
-        this.value?.currentBankBalance,
-        this.value?.currentWalletBalance,
-      ],
-    };
+
+    // const currentMonth = this.value.bankFullYearHistory.filter(
+    //   (value) => value.month.toLowerCase() === pickDate.toLowerCase()
+    // );
+    // console.log(this.value.bankFullYearHistory);
+    // console.log(currentMonth);
   }
 
   render() {
     const { currentBankBalance, currentWalletBalance, totalAmount } =
       this.value;
+
+    const { currentBankAmount, currentWalletAmount, overAllSelected } =
+      this.props;
+
+    const currentTotal = currentBankAmount + currentWalletAmount;
+
+    const getDonoughtProps = new DounoughtProps();
 
     return (
       <div className=" d-flex  flex-row shadow-md   p-0 justify-evenly  rounded-xl text-capitalize ">
@@ -29,8 +44,12 @@ export default class BalanceStats extends Component {
           <div className="mt-10 gap-2 flex flex-col place-items-end ">
             <div className="donut">
               <Chart
-                options={this.state.options}
-                series={this.state.series}
+                options={getDonoughtProps.genLabel()}
+                series={getDonoughtProps.genData(
+                  overAllSelected,
+                  currentBankAmount,
+                  currentWalletAmount
+                )}
                 type="donut"
                 width="260"
               />
@@ -46,7 +65,9 @@ export default class BalanceStats extends Component {
                 Total Amount
               </article>
               <span className="font-semibold text-dark text-lg text-opacity-50">
-                {totalAmount ?? "Data is loading"}
+                {overAllSelected
+                  ? totalAmount
+                  : currentTotal ?? "Data is loading"}
               </span>
             </div>
           </div>
@@ -71,7 +92,7 @@ export default class BalanceStats extends Component {
             <strong className="text-primary  mt-3  ">Bank Balance:</strong>
 
             <span className="font-semibold text-primary  text-opacity-55 ">
-              {currentBankBalance ?? 0}
+              {overAllSelected ? currentBankBalance : currentBankAmount ?? 0}
             </span>
           </div>
           <hr
@@ -94,7 +115,9 @@ export default class BalanceStats extends Component {
               </strong>
 
               <span className="font-semibold text-success text-opacity-[0.8]">
-                {currentWalletBalance ?? 0}
+                {overAllSelected
+                  ? currentWalletBalance
+                  : currentWalletAmount ?? 0}
               </span>
             </div>
           </div>
