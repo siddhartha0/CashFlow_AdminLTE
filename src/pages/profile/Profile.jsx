@@ -31,8 +31,8 @@ export default class Profile extends Component {
           {/* MAIN CONTENT STARTS FROM HERE */}
           <section className="content">
             <div className="container-fluid">
-              <div className="row justify-content-between mb-4">
-                <div className="col-md-5">
+              <div className=" row mb-4">
+                <div className="col-md-6">
                   <UserDetail />
                 </div>
                 <div className="col-md-6">

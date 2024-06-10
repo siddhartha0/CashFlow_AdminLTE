@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'admin-lte/dist/css/adminlte.min.css';
 
 export default class BalanceInfo extends Component {
   render() {
@@ -14,45 +16,53 @@ export default class BalanceInfo extends Component {
     };
 
     return (
-      <div className="card bg-light">
-        <div className="card-header bg-info text-white">
-          <h5 className="mb-0">Balance Information</h5>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-lg-4 col-md-6 mb-3">
+        <div className="card-body ">
+          <div className="row mb-2">
+            <div className="col-12">
               <div className="card bg-success h-100">
-                <div className="card-body text-center">
-                  <h6 className="text-white text-lg mb-0">Total Balance</h6>
-                  <h4 className="text-white mt-2">
-                    ${getTotalTransaction("deposit")}
-                  </h4>
+                <div className="card-body d-flex align-items-center p-2">
+                  <i className="fas fa-dollar-sign fa-2x text-white mr-2"></i>
+                  <div>
+                    <h6 className="text-white mb-0">Total Balance</h6>
+                    <h4 className="text-white mt-1">
+                      ${getTotalTransaction("deposit")}
+                    </h4>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-md-6 mb-3">
+          </div>
+          <div className="row mb-2">
+            <div className="col-12">
               <div className="card bg-warning h-100">
-                <div className="card-body text-center">
-                  <h6 className="text-white text-lg mb-0">Total Bank Balance</h6>
-                  <h4 className="text-white mt-2">
-                    ${getTotalTransaction("deposit")}
-                  </h4>
+                <div className="card-body d-flex align-items-center p-2">
+                  <i className="fas fa-university fa-2x text-white mr-2"></i>
+                  <div>
+                    <h6 className="text-white mb-0">Total Bank Balance</h6>
+                    <h4 className="text-white mt-1">
+                      ${getTotalTransaction("deposit")}
+                    </h4>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-md-6 mb-3">
+          </div>
+          <div className="row mb-2">
+            <div className="col-12">
               <div className="card bg-info h-100">
-                <div className="card-body text-center">
-                  <h6 className="text-white text-lg mb-0">Total Wallet Balance</h6>
-                  <h4 className="text-white mt-2">
-                    ${getTotalTransaction("withdraw")}
-                  </h4>
+                <div className="card-body d-flex align-items-center p-2">
+                  <i className="fas fa-wallet fa-2x text-white mr-2"></i>
+                  <div>
+                    <h6 className="text-white mb-0">Total Wallet Balance</h6>
+                    <h4 className="text-white mt-1">
+                      ${getTotalTransaction("withdraw")}
+                    </h4>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
