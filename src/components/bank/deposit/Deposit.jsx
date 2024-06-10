@@ -4,6 +4,7 @@ import { generateRandomTransactions } from "../../../behindTheScene/api/bank";
 import SingleBarChart from "../../../const/widget_component_model/charts/SingleBarChart";
 import SingleLineChart from "../../../const/widget_component_model/charts/SingleLineChart";
 import TotalView from "../TotalView";
+import ChartComponent from "../Chart";
 
 export default class Deposit extends Component {
   render() {
@@ -38,6 +39,7 @@ export default class Deposit extends Component {
                 title="Total Deposits"
                 color="success"
                 icon="fa-solid fa-building-columns"
+                design="info-box-1"
               />
             </div>
             <div className="col-lg-6">
@@ -46,6 +48,7 @@ export default class Deposit extends Component {
                 title="Total Transactions"
                 color="primary"
                 icon="fa-solid fa-money-bill-trend-up"
+                design="info-box-1"
               />
             </div>
           </div>
@@ -75,6 +78,15 @@ export default class Deposit extends Component {
                 total={true}
               />
             </div>
+            <ChartComponent
+              dataYearly={value.bankhistory}
+              dataWeekly={value.bankhistory}
+              dataDaily={value.bankFullYearHistory[0].eachDaysAmount}
+              labelYearly={value.label}
+              labelWeekly={value.label}
+              labelDaily={value.label}
+              name={"Deposit"}
+            />
           </div>
         </div>
       </div>
