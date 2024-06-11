@@ -3,6 +3,7 @@ import profile from "../../assets/icons/profile.svg";
 import bank from "../../assets/icons/bank.svg";
 import wallet from "../../assets/icons/wallet.svg";
 import business from "../../assets/icons/business.svg";
+import Setting from "../../assets/icons/setting.svg";
 
 const RoutesPath = [
   {
@@ -82,21 +83,9 @@ const RoutesPath = [
     children: [
       {
         id: 50,
-        title: "Bank",
-        path: "/profile/bank",
-        icons: bank,
-      },
-      {
-        id: 51,
-        title: "Wallet",
-        path: "/profile/wallet",
-        icons: wallet,
-      },
-      {
-        id: 52,
-        title: "Edit profile",
-        path: "/profile/edit-profile",
-        icons: bank,
+        title: "Setting",
+        path: "/profile/setting",
+        icons: Setting,
       },
     ],
   },

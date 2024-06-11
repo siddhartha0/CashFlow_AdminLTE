@@ -13,13 +13,11 @@ import WalletLayout from "./pages/wallet/WalletLayout.jsx";
 import Business from "./pages/business/Business.jsx";
 import Bank from "./pages/bank/Bank.jsx";
 import Profile from "./pages/profile/Profile.jsx";
-import BankProfileDetails from "./pages/profile/BankProfileDetails.jsx";
-import WalletProfileDetails from "./pages/profile/WalletProfileDetails.jsx";
-import EditProfile from "./pages/profile/EditProfile.jsx";
 import ProfileLayout from "./pages/profile/ProfileLayout.jsx";
 import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
+import Setting from "./pages/profile/Setting.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -46,9 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/profile" element={<ProfileLayout />}>
             <Route index element={<Profile />} />
-            <Route path="bank" element={<BankProfileDetails />} />
-            <Route path="wallet" element={<WalletProfileDetails />} />
-            <Route path="edit-profile" element={<EditProfile />} />
+            <Route path="setting" element={<Setting />} />
           </Route>
         </Route>
       </Routes>
