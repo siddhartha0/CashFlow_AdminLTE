@@ -102,7 +102,7 @@ export default class DashBoard extends Component {
         >
           <div
             className=" d-flex justify-content-between"
-            // id="dashboard_header_ParentDiv"
+            id="dashboard_header_ParentDiv"
             // id="sortable"
           >
             <div
