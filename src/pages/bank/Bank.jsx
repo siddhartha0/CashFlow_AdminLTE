@@ -99,7 +99,7 @@ export default class Bank extends Component {
               <TransactionChart
                 transactions={transactions}
                 type="all"
-                title="% of Transfer"
+                title="Remarks"
               />
             </div>
           </div>
