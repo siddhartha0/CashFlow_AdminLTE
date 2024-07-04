@@ -1,34 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../utils/axios";
+import { useLogInMutation } from "../../slices/api/auth/AuthApi";
+import LocalData from "../../behindTheScene/helper/LocalData";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [err, setError] = useState(null);
   const navigate = useNavigate();
+
+  const [login] = useLogInMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
-
-    try {
-      const response = await axiosInstance.post("/user/login", {
-        email,
-        password,
-      });
-      if (response.status === 200) {
-        console.log("Login successful:");
-        localStorage.setItem("token", response.data.token);
+    await login({ email, password }).then((data) => {
+      if (data.error) {
+        setError(data.error.data.message);
+      }
+      if (data.data) {
+        LocalData.storeData("token", data.data.token);
         navigate("/dashboard");
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError(
-        error.response?.data?.message ||
-          "An error occurred. Please try again later."
-      );
-    }
+    });
   };
 
   return (
@@ -68,7 +62,7 @@ const LoginPage = () => {
               <Link to="/">Forget Password ?</Link>
             </div>
           </div>
-          {error && <div className="alert alert-danger">{error}</div>}
+          {err && <div className="alert alert-danger">{err}</div>}
           <button type="submit" className="btn btn-primary w-100">
             Login
           </button>

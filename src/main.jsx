@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App.jsx";
 import DashBoard from "./pages/dashboard/DashBoard.jsx";
@@ -22,7 +22,6 @@ import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
 import store from "./store/index.js";
 import { Provider } from "react-redux";
-import Test from "./Test.jsx";
 import HomeLayout from "./landingPage/pages/HomeLayout.jsx";
 import HomePage from "./landingPage/pages/HomePage.jsx";
 import "./index.css";
