@@ -163,4 +163,4 @@ class Bank extends Component {
   }
 }
 
-export default withQuery(Bank, ["users"], fetchUsers);
+export default Bank;
