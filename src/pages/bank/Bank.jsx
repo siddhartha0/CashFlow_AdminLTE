@@ -5,19 +5,73 @@ import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
+import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
+import axios from "axios";
 
-export default class Bank extends Component {
-  constructor() {
-    super();
+const transactions = generateRandomTransactions(10000);
+
+const fetchUsers = async () => {
+  const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
+  console.log(data);
+  return data;
+};
+
+class Bank extends Component {
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   transactions: JSON.parse(localStorage.getItem("bank") || []),
+    // };
   }
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
     });
+    // const getData = async () => {
+    //   const res = await fetch("http://localhost:3000/bank?pageNo=100");
+    //   const resJson = await res.json();
+    //   this.setState({ transactions: resJson });
+    //   // console.log(resJson);
+    // };
+    // getData();
+    // const { data, error, isLoading, isError } = this.props;
+    // if (!isLoading) {
+    //   this.setState({ transactions: data });
+    //   localStorage.setItem("bank", JSON.stringify(data));
+    // }
   }
-  render() {
-    const transactions = generateRandomTransactions(100);
 
+  render() {
+    // this.setState({ transactions: data });
+
+    // console.log("Data:", transactions);
+    // console.log("Error:", error);
+
+    // console.log("Backend Transaction:", transactions);
+    // console.log("Transaction:", transactions);
+
+    const calculateTotals = () => {
+      const { transactions } = this.state;
+      const totals = {};
+
+      transactions.forEach((transaction) => {
+        if (!totals[transaction.bank]) {
+          totals[transaction.bank] = {
+            deposit: 0,
+            withdraw: 0,
+            account: transaction.account,
+          };
+        }
+
+        if (transaction.status === "deposit") {
+          totals[transaction.bank].deposit += transaction.amount;
+        } else if (transaction.status === "withdraw") {
+          totals[transaction.bank].withdraw += transaction.amount;
+        }
+      });
+
+      this.setState({ totals });
+    };
     const totalList = [
       {
         data: "deposit",
@@ -45,8 +99,6 @@ export default class Bank extends Component {
       },
     ];
 
-    // console.log("Transactions: ", transactions);
-
     const getTotalTransaction = (status) => {
       let total = transactions
         .filter((transaction) => transaction.status === status)
@@ -56,10 +108,10 @@ export default class Bank extends Component {
     };
 
     return (
-      <div className="p-3">
+      <div className="bank p-3">
         <div className="row">
           {totalList.map((value, index) => (
-            <div className="col-lg-3">
+            <div className="col-lg-3" key={index}>
               <TotalView
                 data={getTotalTransaction(value.data)}
                 title={value.title}
@@ -70,12 +122,6 @@ export default class Bank extends Component {
               />
             </div>
           ))}
-          {/* <TotalView
-            data={transactions.length}
-            title="Total Transactions"
-            color="primary"
-            icon="fa-solid fa-money-bill-trend-up"
-          /> */}
         </div>
         <div className="row" id="sortable">
           <div className="col-lg-12">
@@ -116,3 +162,5 @@ export default class Bank extends Component {
     );
   }
 }
+
+export default Bank;

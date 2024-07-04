@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import App from "./App.jsx";
 import DashBoard from "./pages/dashboard/DashBoard.jsx";
 import Wallet from "./pages/wallet/Wallet.jsx";
 import Transfer from "./pages/bank/Transfer.jsx";
@@ -20,38 +19,54 @@ import ProfileLayout from "./pages/profile/ProfileLayout.jsx";
 import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
+import store from "./store/index.js";
+import { Provider } from "react-redux";
+import Test from "./Test.jsx";
+import HomeLayout from "./landingPage/pages/HomeLayout.jsx";
+import HomePage from "./landingPage/pages/HomePage.jsx";
+import "./index.css";
+import LoginPage from "./landingPage/pages/LoginPage.jsx";
+import SignupPage from "./landingPage/pages/SignupPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<DashBoard />} />
-
-          <Route path="/bank" element={<Banklayout />}>
-            <Route index element={<Bank />} />
-            <Route path="transfer" element={<Transfer />} />
-            <Route path="deposit" element={<DepositPage />} />
-            <Route path="withdraw" element={<Withdraw />} />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
           </Route>
 
-          <Route path="/wallet" element={<WalletLayout />}>
-            <Route index element={<Wallet />} />
-            <Route path="deposit" element={<WalletDeposit />} />
-            <Route path="transfer" element={<WalletTransfer />} />
-            <Route path="withdraw" element={<WalletWithdraw />} />
-          </Route>
+          <Route path="/dashboard" element={<App />}>
+            <Route index element={<DashBoard />} />
 
-          <Route path="/business" element={<Business />} />
+            <Route path="bank" element={<Banklayout />}>
+              <Route index element={<Bank />} />
+              <Route path="transfer" element={<Transfer />} />
+              <Route path="deposit" element={<DepositPage />} />
+              <Route path="withdraw" element={<Withdraw />} />
+            </Route>
 
-          <Route path="/profile" element={<ProfileLayout />}>
-            <Route index element={<Profile />} />
-            <Route path="bank" element={<BankProfileDetails />} />
-            <Route path="wallet" element={<WalletProfileDetails />} />
-            <Route path="edit-profile" element={<EditProfile />} />
+            <Route path="wallet" element={<WalletLayout />}>
+              <Route index element={<Wallet />} />
+              <Route path="deposit" element={<WalletDeposit />} />
+              <Route path="transfer" element={<WalletTransfer />} />
+              <Route path="withdraw" element={<WalletWithdraw />} />
+            </Route>
+
+            <Route path="business" element={<Business />} />
+
+            <Route path="profile" element={<ProfileLayout />}>
+              <Route index element={<Profile />} />
+              <Route path="bank" element={<BankProfileDetails />} />
+              <Route path="wallet" element={<WalletProfileDetails />} />
+              <Route path="edit-profile" element={<EditProfile />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

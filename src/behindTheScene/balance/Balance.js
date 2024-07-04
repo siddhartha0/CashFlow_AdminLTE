@@ -149,7 +149,8 @@ export default class Balance {
         monthsAmount.push(highestAmount);
       }
     }
-    console.log(monthsAmount);
+    return monthsAmount;
+    // console.log(monthsAmount);
   }
 
   calculateTrends() {
