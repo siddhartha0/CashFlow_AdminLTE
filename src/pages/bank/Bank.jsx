@@ -117,11 +117,8 @@ class Bank extends Component {
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
-                design="info-box"
-                change={getTransactionPercentageIncrease(
-                  transactions,
-                  value.data
-                )}
+                key={index}
+                design="info-box-2"
               />
             </div>
           ))}

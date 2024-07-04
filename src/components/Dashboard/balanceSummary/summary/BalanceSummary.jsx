@@ -49,9 +49,6 @@ export default class BalanceSummary extends Component {
             type="line"
             height={333}
             width={520}
-            // onClick={(data) => {
-            //   console.log(data);
-            // }}
           />
         </div>
         <div className="d-flex ">

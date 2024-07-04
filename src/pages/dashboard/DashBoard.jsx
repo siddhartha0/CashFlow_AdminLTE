@@ -8,9 +8,6 @@ import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import MoreOptionalAccordianModel from "../../const/widget_component_model/components/MoreOptionalAccordianModel";
-import Activities from "../../components/Dashboard/activities/Activities";
-// import { $ } from "jquery";
 
 export default class DashBoard extends Component {
   constructor() {
@@ -105,7 +102,7 @@ export default class DashBoard extends Component {
         >
           <div
             className=" d-flex justify-content-between"
-            // id="dashboard_header_ParentDiv"
+            id="dashboard_header_ParentDiv"
             // id="sortable"
           >
             <div
@@ -195,7 +192,12 @@ export default class DashBoard extends Component {
                 />
               </div>
               <div className=" container mb-2 mt-4 text-capitalize ">
-                <IncomeExpenseStats label={this.state.selectedPlatform} />
+                <IncomeExpenseStats
+                  label={this.state.selectedPlatform}
+                  bankOneMonthHistory={this.state.bankEachMonthHistory}
+                  walletOneMonthHistory={this.state.walletEachDayHistory}
+                  overAllSelected={this.state.overAllSelected}
+                />
               </div>
             </div>
 
@@ -226,11 +228,11 @@ export default class DashBoard extends Component {
           </section>
 
           <div className=" p-3 mt-3 connectedSortable" id="sortable">
-            <MoreOptionalAccordianModel title="Activities">
+            {/* <MoreOptionalAccordianModel title="Activities">
               <div className=" d-flex  flex-column   ">
                 <Activities />
               </div>
-            </MoreOptionalAccordianModel>
+            </MoreOptionalAccordianModel> */}
           </div>
         </div>
       </div>
