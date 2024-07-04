@@ -64,5 +64,5 @@ export function generateRandomTransactions(numTransactions) {
     transactions.push(transaction);
   }
 
-  return transactions;
+  http: return transactions;
 }
