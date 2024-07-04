@@ -1,5 +1,5 @@
-import { MainApi } from "./MainApi";
-import { Investment } from "../../const/Url";
+import { MainApi } from "../../MainApi";
+import { Investment } from "../../../../const/Url";
 
 const InvestmentApi = MainApi.injectEndpoints({
   endpoints: (builder) => ({

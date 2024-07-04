@@ -1,5 +1,5 @@
-import { wallet } from "../../const/Url";
-import { MainApi } from "./MainApi";
+import { wallet } from "../../../../const/Url";
+import { MainApi } from "../../MainApi";
 
 const ApiCollection = MainApi.injectEndpoints({
   endpoints: (builder) => ({

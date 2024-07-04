@@ -20,15 +20,16 @@ import ProfileLayout from "./pages/profile/ProfileLayout.jsx";
 import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
-import store from "../store/index.js";
+import store from "./store/index.js";
 import { Provider } from "react-redux";
+import Test from "./Test.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}>
+          {/* <Route path="/" element={<App />}>
             <Route index element={<DashBoard />} />
 
             <Route path="/bank" element={<Banklayout />}>
@@ -53,9 +54,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="wallet" element={<WalletProfileDetails />} />
               <Route path="edit-profile" element={<EditProfile />} />
             </Route>
-          </Route>
+          </Route> */}
+          <Route path="/" element={<Test />} />
         </Routes>
       </BrowserRouter>
-    </React.StrictMode>
-  </Provider>
+    </Provider>
+  </React.StrictMode>
 );
