@@ -1,59 +1,35 @@
 import { Component } from "react";
+import TotalView from "../../components/bank/TotalView";
 import ReactApexChart from "react-apexcharts";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
-import DynamicTable from "../../const/widget_component_model/DynamicTable";
+import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
 import WithdrawBarChart from "../../const/widget_component_model/WithdrawBarChart";
-import WithdrawPieChart from "../../const/widget_component_model/WithdrawPieChart";
+import TransactionChart from "../../components/bank/TransactionChart";
 
 export default class Withdraw extends Component {
-  // constructor() {
-  //   super();
-  //   this.value = JSON.parse(localStorage.getItem("dashboard"));
-
-  // this.state = {
-  //   series: [
-  //     {
-  //       name: "Deposit",
-  //       data: this.value.bankhistory,
-  //     },
-  //     {
-  //       name: "Withdraw",
-  //       data: this.value.walletHistory,
-  //     },
-  //   ],
-
-  // options: {
-  // chart: {
-  //   height: 350,
-  //   type: "line",
-  //   zoom: {
-  //     enabled: false,
-  //   },
-  // },
-  // dataLabels: {
-  //   enabled: false,
-  // },
-  // stroke: {
-  //   curve: "straight",
-  // },
-  // title: {
-  //   text: "Withdraw on monthly basis",
-  //   align: "center",
-  // },
-  // grid: {
-  //   row: {
-  //     colors: ["#f3f3f3", "transparent"],
-  //     opacity: 0.5,
-  //   },
-  // },
-  // xaxis: {
-  //   categories: this.value.label,
-  // },
-  // },
-  // };
-  // }
   render() {
     const transactions = generateRandomTransactions(15);
+
+    const totalList = [
+      {
+        data: "withdraw",
+        title: "Total Withdraw",
+        color: "danger",
+        icon: "fa-solid fa-arrow-up-from-bracket",
+      },
+      {
+        data: "transfer",
+        title: "Total Withdraw This Month",
+        color: "info",
+        icon: "fa-solid fa-money-bill-transfer",
+      },
+      {
+        data: "deposit",
+        title: "Total Withdraw Last Month",
+        color: "warning",
+        icon: "fa fa-heart",
+      },
+    ];
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -78,50 +54,36 @@ export default class Withdraw extends Component {
     return (
       <div>
         <div className="row">
-          <div class="info-box mb-3 mr-3 bg-danger col-lg-3">
-            <span class="info-box-icon">
-              <i class="far fa-comment"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Withdraw</span>
-              <span className="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
+          {totalList.map((value, index) => (
+            <div className="col-lg-3">
+              <TotalView
+                data={getTotalTransaction(value.data)}
+                title={value.title}
+                color={value.color}
+                icon={value.icon}
+                key={index}
+                design="small-box"
+              />
             </div>
-          </div>
-
-          <div class="info-box mb-3 bg-warning col-lg-3">
-            <span class="info-box-icon">
-              <i class="far fa-comment"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Withdraw This Month</span>
-              <span className="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
-            </div>
-          </div>
-          <div class="info-box mb-3 bg-success col-lg-3">
-            <span class="info-box-icon">
-              <i class="far fa-comment"></i>
-            </span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Withdraw Last Month</span>
-              <span class="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
-        <div className="col-lg-9">
-          <div className="custom-card p-3">
-            <WithdrawBarChart />
-          </div>
-          <div className="custom-card p-3">
-            <WithdrawPieChart />
+        <div className="col-lg-12">
+          <div className="custom-card">
+            <div className="card-header bg-info">
+              <h3>Withdraw Bar Chart</h3>
+            </div>
+            <div className="custom-card">
+              <WithdrawBarChart />
+            </div>
           </div>
           <div className="custom-card">
-            <div className="card-header">
+            <div className="card-header bg-danger">
+              <h3>Withdraw Pie Chart</h3>
+            </div>
+            <TransactionChart transactions={transactions} type="withdraw" />
+          </div>
+          <div className="custom-card">
+            <div className="card-header bg-success row">
               <h3>Total Withdraws</h3>
             </div>
             <div className="card-body p-0">
