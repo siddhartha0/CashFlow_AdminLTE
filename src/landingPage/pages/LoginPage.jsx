@@ -4,6 +4,7 @@ import { useLogInMutation } from "../../slices/api/auth/AuthApi";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../slices/slice/auth/AuthSlice";
 import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,14 +13,15 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [login, { isLoading }] = useLogInMutation();
+  const [login, { isLoading, error }] = useLogInMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+
     await login({ email, password }).then((data) => {
       if (data.error) {
-        setError(data.error.data.message);
+        setError(data.error?.data?.message);
       }
       if (data.data) {
         const toStore = {
@@ -29,11 +31,15 @@ const LoginPage = () => {
         dispatch(logIn(toStore));
         navigate("/dashboard");
       }
+      if (error?.status === "FETCH_ERROR") {
+        toast.error("Couldn't connect to server!!! Please try again later");
+      }
     });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <Toaster />
       {isLoading && <LoaderSpinner />}
 
       <div
