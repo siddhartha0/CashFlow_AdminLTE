@@ -8,10 +8,6 @@ export default class WithdrawBarChart extends Component {
 
     this.state = {
       series: [
-        // {
-        //   name: "Deposit",
-        //   data: this.value.bankhistory,
-        // },
         {
           name: "Withdraw",
           data: this.value.bankhistory,
@@ -31,13 +27,6 @@ export default class WithdrawBarChart extends Component {
         },
         stroke: {
           curve: "straight",
-        },
-        title: {
-          text: "Withdraw on Monthly Basis",
-          align: "center",
-          style: {
-            fontSize: "25px",
-          },
         },
         grid: {
           row: {
