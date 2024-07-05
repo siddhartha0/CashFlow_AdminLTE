@@ -1,16 +1,18 @@
-import { Component } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import LocalData from "../../behindTheScene/helper/LocalData";
+import { useEffect } from "react";
 
-export default class HomeLayout extends Component {
-  constructor() {
-    super();
-  }
-
-  render() {
-    return (
-      <section className="landing-page">
-        <Outlet />
-      </section>
-    );
-  }
+export default function HomeLayout() {
+  const navigate = useNavigate();
+  const token = LocalData.getStorageData("token");
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
+  return (
+    <section className="landing-page">
+      <Outlet />
+    </section>
+  );
 }
