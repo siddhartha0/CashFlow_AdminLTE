@@ -10,7 +10,6 @@ export default function HomeLayout() {
       navigate("/dashboard");
     }
   }, []);
-  console.log(token);
   return (
     <section className="landing-page">
       <Outlet />

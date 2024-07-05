@@ -1,6 +1,6 @@
 export default class LocalData {
   static storeData(key, data) {
-    return localStorage.setItem(key, JSON.stringify(data));
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
   static getStorageData(key) {

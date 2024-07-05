@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogInMutation } from "../../slices/api/auth/AuthApi";
-import LocalData from "../../behindTheScene/helper/LocalData";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../slices/slice/auth/AuthSlice";
+import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [login] = useLogInMutation();
+  const [login, { isLoading }] = useLogInMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,7 +22,11 @@ const LoginPage = () => {
         setError(data.error.data.message);
       }
       if (data.data) {
-        LocalData.storeData("token", data.data.token);
+        const toStore = {
+          user: data.data.userData,
+          token: data?.data?.token,
+        };
+        dispatch(logIn(toStore));
         navigate("/dashboard");
       }
     });
@@ -27,6 +34,8 @@ const LoginPage = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      {isLoading && <LoaderSpinner />}
+
       <div
         className="card shadow p-4"
         style={{ maxWidth: "350px", width: "100%" }}

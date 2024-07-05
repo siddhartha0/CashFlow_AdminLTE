@@ -4,6 +4,7 @@ import BalanceInfo from "../../components/profile/BalanceInfo";
 import UserWalletAccounts from "../../components/profile/UserWalletAccounts";
 import SavingGoals from "../../components/profile/SavingGoals";
 import UserBankAccounts from "../../components/profile/UserBankAccounts"; // Assuming the path is correct
+import UserInformation from "../../components/profile/UserDetail";
 
 export default class Profile extends Component {
   render() {
@@ -38,9 +39,8 @@ export default class Profile extends Component {
               </div>
               <div className="row mb-4 align-items-end">
                 <div className="col-md-5">
-                  <UserDetail />
+                  <UserInformation />
                 </div>
-                
               </div>
               <div className="row mb-4">
                 <div className="col-md-6">
