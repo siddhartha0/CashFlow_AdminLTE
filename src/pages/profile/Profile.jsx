@@ -1,5 +1,4 @@
 import { Component } from "react";
-import UserDetail from "../../components/profile/UserDetail";
 import BalanceInfo from "../../components/profile/BalanceInfo";
 import UserWalletAccounts from "../../components/profile/UserWalletAccounts";
 import SavingGoals from "../../components/profile/SavingGoals";
@@ -10,7 +9,7 @@ export default class Profile extends Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
-        <div className="container my-4">
+        <div className="container">
           <section className="content-header">
             <div className="container-fluid">
               <div className="row mb-2">
