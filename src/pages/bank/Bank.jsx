@@ -48,7 +48,7 @@ export default class Bank extends Component {
       // },
     ];
 
-    // console.log("Transactions: ", transactions);
+    console.log("Transactions: ", transactions);
 
     const getTotalTransaction = (status) => {
       let total = transactions

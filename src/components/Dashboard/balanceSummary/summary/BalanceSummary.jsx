@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import MonthSelection from "../header/MonthSelection";
 import PropTypes from "prop-types";
 import LineChartProps from "./LineChartProps";
+
 export default class BalanceSummary extends Component {
   value = {};
 
@@ -34,11 +35,16 @@ export default class BalanceSummary extends Component {
     return (
       <div>
         <div
-          id="chart"
-          style={{
-            marginLeft: "-15px",
-          }}
+          className="d-flex position-absolute"
+          style={{ top: "1px", right: " 37px", zIndex: "1" }}
         >
+          <MonthSelection
+            months={this.value.label}
+            selectMonth={selectMonth}
+            currentId={currentId}
+          />
+        </div>
+        <div id="chart" className="w-100">
           <ReactApexChart
             options={lineChartProps.optionGen(overAllSelected, dayslabel)}
             series={lineChartProps.dataGen(
@@ -46,19 +52,9 @@ export default class BalanceSummary extends Component {
               bankEachDaysAmount,
               walletEachDayAmount
             )}
-            type="line"
-            height={333}
-            width={520}
-            // onClick={(data) => {
-            //   console.log(data);
-            // }}
-          />
-        </div>
-        <div className="d-flex ">
-          <MonthSelection
-            months={this.value.label}
-            selectMonth={selectMonth}
-            currentId={currentId}
+            type={overAllSelected ? "bar" : "line"}
+            height={433}
+            width="100%"
           />
         </div>
         <div id="html-dist"></div>

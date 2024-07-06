@@ -27,7 +27,7 @@ export default class MonthSelection extends Component {
   }
 
   render() {
-    const { selectMonth, currentId } = this.props;
+    const { selectMonth } = this.props;
     return (
       <div
         className="d-flex card-body"
@@ -38,24 +38,17 @@ export default class MonthSelection extends Component {
           scrollbarWidth: "none",
         }}
       >
-        {this.durationHeader?.map((month, i) => (
-          <button
-            className={`page-item  
-            border-0 rounded mr-4 text-white ${
-              currentId === i ? "bg-primary" : "bg-white"
-            }
-          `}
-            style={{
-              padding: "5px",
-            }}
-            key={month + i}
-            onClick={() => {
-              selectMonth(i);
-            }}
-          >
-            {month.month}
-          </button>
-        ))}
+        <select
+          onChange={(e) => {
+            selectMonth(parseInt(e.target.value));
+          }}
+        >
+          {this.durationHeader?.map((month, i) => (
+            <option key={i} value={i}>
+              {month.month}
+            </option>
+          ))}
+        </select>
       </div>
     );
   }
