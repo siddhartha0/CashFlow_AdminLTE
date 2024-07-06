@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../utils/axios";
+import { useSignUpMutation } from "../../slices/api/auth/AuthApi";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +14,8 @@ const SignupPage = () => {
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const [createUser] = useSignUpMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,25 +37,21 @@ const SignupPage = () => {
       return;
     }
 
-    try {
-      const response = await axiosInstance.post("/user/signup", {
-        username,
-        email,
-        contact,
-        password,
-        address,
-      });
-      if (response) {
-        console.log("Signup successful:", response.data);
+    await createUser({
+      username,
+      email,
+      contact,
+      password,
+      address,
+    }).then((res) => {
+      console.log(res);
+      if (res.error) {
+        setError(res.error.data.message);
+      }
+      if (res.data) {
         navigate("/login");
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setError(
-        error.response?.data?.message ||
-          "An error occurred. Please try again later."
-      );
-    }
+    });
   };
 
   return (

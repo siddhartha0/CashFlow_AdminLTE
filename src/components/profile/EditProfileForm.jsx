@@ -1,86 +1,104 @@
-import { Component } from 'react';
+import { Component, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  updateCredentials,
+  userDetails,
+} from "../../slices/slice/auth/AuthSlice";
+import { useUpdateUserMutation } from "../../slices/api/user/UserApi";
+import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
 
-export default class ProfileForm extends Component {
-  state = {
-    userProfile: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      address: '',
-      gender: '',
-      dateOfBirth: '',
-    },
+export default function UpdateProfileForm() {
+  const details = useSelector(userDetails);
+
+  const [userProfile, setUserProfile] = useState({
+    userName: details?.username,
+    email: details?.email,
+    contact: details?.contact,
+    address: details?.address,
+    gender: details?.gender ?? "male",
+    dateOfBirth: details?.dateOfBirth ?? "1990-01-01",
+  });
+
+  const [updateUser, { isLoading, error }] = useUpdateUserMutation();
+  const dispatch = useDispatch();
+  const [isChangesSaved, setIsChangesSave] = useState(false);
+
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setUserProfile({ ...userProfile, [name]: value });
   };
 
-  componentDidMount() {
-    this.setState({
-      userProfile: {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        phoneNumber: '9876543210',
-        address: '123 Main St, City, Country',
-        gender: 'Male',
-        dateOfBirth: '1990-01-01',
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const id = Number(details?.id);
+    const newUpdatedValue = {
+      id: id,
+      username: userProfile.userName,
+      email: userProfile?.email,
+      contact: userProfile?.contact,
+      address: userProfile?.address,
+      gender: userProfile?.gender,
+      dateOfBirth: userProfile?.dateOfBirth,
+    };
+    console.log("Updated Profile:", newUpdatedValue);
+    await updateUser({ id, newUpdatedValue }).then((resp) => {
+      if (resp.error) {
+        console.log(resp.error);
+      }
+      if (resp.data) {
+        console.log(resp.data);
+        setIsChangesSave(true);
+        dispatch(updateCredentials(newUpdatedValue));
       }
     });
-  }
-
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    this.setState(prevState => ({
-      userProfile: {
-        ...prevState.userProfile,
-        [name]: value
-      },
-      isChangesSaved: false, // Reset the changes saved state when user modifies the form
-    }));
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Updated Profile:', this.state.userProfile);
-    this.setState({
-      isChangesSaved: true,
-    });
-  };
+  return (
+    <ProfileForm
+      userProfile={userProfile}
+      handleInputChange={(e) => handleInputChange(e)}
+      handleSubmit={(e) => handleSubmit(e)}
+      isChangesSaved={isChangesSaved}
+      isLoading={isLoading}
+    />
+  );
+}
 
+class ProfileForm extends Component {
   render() {
-    const { userProfile, isChangesSaved } = this.state;
+    const {
+      userProfile,
+      handleInputChange,
+      handleSubmit,
+      isChangesSaved,
+      isLoading,
+    } = this.props;
 
     return (
       <div className="card">
+        {isLoading && <LoaderSpinner />}
         <div className="card-header">
           <h3 className="card-title">Edit Profile</h3>
         </div>
         <div className="card-body">
-          {isChangesSaved && ( 
+          {isChangesSaved && (
             <div className="alert alert-success" role="alert">
               Changes saved successfully!
             </div>
           )}
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>First Name</label>
               <input
                 type="text"
                 className="form-control"
-                name="firstName"
-                value={userProfile.firstName}
-                onChange={this.handleInputChange}
+                name="userName"
+                value={userProfile?.userName}
+                onChange={handleInputChange}
               />
             </div>
-            <div className="form-group">
-              <label>Last Name</label>
-              <input
-                type="text"
-                className="form-control"
-                name="lastName"
-                value={userProfile.lastName}
-                onChange={this.handleInputChange}
-              />
-            </div>
+
             <div className="form-group">
               <label>Email</label>
               <input
@@ -88,7 +106,7 @@ export default class ProfileForm extends Component {
                 className="form-control"
                 name="email"
                 value={userProfile.email}
-                onChange={this.handleInputChange}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -96,9 +114,9 @@ export default class ProfileForm extends Component {
               <input
                 type="tel"
                 className="form-control"
-                name="phoneNumber"
-                value={userProfile.phoneNumber}
-                onChange={this.handleInputChange}
+                name="contact"
+                value={userProfile.contact}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -108,7 +126,7 @@ export default class ProfileForm extends Component {
                 className="form-control"
                 name="address"
                 value={userProfile.address}
-                onChange={this.handleInputChange}
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
@@ -117,7 +135,7 @@ export default class ProfileForm extends Component {
                 className="form-control"
                 name="gender"
                 value={userProfile.gender}
-                onChange={this.handleInputChange}
+                onChange={handleInputChange}
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -131,13 +149,17 @@ export default class ProfileForm extends Component {
                 className="form-control"
                 name="dateOfBirth"
                 value={userProfile.dateOfBirth}
-                onChange={this.handleInputChange}
+                onChange={handleInputChange}
               />
             </div>
-            <button type="submit" className="btn btn-primary">Save Changes</button>
+            <button type="submit" className="btn btn-primary">
+              Save Changes
+            </button>
           </form>
         </div>
       </div>
     );
   }
 }
+
+connect()(ProfileForm);

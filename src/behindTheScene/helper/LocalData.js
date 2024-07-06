@@ -1,4 +1,4 @@
-class LocalData {
+export default class LocalData {
   static storeData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
   }
@@ -21,5 +21,3 @@ class LocalData {
     localStorage.removeItem(key);
   }
 }
-
-export default new LocalData();

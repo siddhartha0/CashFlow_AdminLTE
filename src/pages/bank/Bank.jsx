@@ -6,6 +6,7 @@ import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
 import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
+// import withQuery from "../../components/bank/withQuery";
 import axios from "axios";
 
 const transactions = generateRandomTransactions(10000);

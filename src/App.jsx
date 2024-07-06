@@ -1,12 +1,24 @@
-import { Component } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Component, useEffect } from "react";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import CashFlow from "./behindTheScene/CashFlow";
 import Header from "./components/common/header/Header";
 import NewSideBar from "./components/common/sidebar/NewSideBar";
+import { useSelector } from "react-redux";
+import { userToken } from "./slices/slice/auth/AuthSlice";
 
-export default class App extends Component {
+export default function App() {
+  const token = useSelector(userToken);
+  const nav = useNavigate();
+  useEffect(() => {
+    if (!token) {
+      nav("/");
+    }
+  }, [token, nav]);
+  return <AppWrapped />;
+}
+
+class AppWrapped extends Component {
   constructor() {
     super();
     this.getData();

@@ -1,15 +1,15 @@
 import { Component } from "react";
-import UserDetail from "../../components/profile/UserDetail";
 import BalanceInfo from "../../components/profile/BalanceInfo";
 import UserWalletAccounts from "../../components/profile/UserWalletAccounts";
 import SavingGoals from "../../components/profile/SavingGoals";
 import UserBankAccounts from "../../components/profile/UserBankAccounts"; // Assuming the path is correct
+import UserInformation from "../../components/profile/UserDetail";
 
 export default class Profile extends Component {
   render() {
     return (
       <div className="d-flex justify-content-center">
-        <div className="container my-4">
+        <div className="container">
           <section className="content-header">
             <div className="container-fluid">
               <div className="row mb-2">
@@ -38,9 +38,8 @@ export default class Profile extends Component {
               </div>
               <div className="row mb-4 align-items-end">
                 <div className="col-md-5">
-                  <UserDetail />
+                  <UserInformation />
                 </div>
-                
               </div>
               <div className="row mb-4">
                 <div className="col-md-6">
