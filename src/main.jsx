@@ -7,6 +7,8 @@ import Wallet from "./pages/wallet/Wallet.jsx";
 import Transfer from "./pages/bank/Transfer.jsx";
 import DepositPage from "./pages/bank/DepositPage.jsx";
 import Withdraw from "./pages/bank/Withdraw.jsx";
+import CreateWithdraw from "./pages/bank/CreateWithdraw.jsx";
+import CreateDeposit from "./pages/bank/CreateDeposit.jsx";
 import Banklayout from "./pages/bank/Banklayout.jsx";
 import WalletLayout from "./pages/wallet/WalletLayout.jsx";
 import Business from "./pages/business/Business.jsx";
@@ -45,7 +47,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route index element={<Bank />} />
               <Route path="transfer" element={<Transfer />} />
               <Route path="deposit" element={<DepositPage />} />
+              <Route path="deposit/new" element={<CreateDeposit />} />
               <Route path="withdraw" element={<Withdraw />} />
+              <Route path="withdraw/new" element={<CreateWithdraw />} />
             </Route>
 
             <Route path="wallet" element={<WalletLayout />}>

@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 import { userToken } from "./slices/slice/auth/AuthSlice";
 
 export default function App() {
-  const token = useSelector(userToken);
-  const nav = useNavigate();
-  useEffect(() => {
-    if (!token) {
-      nav("/");
-    }
-  }, [token, nav]);
+  // const token = useSelector(userToken);
+  // const nav = useNavigate();
+  // useEffect(() => {
+  //   if (!token) {
+  //     nav("/");
+  //   }
+  // }, [token, nav]);
   return <AppWrapped />;
 }
 
@@ -36,9 +36,6 @@ class AppWrapped extends Component {
         <div className="content-wrapper p-3">
           <Outlet />
         </div>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
         {/* <Footer /> */}
       </div>
     );
