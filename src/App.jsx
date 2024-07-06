@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { Outlet } from "react-router-dom";
 import CashFlow from "./behindTheScene/CashFlow";
@@ -23,6 +24,9 @@ export default class App extends Component {
         <div className="content-wrapper p-3">
           <Outlet />
         </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
         {/* <Footer /> */}
       </div>
     );
