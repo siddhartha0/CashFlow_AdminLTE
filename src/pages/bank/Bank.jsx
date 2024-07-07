@@ -7,6 +7,7 @@ import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
 import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
 import axios from "axios";
+import CalendarPage from "../../components/bank/CalendarPage";
 
 const transactions = generateRandomTransactions(10000);
 
@@ -116,10 +117,13 @@ export default class Bank extends Component {
                 color={value.color}
                 icon={value.icon}
                 key={index}
-                design="info-box-2"
+                design="info-box"
               />
             </div>
           ))}
+        </div>
+        <div className="p-3">
+          <CalendarPage />
         </div>
         <div className="row" id="sortable">
           <div className="col-lg-12">

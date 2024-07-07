@@ -1,0 +1,52 @@
+/* src/CalendarPage.css */
+.calendar-page {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calendar-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-calendar {
+  border: none;
+  width: 100%;
+}
+
+.transactions {
+  margin-top: 20px;
+}
+
+.deposit {
+  color: blue;
+}
+
+.withdraw {
+  color: red;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.event {
+  font-size: 0.75em;
+}
+
+.event.deposit {
+  color: green;
+}
+
+.event.withdraw {
+  color: red;
+}
