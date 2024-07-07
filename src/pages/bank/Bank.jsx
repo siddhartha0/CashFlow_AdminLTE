@@ -17,7 +17,7 @@ const fetchUsers = async () => {
   return data;
 };
 
-class Bank extends Component {
+export default class Bank extends Component {
   constructor(props) {
     super(props);
     // this.state = {
@@ -43,8 +43,6 @@ class Bank extends Component {
   }
 
   render() {
-    // this.setState({ transactions: data });
-
     // console.log("Data:", transactions);
     // console.log("Error:", error);
 
@@ -163,5 +161,3 @@ class Bank extends Component {
     );
   }
 }
-
-export default Bank;
