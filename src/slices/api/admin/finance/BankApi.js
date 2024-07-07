@@ -1,5 +1,6 @@
 import { MainApi } from "../../MainApi";
 import { Bank } from "../../../../const/Url";
+import LocalData from "../../../../behindTheScene/helper/LocalData";
 
 const BankApi = MainApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -24,7 +25,7 @@ const BankApi = MainApi.injectEndpoints({
       query: () => ({
         url: `${Bank}/getAllBank`,
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ4aW51IiwiZW1haWwiOiJ4aW51QGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcyMDA2NzY0NSwiZXhwIjoxNzIwMTU0MDQ1fQ.inV_jh_J9tY3tbUPZbAvm56M8maigR17qRHplbJ5a5M`,
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
       }),
     }),

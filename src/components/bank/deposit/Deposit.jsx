@@ -4,6 +4,7 @@ import { generateRandomTransactions } from "../../../behindTheScene/api/bank";
 import SingleBarChart from "../../../const/widget_component_model/charts/SingleBarChart";
 import SingleLineChart from "../../../const/widget_component_model/charts/SingleLineChart";
 import TotalView from "../TotalView";
+import { Link } from "react-router-dom";
 
 export default class Deposit extends Component {
   render() {
@@ -30,6 +31,12 @@ export default class Deposit extends Component {
 
     return (
       <div className="container-fluid">
+        <div className="mb-3">
+          <Link to="/dashboard/bank/deposit/new" className="btn btn-primary">
+            Create Deposit
+          </Link>
+        </div>
+
         <div className="w-100">
           <div className="d-flex ">
             <div className="col-lg-6">

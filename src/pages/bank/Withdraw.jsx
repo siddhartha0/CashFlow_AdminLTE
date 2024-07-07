@@ -1,57 +1,36 @@
 import { Component } from "react";
+import TotalView from "../../components/bank/TotalView";
 import ReactApexChart from "react-apexcharts";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
+import WithdrawBarChart from "../../const/widget_component_model/WithdrawBarChart";
+import TransactionChart from "../../components/bank/TransactionChart";
+import { Link } from "react-router-dom";
 
 export default class Withdraw extends Component {
-  constructor() {
-    super();
-    this.value = JSON.parse(localStorage.getItem("dashboard"));
-
-    this.state = {
-      series: [
-        {
-          name: "Deposit",
-          data: this.value.bankhistory,
-        },
-        {
-          name: "Withdraw",
-          data: this.value.walletHistory,
-        },
-      ],
-
-      options: {
-        chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: false,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "straight",
-        },
-        title: {
-          text: "Balance Summary",
-          align: "left",
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"],
-            opacity: 0.5,
-          },
-        },
-        xaxis: {
-          categories: this.value.label,
-        },
-      },
-    };
-  }
   render() {
     const transactions = generateRandomTransactions(15);
+
+    const totalList = [
+      {
+        data: "withdraw",
+        title: "Total Withdraw",
+        color: "danger",
+        icon: "fa-solid fa-arrow-up-from-bracket",
+      },
+      {
+        data: "transfer",
+        title: "Total Withdraw This Month",
+        color: "info",
+        icon: "fa-solid fa-money-bill-transfer",
+      },
+      {
+        data: "deposit",
+        title: "Total Withdraw Last Month",
+        color: "warning",
+        icon: "fa fa-heart",
+      },
+    ];
 
     const getTotalTransaction = (status) => {
       let total = transactions
@@ -75,105 +54,51 @@ export default class Withdraw extends Component {
 
     return (
       <div>
+        <div className="col-lg-12">
+          <Link to="/dashboard/bank/withdraw/new" className="btn btn-primary">
+            Create Withdraw
+          </Link>
+        </div>
+
         <div className="row">
-          <div className="info-box mb-3 mr-3 bg-danger col-lg-3">
-            <span className="info-box-icon">
-              <i className="far fa-comment"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Withdraw</span>
-              <span className="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
+          {totalList.map((value, index) => (
+            <div className="col-lg-3">
+              <TotalView
+                data={getTotalTransaction(value.data)}
+                title={value.title}
+                color={value.color}
+                icon={value.icon}
+                key={index}
+                design="small-box"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="col-lg-12">
+          <div className="custom-card">
+            <div className="card-header bg-info">
+              <h3>Withdraw Bar Chart</h3>
+            </div>
+            <div className="custom-card">
+              <WithdrawBarChart />
             </div>
           </div>
-
-          <div className="info-box mb-3 bg-warning col-lg-3">
-            <span className="info-box-icon">
-              <i className="far fa-comment"></i>
-            </span>
-            <div className="info-box-content">
-              <span className="info-box-text">Total Withdraw This Month</span>
-              <span className="info-box-number">
-                {getTotalTransaction("withdraw")}
-              </span>
+          <div className="custom-card">
+            <div className="card-header bg-danger">
+              <h3>Withdraw Pie Chart</h3>
+            </div>
+            <TransactionChart transactions={transactions} type="withdraw" />
+          </div>
+          <div className="custom-card">
+            <div className="card-header bg-success row">
+              <h3>Total Withdraws</h3>
+            </div>
+            <div className="card-body p-0">
+              <DynamicTable data={filteredTransactions} headers={headers} />
             </div>
           </div>
-        </div>
-
-        <div className="col-lg-9">
-          <div className="card p-3">
-            <ReactApexChart
-              options={this.state.options}
-              series={this.state.series}
-              type="bar"
-              height={420}
-            />
-          </div>
-        </div>
-
-        {/* <div className="custom-card">
-          <div className="card-header">
-            <h3 className="card-title mt-2">{withdraw}</h3>
-            <div className="card-tools">
-              <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                <label
-                  className={`btn btn-secondary ${
-                    selectedOption === "option1" ? "active" : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="options"
-                    id="option1"
-                    autoComplete="off"
-                    checked={selectedOption === "option1"}
-                    onChange={this.handleOptionChange}
-                  />
-                  Today
-                </label>
-                <label
-                  className={`btn btn-secondary ${
-                    selectedOption === "option2" ? "active" : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="options"
-                    id="option2"
-                    autoComplete="off"
-                    checked={selectedOption === "option2"}
-                    onChange={this.handleOptionChange}
-                  />
-                  Yesterday
-                </label>
-              </div>
-            </div>
-          </div> */}
-        <div className="card-header">
-          <ul className="nav nav-pills card-header-pills">
-            <li className="nav-item">
-              <a className="nav-link active" href="#">
-                Active
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Link
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link disabled" href="#" aria-disabled="true">
-                Disabled
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div className="card-body p-0">
-          <DynamicTable data={filteredTransactions} headers={headers} />
         </div>
       </div>
-      // </div>
     );
   }
 }
