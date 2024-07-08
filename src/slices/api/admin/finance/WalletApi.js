@@ -1,25 +1,35 @@
+import LocalData from "../../../../behindTheScene/helper/LocalData";
 import { wallet } from "../../../../const/Url";
 import { MainApi } from "../../MainApi";
 
-const ApiCollection = MainApi.injectEndpoints({
+const WalletApi = MainApi.injectEndpoints({
   endpoints: (builder) => ({
     createWallet: builder.mutation({
       query: (data) => ({
         url: `${wallet}`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
       }),
     }),
 
     getWalletById: builder.query({
       query: (id) => ({
         url: `${wallet}/${id}`,
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
       }),
     }),
 
     getAllWallet: builder.query({
       query: () => ({
         url: `${wallet}/getAllWallet`,
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
       }),
     }),
 
@@ -28,6 +38,9 @@ const ApiCollection = MainApi.injectEndpoints({
         method: "PUT",
         body: data,
         url: `${wallet}/${id}`,
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
       }),
     }),
 
@@ -35,6 +48,9 @@ const ApiCollection = MainApi.injectEndpoints({
       query: (id) => ({
         method: "DELETE",
         url: `${wallet}/${id}`,
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
       }),
     }),
   }),
@@ -46,4 +62,4 @@ export const {
   useGetAllWalletQuery,
   useGetWalletByIdQuery,
   useUpdateWalletMutation,
-} = ApiCollection;
+} = WalletApi;

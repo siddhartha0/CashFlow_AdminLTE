@@ -6,6 +6,7 @@ import {
 } from "../../slices/slice/auth/AuthSlice";
 import { useUpdateUserMutation } from "../../slices/api/user/UserApi";
 import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
+import PropTypes from "prop-types";
 
 export default function UpdateProfileForm() {
   const details = useSelector(userDetails);
@@ -19,7 +20,7 @@ export default function UpdateProfileForm() {
     dateOfBirth: details?.dateOfBirth ?? "1990-01-01",
   });
 
-  const [updateUser, { isLoading, error }] = useUpdateUserMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
   const dispatch = useDispatch();
   const [isChangesSaved, setIsChangesSave] = useState(false);
 
@@ -66,6 +67,14 @@ export default function UpdateProfileForm() {
 }
 
 class ProfileForm extends Component {
+  static propTypes = {
+    userProfile: PropTypes.object,
+    handleInputChange: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    isChangesSaved: PropTypes.bool,
+    isLoading: PropTypes.bool,
+  };
+
   render() {
     const {
       userProfile,
