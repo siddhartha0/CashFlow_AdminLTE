@@ -1,37 +1,87 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
 import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
-import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
+import PropTypes from "prop-types";
 // import withQuery from "../../components/bank/withQuery";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
+import {
+  useGetDepositOfUserBankByIdQuery,
+  useGetWithdrawsOfUserBankByIdQuery,
+} from "../../slices/api/transaction/TransactionApi";
 
 const transactions = generateRandomTransactions(10000);
 
-const fetchUsers = async () => {
-  const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
-  console.log(data);
-  return data;
-};
+// const fetchUsers = async () => {
+//   const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
+//   console.log(data);
+//   return data;
+// };
 
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
+  const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
+  const [bankDepositHistory, setBankDepositHistory] = useState();
 
-  return <BankWrapped userbank={userbank} />;
+  const { data: depositHistory, isLoading: depositLoading } =
+    useGetDepositOfUserBankByIdQuery(getSelectedBank?.id);
+  console.log(depositHistory.entities);
+
+  const { data: withdrawHistory, isLoading: withdrawLoading } =
+    useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
+  const selectBank = (bank = userbank[0]) => {
+    setSelectedBank(bank);
+    let depositsData = depositHistory.entities;
+    console.log(depositsData);
+    const storeBoth = {
+      bankName: bank.bankName,
+      accountId: bank.accountId,
+      currentAmount: bank.currentAmount,
+    };
+    let bank_and_deposit_data = [];
+
+    depositsData?.map((data) => {
+      const mix = {
+        ...data,
+        ...storeBoth,
+      };
+      bank_and_deposit_data.push(mix);
+    });
+    console.log(bank_and_deposit_data);
+    setBankDepositHistory(bank_and_deposit_data);
+  };
+
+  return (
+    <BankWrapped
+      userbank={userbank}
+      selectBank={selectBank}
+      depositHistory={depositHistory ?? null}
+      depositLoading={depositLoading}
+      withdrawHistory={withdrawHistory ?? null}
+      withdrawLoading={withdrawLoading}
+      getSelectedBank={getSelectedBank}
+      bankDepositHistory={bankDepositHistory}
+      // getSelectedBank={getSelectedBank}
+    />
+  );
 }
 
 class BankWrapped extends Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   transactions: JSON.parse(localStorage.getItem("bank") || []),
-    // };
-  }
+  static propTypes = {
+    userbank: PropTypes.object,
+    selectBank: PropTypes.func,
+    depositHistory: PropTypes.array,
+    depositLoading: PropTypes.bool,
+    withdrawHistory: PropTypes.array,
+    withdrawLoading: PropTypes.bool,
+    getSelectedBank: PropTypes.object,
+    bankDepositHistory: PropTypes.array,
+  };
+
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
@@ -51,13 +101,16 @@ class BankWrapped extends Component {
   }
 
   render() {
-    const { userbank } = this.props;
-    console.log(userbank);
-    // console.log("Data:", transactions);
-    // console.log("Error:", error);
-
-    // console.log("Backend Transaction:", transactions);
-    // console.log("Transaction:", transactions);
+    const {
+      userbank,
+      selectBank,
+      depositHistory,
+      depositLoading,
+      withdrawHistory,
+      withdrawLoading,
+      getSelectedBank,
+      bankDepositHistory,
+    } = this.props;
 
     const calculateTotals = () => {
       const { transactions } = this.state;
@@ -116,12 +169,20 @@ class BankWrapped extends Component {
       return total.toLocaleString();
     };
 
+    console.log(bankDepositHistory);
+
     return (
       <div className="bank p-3">
+        {depositLoading && <div>Data is loading....</div>}
+
         <div className="row mb-2" id="sortable">
           {userbank &&
             userbank.map((bank) => (
-              <div className="custom-card p-3 mr-4 " key={bank.bankName}>
+              <div
+                className="custom-card p-3 mr-4 "
+                key={bank.bankName}
+                onClick={() => selectBank(bank)}
+              >
                 <header className="text-bold">{bank.bankName}</header>
                 <p className="text-success mt-1">Rs. {bank.currentAmount}</p>
               </div>

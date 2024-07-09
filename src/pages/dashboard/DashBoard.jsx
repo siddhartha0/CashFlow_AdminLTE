@@ -107,6 +107,7 @@ class DashBoardWrapped extends Component {
 
   render() {
     const { userDetail } = this.props;
+
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
         <div

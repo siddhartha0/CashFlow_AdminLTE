@@ -6,7 +6,7 @@ const TransactionApi = MainApi.injectEndpoints({
   endpoints: (builder) => ({
     createTransaction: builder.mutation({
       query: (data) => ({
-        url: `${Transaction}/signup`,
+        url: `${Transaction}`,
         method: "POST",
         body: data,
         headers: {
@@ -18,6 +18,26 @@ const TransactionApi = MainApi.injectEndpoints({
     getTransactionById: builder.query({
       query: (id) => ({
         url: `${Transaction}/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
+    getDepositOfUserBankById: builder.query({
+      query: (userBankid) => ({
+        url: `${Transaction}/getDepositOfUserBankById/${userBankid}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
+    getWithdrawsOfUserBankById: builder.query({
+      query: (userBankid) => ({
+        url: `${Transaction}/getWithdrawOfUserBankById/${userBankid}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
@@ -72,4 +92,7 @@ export const {
   useGetAllTransactionQuery,
   useGetTransactionByIdQuery,
   useUpdateTransactionMutation,
+  useGetTransactionByMonthQuery,
+  useGetDepositOfUserBankByIdQuery,
+  useGetWithdrawsOfUserBankByIdQuery,
 } = TransactionApi;

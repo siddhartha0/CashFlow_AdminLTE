@@ -13,6 +13,7 @@ const UserWalletSlice = createSlice({
   reducers: {
     storeUserWalletData: (state, action) => {
       state.bank = action.payload;
+      console.log(action.payload);
       LocalData.storeData("userwallet", action.payload);
     },
   },

@@ -7,6 +7,7 @@ import {
 import { useUpdateUserMutation } from "../../slices/api/user/UserApi";
 import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
 import PropTypes from "prop-types";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function UpdateProfileForm() {
   const details = useSelector(userDetails);
@@ -46,9 +47,11 @@ export default function UpdateProfileForm() {
     await updateUser({ id, newUpdatedValue }).then((resp) => {
       if (resp.error) {
         console.log(resp.error);
+        if (resp?.error?.status !== "FETCH_ERROR")
+          toast.error(resp?.error?.data?.message);
       }
+
       if (resp.data) {
-        console.log(resp.data);
         setIsChangesSave(true);
         dispatch(updateCredentials(newUpdatedValue));
       }
@@ -86,6 +89,7 @@ class ProfileForm extends Component {
 
     return (
       <div className="card">
+        <Toaster />
         {isLoading && <LoaderSpinner />}
         <div className="card-header">
           <h3 className="card-title">Edit Profile</h3>

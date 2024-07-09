@@ -15,6 +15,7 @@ import { useGetUsersAllWalletQuery } from "./slices/api/wallet/UserWalletApi";
 
 import { storeWalletData } from "./slices/slice/wallet/WalletSlice";
 import { storeUserWalletData } from "./slices/slice/wallet/UserWalletSlice";
+import { storeUserBankData } from "./slices/slice/bank/UserBankSlice";
 
 export default function App() {
   const token = useSelector(userToken);
@@ -44,10 +45,11 @@ export default function App() {
       }
       // dispatch();
     }
+    console.log(userWallet);
     if (!userWalletDataExists) {
       // dispatch();
       if (userWallet) {
-        dispatch(storeUserWalletData(allWalletData));
+        dispatch(storeUserWalletData(userWallet));
       }
     }
 
@@ -56,7 +58,7 @@ export default function App() {
         if (allBankData) dispatch(storeBankData(allBankData?.entities));
     }
     if (!userBankDataExists) {
-      if (userBank) dispatch(storeBankData(userBank));
+      if (userBank) dispatch(storeUserBankData(userBank));
     }
   }, [
     token,
