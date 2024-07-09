@@ -7,48 +7,20 @@ import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
 import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
 import axios from "axios";
-import CalendarPage from "../../components/bank/CalendarPage";
 
 const transactions = generateRandomTransactions(10000);
-
-const fetchUsers = async () => {
-  const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
-  console.log(data);
-  return data;
-};
 
 export default class Bank extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   transactions: JSON.parse(localStorage.getItem("bank") || []),
-    // };
   }
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
     });
-    // const getData = async () => {
-    //   const res = await fetch("http://localhost:3000/bank?pageNo=100");
-    //   const resJson = await res.json();
-    //   this.setState({ transactions: resJson });
-    //   // console.log(resJson);
-    // };
-    // getData();
-    // const { data, error, isLoading, isError } = this.props;
-    // if (!isLoading) {
-    //   this.setState({ transactions: data });
-    //   localStorage.setItem("bank", JSON.stringify(data));
-    // }
   }
 
   render() {
-    // console.log("Data:", transactions);
-    // console.log("Error:", error);
-
-    // console.log("Backend Transaction:", transactions);
-    // console.log("Transaction:", transactions);
-
     const calculateTotals = () => {
       const { transactions } = this.state;
       const totals = {};
@@ -121,9 +93,6 @@ export default class Bank extends Component {
               />
             </div>
           ))}
-        </div>
-        <div className="p-3">
-          <CalendarPage />
         </div>
         <div className="row" id="sortable">
           <div className="col-lg-12">
