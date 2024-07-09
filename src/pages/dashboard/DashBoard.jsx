@@ -8,8 +8,21 @@ import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
+import { useSelector } from "react-redux";
+import { userDetails } from "../../slices/slice/auth/AuthSlice";
+import PropTypes from "prop-types";
 
-export default class DashBoard extends Component {
+export default function Dashboard() {
+  const userDetail = useSelector(userDetails);
+
+  return <DashBoardWrapped userDetail={userDetail} />;
+}
+
+class DashBoardWrapped extends Component {
+  static propTypes = {
+    userDetail: PropTypes.object,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -93,6 +106,7 @@ export default class DashBoard extends Component {
   };
 
   render() {
+    const { userDetail } = this.props;
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
         <div
@@ -116,14 +130,14 @@ export default class DashBoard extends Component {
                   color: "#9B4078",
                 }}
               >
-                DashBoard
+                {userDetail?.username}
               </strong>
               <span id="Greeting" className="text-md">
                 {this.state.date.getHours() < 12
-                  ? "Good Morning !!"
+                  ? `Good Morning  !!`
                   : this.state.date.getHours() <= 18
-                  ? "Good Afternoon !!"
-                  : "Good Evening !!"}
+                  ? `Good Afternoon  !!`
+                  : `Good Evening  !!`}
               </span>
             </div>
 
@@ -140,7 +154,7 @@ export default class DashBoard extends Component {
           </div>
 
           <div className="d-flex flex-column" id="sortable">
-            <div className="row ">
+            <div className=" d-flex ">
               <div
                 className="d-flex flex-column"
                 style={{
@@ -148,7 +162,7 @@ export default class DashBoard extends Component {
                 }}
               >
                 <div
-                  className=" custom-card card"
+                  className=" custom-card  card"
                   style={{
                     width: "100%",
                   }}
@@ -160,12 +174,21 @@ export default class DashBoard extends Component {
                     overAllSelected={this.state.overAllSelected}
                   />
                 </div>
-                <div className=" d-flex p-3 mt-2 custom-card card">
+                <div
+                  className=" d-flex p-3 mt-2  custom-card  
+                "
+                  style={{
+                    maxWidth: "480px",
+                    //   marginTop: "20px",
+                    overflowX: "scroll",
+                    scrollbarWidth: "none",
+                  }}
+                >
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div className="container card col-md-6 p-4 text-capitalize custom-card ">
+              <div className="container card col-md-6  p-4 text-capitalize custom-card ">
                 <BalanceSummary
                   selectMonth={this.selectMonth}
                   currentId={this.state.id}

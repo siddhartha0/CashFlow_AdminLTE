@@ -7,10 +7,24 @@ import TransactionChart from "../../components/bank/TransactionChart";
 import BankList from "../../components/bank/BankList";
 import { getTransactionPercentageIncrease } from "../../behindTheScene/bank/calculateIncreaseRate";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
 
 const transactions = generateRandomTransactions(10000);
 
-export default class Bank extends Component {
+const fetchUsers = async () => {
+  const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
+  console.log(data);
+  return data;
+};
+
+export default function Bank() {
+  const userbank = useSelector(userbankDetails);
+
+  return <BankWrapped userbank={userbank} />;
+}
+
+class BankWrapped extends Component {
   constructor(props) {
     super(props);
   }
@@ -21,6 +35,14 @@ export default class Bank extends Component {
   }
 
   render() {
+    const { userbank } = this.props;
+    console.log(userbank);
+    // console.log("Data:", transactions);
+    // console.log("Error:", error);
+
+    // console.log("Backend Transaction:", transactions);
+    // console.log("Transaction:", transactions);
+
     const calculateTotals = () => {
       const { transactions } = this.state;
       const totals = {};
@@ -80,6 +102,16 @@ export default class Bank extends Component {
 
     return (
       <div className="bank p-3">
+        <div className="row mb-2" id="sortable">
+          {userbank &&
+            userbank.map((bank) => (
+              <div className="custom-card p-3 mr-4 " key={bank.bankName}>
+                <header className="text-bold">{bank.bankName}</header>
+                <p className="text-success mt-1">Rs. {bank.currentAmount}</p>
+              </div>
+            ))}
+        </div>
+
         <div className="row">
           {totalList.map((value, index) => (
             <div className="col-lg-3" key={index}>

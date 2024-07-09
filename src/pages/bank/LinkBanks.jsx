@@ -1,11 +1,23 @@
-import { Component, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Component, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { bankDetails } from "../../slices/slice/bank/BankSlice";
 import { userDetails } from "../../slices/slice/auth/AuthSlice";
+import { useLinkUserBankMutation } from "../../slices/api/bank/UserBankApi";
+import {
+  storeUserBankData,
+  userbankDetails,
+} from "../../slices/slice/bank/UserBankSlice";
+import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
+import toast, { Toaster } from "react-hot-toast";
 
 function LinkBanks() {
   const details = useSelector(bankDetails);
   const user = useSelector(userDetails);
+  const userbank = useSelector(userbankDetails);
+
+  const dispatch = useDispatch();
+  const [linkBank, { isLoading }] = useLinkUserBankMutation();
+  const [err, setErr] = useState("");
 
   const [userProfile, setUserProfile] = useState({
     bankName: "",
@@ -19,6 +31,7 @@ function LinkBanks() {
   };
 
   const handleSubmit = async (e) => {
+    let userBanks = [];
     const currentAmount = Math.ceil(Math.random(1) * 1000000);
 
     e.preventDefault();
@@ -27,13 +40,32 @@ function LinkBanks() {
     );
     const userData = {
       bankName: userProfile.bankName,
-      userId: user?.id,
-      bankId: selectedBank[0].id,
+      userId: parseInt(user?.id),
+      bankId: parseInt(selectedBank[0].id),
       accountId: userProfile.accountId,
       currentAmount: currentAmount,
-      transactionHistory: "",
     };
-    console.log(userData);
+
+    if (userbank) {
+      userBanks.push(userbank, userData);
+    }
+    if (!userbank) {
+      userBanks.push(userData);
+    }
+
+    await linkBank(userData).then((resp) => {
+      if (resp.data) {
+        dispatch(storeUserBankData(userBanks));
+        toast.success("Bank has been linked");
+        setUserProfile({
+          accountId: "",
+          bankName: "",
+        });
+      }
+      if (resp.error) {
+        setErr(resp.error);
+      }
+    });
   };
   return (
     <LinkBankWrapped
@@ -41,6 +73,8 @@ function LinkBanks() {
       handleSubmit={handleSubmit}
       handleInputChange={handleInputChange}
       userProfile={userProfile}
+      isLoading={isLoading}
+      err={err}
     />
   );
 }
@@ -49,9 +83,20 @@ export default LinkBanks;
 
 class LinkBankWrapped extends Component {
   render() {
-    const { data, handleSubmit, handleInputChange, userProfile } = this.props;
+    const {
+      data,
+      handleSubmit,
+      handleInputChange,
+      userProfile,
+      isLoading,
+      err,
+    } = this.props;
     return (
       <form onSubmit={handleSubmit}>
+        <Toaster />
+        {isLoading && <LoaderSpinner />}
+        {err && <div className="alert alert-danger">{err}</div>}
+
         <div className="form-group">
           <label>Bank Name</label>
           <select

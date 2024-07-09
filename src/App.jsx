@@ -7,26 +7,67 @@ import NewSideBar from "./components/common/sidebar/NewSideBar";
 import { useDispatch, useSelector } from "react-redux";
 import { userToken } from "./slices/slice/auth/AuthSlice";
 import { useGetAllBanksQuery } from "./slices/api/admin/finance/BankApi";
+import { useGetAllWalletQuery } from "./slices/api/admin/finance/WalletApi";
 import LocalData from "./behindTheScene/helper/LocalData";
 import { storeBankData } from "./slices/slice/bank/BankSlice";
+import { useGetAllLinkBankQuery } from "./slices/api/bank/UserBankApi";
+import { useGetUsersAllWalletQuery } from "./slices/api/wallet/UserWalletApi";
+
+import { storeWalletData } from "./slices/slice/wallet/WalletSlice";
+import { storeUserWalletData } from "./slices/slice/wallet/UserWalletSlice";
 
 export default function App() {
   const token = useSelector(userToken);
   const nav = useNavigate();
   const dispatch = useDispatch();
-  const { data } = useGetAllBanksQuery();
+  const { data: allBankData } = useGetAllBanksQuery();
+  const { data: allWalletData } = useGetAllWalletQuery();
+  const { data: userBank } = useGetAllLinkBankQuery();
+  const { data: userWallet } = useGetUsersAllWalletQuery();
 
   useEffect(() => {
     const bankDataExists = LocalData.checkStorageExists("bank");
 
-    if (!bankDataExists) {
-      dispatch(storeBankData(data.entities));
-    }
+    const userBankDataExists = LocalData.checkStorageExists("userbank");
+
+    const walletDataExists = LocalData.checkStorageExists("wallet");
+
+    const userWalletDataExists = LocalData.checkStorageExists("userbank");
 
     if (!token) {
       nav("/");
     }
-  }, [token, nav, data?.entities, dispatch]);
+
+    if (!walletDataExists) {
+      if (allWalletData) {
+        dispatch(storeWalletData(allWalletData?.entities));
+      }
+      // dispatch();
+    }
+    if (!userWalletDataExists) {
+      // dispatch();
+      if (userWallet) {
+        dispatch(storeUserWalletData(allWalletData));
+      }
+    }
+
+    if (!bankDataExists) {
+      if (allBankData)
+        if (allBankData) dispatch(storeBankData(allBankData?.entities));
+    }
+    if (!userBankDataExists) {
+      if (userBank) dispatch(storeBankData(userBank));
+    }
+  }, [
+    token,
+    nav,
+    dispatch,
+    allBankData?.entities,
+    userBank,
+    allWalletData,
+    userWallet,
+    allBankData,
+  ]);
   return <AppWrapped />;
 }
 
