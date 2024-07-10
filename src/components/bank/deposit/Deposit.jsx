@@ -7,6 +7,7 @@ import TotalView from "../TotalView";
 import ChartComponent from "../Chart";
 import TransactionChart from "../TransactionChart";
 import DownloadButton from "../../../const/DownloadButton";
+import { Link } from "react-router-dom";
 
 export default class Deposit extends Component {
   render() {
@@ -33,6 +34,12 @@ export default class Deposit extends Component {
 
     return (
       <div className="container-fluid">
+        <div className="mb-3">
+          <Link to="/dashboard/bank/deposit/new" className="btn btn-primary">
+            Create Deposit
+          </Link>
+        </div>
+
         <div className="w-100">
           <div className="d-flex justify-content-end mb-2">
             <DownloadButton />

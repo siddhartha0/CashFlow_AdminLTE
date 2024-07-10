@@ -39,11 +39,13 @@ class BankList extends Component {
   render() {
     const { totals } = this.state;
 
+    // console.log(this.props.transactions);
+
     return (
       <>
-        <h3>Bank Totals</h3>
+        <h3 className="card-title mb-3">Bank Totals</h3>
         {Object.keys(totals).length === 0 ? (
-          <p>No transactions available</p>
+          <h3>No transactions available</h3>
         ) : (
           <table className="table table-responsive-sm">
             <thead>

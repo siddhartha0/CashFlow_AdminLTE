@@ -8,11 +8,21 @@ import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import MoreOptionalAccordianModel from "../../const/widget_component_model/components/MoreOptionalAccordianModel";
-import Activities from "../../components/Dashboard/activities/Activities";
-// import { $ } from "jquery";
+import { useSelector } from "react-redux";
+import { userDetails } from "../../slices/slice/auth/AuthSlice";
+import PropTypes from "prop-types";
 
-export default class DashBoard extends Component {
+export default function Dashboard() {
+  const userDetail = useSelector(userDetails);
+
+  return <DashBoardWrapped userDetail={userDetail} />;
+}
+
+class DashBoardWrapped extends Component {
+  static propTypes = {
+    userDetail: PropTypes.object,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -96,6 +106,8 @@ export default class DashBoard extends Component {
   };
 
   render() {
+    const { userDetail } = this.props;
+
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
         <div
@@ -105,7 +117,7 @@ export default class DashBoard extends Component {
         >
           <div
             className=" d-flex justify-content-between"
-            // id="dashboard_header_ParentDiv"
+            id="dashboard_header_ParentDiv"
             // id="sortable"
           >
             <div
@@ -119,14 +131,14 @@ export default class DashBoard extends Component {
                   color: "#9B4078",
                 }}
               >
-                DashBoard
+                {userDetail?.username}
               </strong>
               <span id="Greeting" className="text-md">
                 {this.state.date.getHours() < 12
-                  ? "Good Morning !!"
+                  ? `Good Morning  !!`
                   : this.state.date.getHours() <= 18
-                  ? "Good Afternoon !!"
-                  : "Good Evening !!"}
+                  ? `Good Afternoon  !!`
+                  : `Good Evening  !!`}
               </span>
             </div>
 
@@ -143,7 +155,7 @@ export default class DashBoard extends Component {
           </div>
 
           <div className="d-flex flex-column" id="sortable">
-            <div className="row ">
+            <div className=" d-flex ">
               <div
                 className="d-flex flex-column"
                 style={{
@@ -151,7 +163,7 @@ export default class DashBoard extends Component {
                 }}
               >
                 <div
-                  className=" custom-card card"
+                  className=" custom-card  card"
                   style={{
                     width: "100%",
                   }}
@@ -163,12 +175,21 @@ export default class DashBoard extends Component {
                     overAllSelected={this.state.overAllSelected}
                   />
                 </div>
-                <div className=" d-flex p-3 mt-2 custom-card card">
+                <div
+                  className=" d-flex p-3 mt-2  custom-card  
+                "
+                  style={{
+                    maxWidth: "480px",
+                    //   marginTop: "20px",
+                    overflowX: "scroll",
+                    scrollbarWidth: "none",
+                  }}
+                >
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div className="container card col-md-6 p-4 text-capitalize custom-card ">
+              <div className="container card col-md-6  p-4 text-capitalize custom-card ">
                 <BalanceSummary
                   selectMonth={this.selectMonth}
                   currentId={this.state.id}
@@ -195,7 +216,12 @@ export default class DashBoard extends Component {
                 />
               </div>
               <div className=" container mb-2 mt-4 text-capitalize ">
-                <IncomeExpenseStats label={this.state.selectedPlatform} />
+                <IncomeExpenseStats
+                  label={this.state.selectedPlatform}
+                  bankOneMonthHistory={this.state.bankEachMonthHistory}
+                  walletOneMonthHistory={this.state.walletEachDayHistory}
+                  overAllSelected={this.state.overAllSelected}
+                />
               </div>
             </div>
 
@@ -226,11 +252,11 @@ export default class DashBoard extends Component {
           </section>
 
           <div className=" p-3 mt-3 connectedSortable" id="sortable">
-            <MoreOptionalAccordianModel title="Activities">
+            {/* <MoreOptionalAccordianModel title="Activities">
               <div className=" d-flex  flex-column   ">
                 <Activities />
               </div>
-            </MoreOptionalAccordianModel>
+            </MoreOptionalAccordianModel> */}
           </div>
         </div>
       </div>

@@ -52,9 +52,16 @@ export default class BalanceSummary extends Component {
               bankEachDaysAmount,
               walletEachDayAmount
             )}
-            type={overAllSelected ? "bar" : "line"}
-            height={433}
-            width="100%"
+            type="line"
+            height={333}
+            width={520}
+          />
+        </div>
+        <div className="d-flex ">
+          <MonthSelection
+            months={this.value.label}
+            selectMonth={selectMonth}
+            currentId={currentId}
           />
         </div>
         <div id="html-dist"></div>

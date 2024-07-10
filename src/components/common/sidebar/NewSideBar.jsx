@@ -48,12 +48,12 @@ export default class NewSideBar extends Component {
             >
               {RoutesPath.map((routes) => (
                 <li
-                  className="place-items-center nav-item menu-open mt-4"
+                  className="place-items-center  nav-item  mt-4"
                   key={routes.id}
                 >
                   <NavLink
                     to={routes.path}
-                    className={"nav-link   "}
+                    className="nav-link "
                     onClick={this.activeLink.bind(this, routes.id)}
                   >
                     <img

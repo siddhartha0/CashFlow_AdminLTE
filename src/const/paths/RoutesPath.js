@@ -8,32 +8,38 @@ const RoutesPath = [
   {
     id: 1,
     title: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icons: dashboard,
   },
 
   {
     id: 2,
     title: "Banks",
-    path: "/bank",
+    path: "/dashboard/bank",
     icons: bank,
     children: [
       {
         id: 20,
         title: "Deposit",
-        path: "/bank/deposit",
+        path: "/dashboard/bank/deposit",
         icons: bank,
       },
       {
         id: 21,
         title: "Withdraw",
-        path: "/bank/withdraw",
+        path: "/dashboard/bank/withdraw",
         icons: profile,
       },
       {
         id: 22,
         title: "Transfer",
-        path: "/bank/transfer",
+        path: "/dashboard/bank/transfer",
+        icons: bank,
+      },
+      {
+        id: 23,
+        title: "Link Banks",
+        path: "/dashboard/bank/linkBank",
         icons: bank,
       },
     ],
@@ -41,27 +47,27 @@ const RoutesPath = [
   {
     id: 3,
     title: "Wallet",
-    path: "/wallet",
+    path: "/dashboard/wallet",
     icons: wallet,
     children: [
       {
         id: 31,
         title: "Deposit",
-        path: "/wallet/deposit",
+        path: "/dashboard/wallet/deposit",
 
         icons: wallet,
       },
       {
         id: 32,
         title: "Withdraw",
-        path: "/wallet/withdraw",
+        path: "/dashboard/wallet/withdraw",
 
         icons: wallet,
       },
       {
         id: 33,
         title: "Transfer",
-        path: "/wallet/transfer",
+        path: "/dashboard/wallet/transfer",
 
         icons: wallet,
       },
@@ -70,32 +76,32 @@ const RoutesPath = [
   {
     id: 4,
     title: "Business",
-    path: "/business",
+    path: "/dashboard/business",
     icons: business,
   },
 
   {
     id: 5,
     title: "Profile",
-    path: "/profile",
+    path: "/dashboard/profile",
     icons: profile,
     children: [
       {
         id: 50,
         title: "Bank",
-        path: "/profile/bank",
+        path: "/dashboard/profile/bank",
         icons: bank,
       },
       {
         id: 51,
         title: "Wallet",
-        path: "/profile/wallet",
+        path: "/dashboard/profile/wallet",
         icons: wallet,
       },
       {
         id: 52,
         title: "Edit profile",
-        path: "/profile/edit-profile",
+        path: "/dashboard/profile/edit-profile",
         icons: bank,
       },
     ],

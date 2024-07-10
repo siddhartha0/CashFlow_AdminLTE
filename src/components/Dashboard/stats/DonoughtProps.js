@@ -1,6 +1,4 @@
 export default class DounoughtProps {
-  value = JSON.parse(localStorage.getItem("dashboard"));
-
   genLabel() {
     const options = {
       labels: ["Bank", "Wallet"],
@@ -8,12 +6,14 @@ export default class DounoughtProps {
     return options;
   }
 
-  genData(overallSelected, currentBankAmount, currentWalletAmount) {
-    console.log(overallSelected);
-    const series = [
-      overallSelected ? this.value.currentBankBalance : currentBankAmount,
-      overallSelected ? this.value.currentWalletBalance : currentWalletAmount,
-    ];
+  genData(overallSelected, currentBankAmount = 0, currentWalletAmount = 0) {
+    const series = [currentBankAmount, currentWalletAmount];
     return series;
   }
+}
+
+{
+  /* <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-6 col-lg-4 fixed-width bg-light border p-3"></div> */
 }

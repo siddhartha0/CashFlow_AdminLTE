@@ -1,0 +1,21 @@
+dashboard={
+    currentBankBalance:number,
+    currentWalletBalance:number,
+    fiscalYear:[
+        Date
+    ]
+    overAllBankHistory:[
+        {
+            month:string,
+            currentAmount:number
+            eachDayAmount:[number]
+        }
+    ]
+
+    incomeSources:[
+        {
+            title:string,
+            amount:number
+        }
+    ]
+}
