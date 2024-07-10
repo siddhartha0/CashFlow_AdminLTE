@@ -5,14 +5,15 @@ class ChartComponent extends Component {
   constructor(props) {
     super(props);
     const {
-      dataYearly,
-      dataWeekly,
-      dataDaily,
-      labelYearly,
-      labelWeekly,
-      labelDaily,
-      name,
+      dataYearly = [],
+      dataWeekly = [],
+      dataDaily = [],
+      labelYearly = [],
+      labelWeekly = [],
+      labelDaily = [],
+      name = "Data",
     } = this.props;
+
     const paddedData = this.padData(dataDaily, 30);
 
     this.state = {
@@ -77,7 +78,7 @@ class ChartComponent extends Component {
           bar: {
             borderRadius: 10,
             dataLabels: {
-              position: "top", // top, center, bottom
+              position: "top",
             },
           },
         },
@@ -158,7 +159,7 @@ class ChartComponent extends Component {
           bar: {
             borderRadius: 10,
             dataLabels: {
-              position: "top", // top, center, bottom
+              position: "top",
             },
           },
         },
@@ -174,15 +175,7 @@ class ChartComponent extends Component {
           },
         },
         xaxis: {
-          categories: [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-          ],
+          categories: labelWeekly,
           position: "bottom",
           axisBorder: {
             show: false,
@@ -226,8 +219,8 @@ class ChartComponent extends Component {
     const dailyData = {
       series: [
         {
-          name: `${name}`,
-          data: paddedData,
+          name: name,
+          data: dataDaily,
         },
       ],
       options: {
@@ -250,7 +243,7 @@ class ChartComponent extends Component {
         },
         grid: {
           row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            colors: ["#f3f3f3", "transparent"],
             opacity: 0.5,
           },
         },
