@@ -45,7 +45,7 @@ export default function App() {
       }
       // dispatch();
     }
-    console.log(userWallet);
+
     if (!userWalletDataExists) {
       // dispatch();
       if (userWallet) {

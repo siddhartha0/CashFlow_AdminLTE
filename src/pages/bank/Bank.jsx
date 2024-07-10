@@ -16,12 +16,6 @@ import {
 
 const transactions = generateRandomTransactions(10000);
 
-// const fetchUsers = async () => {
-//   const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
-//   console.log(data);
-//   return data;
-// };
-
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
@@ -29,7 +23,6 @@ export default function Bank() {
 
   const { data: depositHistory, isLoading: depositLoading } =
     useGetDepositOfUserBankByIdQuery(getSelectedBank?.id);
-  console.log(depositHistory.entities);
 
   const { data: withdrawHistory, isLoading: withdrawLoading } =
     useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
@@ -74,11 +67,7 @@ class BankWrapped extends Component {
   static propTypes = {
     userbank: PropTypes.object,
     selectBank: PropTypes.func,
-    depositHistory: PropTypes.array,
     depositLoading: PropTypes.bool,
-    withdrawHistory: PropTypes.array,
-    withdrawLoading: PropTypes.bool,
-    getSelectedBank: PropTypes.object,
     bankDepositHistory: PropTypes.array,
   };
 
@@ -101,16 +90,8 @@ class BankWrapped extends Component {
   }
 
   render() {
-    const {
-      userbank,
-      selectBank,
-      depositHistory,
-      depositLoading,
-      withdrawHistory,
-      withdrawLoading,
-      getSelectedBank,
-      bankDepositHistory,
-    } = this.props;
+    const { userbank, selectBank, depositLoading, bankDepositHistory } =
+      this.props;
 
     const calculateTotals = () => {
       const { transactions } = this.state;
