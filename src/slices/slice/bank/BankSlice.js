@@ -13,6 +13,7 @@ const BankSlice = createSlice({
   reducers: {
     storeBankData: (state, action) => {
       state.bank = action.payload;
+
       LocalData.storeData("bank", action.payload);
     },
   },

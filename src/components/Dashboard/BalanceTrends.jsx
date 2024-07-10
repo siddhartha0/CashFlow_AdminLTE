@@ -61,15 +61,15 @@ class BalanceTrendsWrapped extends Component {
                   style={{
                     minWidth: "180px",
                   }}
-                  key={bankDetails.bankName}
+                  key={bankDetails?.bankName}
                 >
                   <DisplayTrends
                     icon={
                       <CiBank className="text-xl place-self-start text-primary " />
                     }
                     status={bankStatus}
-                    amount={bankDetails.currentAmount}
-                    label={bankDetails.bankName}
+                    amount={bankDetails?.currentAmount}
+                    label={bankDetails?.bankName}
                   />
                   <hr
                     className="text-dark text-opacity-50"

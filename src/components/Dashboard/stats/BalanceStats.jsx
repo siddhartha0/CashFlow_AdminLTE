@@ -15,13 +15,26 @@ export default function BalanceStats() {
   const [walletCurrentAmount, setWalletCurrentAmount] = useState();
 
   useEffect(() => {
-    const bankamount = userbank?.map((banks) => banks?.currentAmount);
-    const totalCurrentBankAmount = bankamount?.reduce((a, b) => a + b);
-    setBankCurrentAmount(totalCurrentBankAmount ?? 0);
+    if (userbank) {
+      const bankamount = userbank?.map((banks) => banks?.currentAmount);
+      if (bankamount) {
+        const totalCurrentBankAmount = bankamount?.reduce((a, b) => a + b);
+        setBankCurrentAmount(totalCurrentBankAmount ?? 0);
+      }
+    }
 
-    const walletamounts = userwallet?.map((wallet) => wallet?.currentAmount);
-    const totalwalletCurrentAmount = walletamounts?.reduce((a, b) => a + b);
-    setWalletCurrentAmount(totalwalletCurrentAmount ?? 0);
+    console.log(userwallet);
+    if (userwallet) {
+      const walletamounts = userwallet?.entities?.map(
+        (wallet) => wallet?.currentAmount
+      );
+
+      // console.log(walletamounts);
+      if (walletamounts) {
+        const totalwalletCurrentAmount = walletamounts?.reduce((a, b) => a + b);
+        setWalletCurrentAmount(totalwalletCurrentAmount ?? 0);
+      }
+    }
   }, [userbank, userwallet]);
 
   return (
@@ -55,7 +68,7 @@ class BalanceStatsWrapped extends Component {
       this.props;
 
     const currentTotal =
-      parseInt(bankCurrentAmount) + parseInt(walletCurrentAmount);
+      parseInt(bankCurrentAmount ?? 0) + parseInt(walletCurrentAmount ?? 0);
 
     const getDonoughtProps = new DounoughtProps();
 

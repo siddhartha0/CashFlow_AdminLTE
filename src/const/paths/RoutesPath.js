@@ -37,7 +37,7 @@ const RoutesPath = [
         icons: bank,
       },
       {
-        id: 22,
+        id: 23,
         title: "Link Banks",
         path: "/dashboard/bank/linkBank",
         icons: bank,
