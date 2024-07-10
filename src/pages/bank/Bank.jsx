@@ -75,18 +75,6 @@ class BankWrapped extends Component {
     $(function () {
       $("#sortable").sortable();
     });
-    // const getData = async () => {
-    //   const res = await fetch("http://localhost:3000/bank?pageNo=100");
-    //   const resJson = await res.json();
-    //   this.setState({ transactions: resJson });
-    //   // console.log(resJson);
-    // };
-    // getData();
-    // const { data, error, isLoading, isError } = this.props;
-    // if (!isLoading) {
-    //   this.setState({ transactions: data });
-    //   localStorage.setItem("bank", JSON.stringify(data));
-    // }
   }
 
   render() {
@@ -179,7 +167,7 @@ class BankWrapped extends Component {
                 color={value.color}
                 icon={value.icon}
                 key={index}
-                design="info-box-2"
+                design="info-box"
               />
             </div>
           ))}
