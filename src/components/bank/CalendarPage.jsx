@@ -19,7 +19,7 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
-      const transformedEvents = data.entities.map((item) => ({
+      const transformedEvents = data?.entities.map((item) => ({
         id: item.id,
         title: `${item.remarks}`,
         start: new Date(item.issuedAt),
@@ -30,7 +30,7 @@ const CalendarPage = () => {
         (item) => new Date(item.issuedAt) > new Date()
       );
 
-      console.log("Monthly: ", monthly);
+      // console.log("Monthly: ", monthly);
 
       setEvents(transformedEvents);
       setUpcomingTransactions(upcomingTrans);

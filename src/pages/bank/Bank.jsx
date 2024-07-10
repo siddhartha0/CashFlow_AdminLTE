@@ -26,9 +26,10 @@ export default function Bank() {
 
   const { data: withdrawHistory, isLoading: withdrawLoading } =
     useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
+
   const selectBank = (bank = userbank[0]) => {
     setSelectedBank(bank);
-    let depositsData = depositHistory.entities;
+    let depositsData = depositHistory?.entities ?? null;
     console.log(depositsData);
     const storeBoth = {
       bankName: bank.bankName,

@@ -15,6 +15,16 @@ const TransactionApi = MainApi.injectEndpoints({
       }),
     }),
 
+    getUserTransaction: builder.query({
+      query: (id) => ({
+        url: `${Transaction}/userAccountTransaction`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
     getTransactionById: builder.query({
       query: (id) => ({
         url: `${Transaction}/${id}`,
@@ -46,8 +56,9 @@ const TransactionApi = MainApi.injectEndpoints({
     }),
 
     getTransactionByMonth: builder.query({
-      query: () => ({
+      query: ({ year }) => ({
         url: `${Transaction}/monthwise`,
+        params: year,
         method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
@@ -59,6 +70,7 @@ const TransactionApi = MainApi.injectEndpoints({
       query: () => ({
         url: `${Transaction}/getAllTransaction`,
         method: "GET",
+
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },

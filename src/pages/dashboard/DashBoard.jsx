@@ -13,22 +13,24 @@ import PropTypes from "prop-types";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
 import { userWalletDetail } from "../../slices/slice/wallet/UserWalletSlice";
 import { useGetDepositOfUserBankByIdQuery } from "../../slices/api/transaction/TransactionApi";
+import HeadController from "../../behindTheScene/helper/HeadController";
 
 export default function Dashboard() {
-  const userDetail = useSelector(userDetails);
-  const userbank = useSelector(userbankDetails);
-  const userwallets = useSelector(userWalletDetail);
-  const initselection = {
-    id: userbank[0]?.id ?? 0,
-    value: userbank[0].bankName,
-  };
+  const {
+    user_data,
+    user_Bank_Data,
+    user_wallet_Data,
+    transactionHistory,
+    loadTime_DataSession,
+    transactionFetchError,
+    transactionFetchLoading,
+  } = HeadController();
+
   const [userLinkAccount, setUserLinkAccount] = useState();
   const [selectedPlatform, setSelectedPatform] = useState(
-    initselection ?? null
+    loadTime_DataSession ?? null
   );
-  // const { data, isLoading, isError } = useGetDepositOfUserBankByIdQuery(
-  //   selectPlatform.id
-  // );
+
   const { data: depositHistory, isLoading: depositLoading } =
     useGetDepositOfUserBankByIdQuery(selectedPlatform?.id);
 
@@ -37,15 +39,15 @@ export default function Dashboard() {
     const getSelectedData = userLinkAccount?.filter(
       (account) => account.value === value
     );
-    // console.log(getSelectedData[0]);
+
+    // console.log(getSelectedData[0])
     setSelectedPatform(getSelectedData[0]);
-    console.log(depositHistory);
   };
 
   useEffect(() => {
     let combo = [];
-    if (userbank) {
-      userbank?.map((bank, i) => {
+    if (user_Bank_Data) {
+      user_Bank_Data?.map((bank, i) => {
         const toStore = {
           id: bank.id,
           title: `Bank ${i + 1}`,
@@ -55,8 +57,8 @@ export default function Dashboard() {
       });
     }
 
-    if (userwallets) {
-      userwallets?.map((wallet, i) => {
+    if (user_wallet_Data) {
+      user_wallet_Data?.map((wallet, i) => {
         const toStore = {
           id: wallet?.id,
           title: `Wallet ${i + 1}`,
@@ -66,11 +68,11 @@ export default function Dashboard() {
       });
     }
     setUserLinkAccount(combo);
-  }, [userbank, userwallets]);
+  }, [user_Bank_Data, user_wallet_Data]);
 
   return (
     <DashBoardWrapped
-      userDetail={userDetail}
+      userDetail={user_data}
       userLinkAccount={userLinkAccount}
       selectPlatform={selectPlatform}
       selectedPlatform={selectedPlatform ?? ""}
@@ -172,6 +174,8 @@ class DashBoardWrapped extends Component {
       depositHistory,
       depositLoading,
     } = this.props;
+
+    console.log(depositHistory);
 
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
