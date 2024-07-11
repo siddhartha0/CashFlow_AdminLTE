@@ -21,16 +21,19 @@ const CalendarPage = () => {
     if (!isLoading && !isError && data) {
       const transformedEvents = data?.entities.map((item) => ({
         id: item.id,
-        title: `${item.remarks}`,
+        title: `${item.source}`,
         start: new Date(item.issuedAt),
-        className: item.type === "withdraw" ? "bg-danger" : "bg-warning",
+        className:
+          item.type === "withdraw"
+            ? "bg-danger"
+            : item.type === "deposit"
+            ? "bg-warning"
+            : "bg-primary",
       }));
 
       const upcomingTrans = data.entities.filter(
         (item) => new Date(item.issuedAt) > new Date()
       );
-
-      // console.log("Monthly: ", monthly);
 
       setEvents(transformedEvents);
       setUpcomingTransactions(upcomingTrans);
@@ -93,7 +96,7 @@ const CalendarPage = () => {
                     key={index}
                     className={`list-group-item ${transaction.type}`}
                   >
-                    {transaction.remarks} -{" "}
+                    {transaction.source} -{" "}
                     {transaction.type.charAt(0).toUpperCase() +
                       transaction.type.slice(1)}
                     <br />
@@ -138,7 +141,7 @@ const CalendarPage = () => {
                       key={index}
                       className={`list-group-item ${transaction.type}`}
                     >
-                      {transaction.remarks} -{" "}
+                      {transaction.source} -{" "}
                       {transaction.type.charAt(0).toUpperCase() +
                         transaction.type.slice(1)}
                       <br />

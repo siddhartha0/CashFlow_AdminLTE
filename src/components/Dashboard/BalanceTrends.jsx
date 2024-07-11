@@ -53,7 +53,7 @@ class BalanceTrendsWrapped extends Component {
 
         <div className="d-flex justify-content-between overflow-x-scroll mt-4">
           <div className="d-flex   ">
-            {userbank &&
+            {userbank.length &&
               userbank?.map((bankDetails) => (
                 <div
                   className="d-flex
@@ -84,7 +84,7 @@ class BalanceTrendsWrapped extends Component {
                 </div>
               ))}
 
-            {userwallet &&
+            {userwallet.length &&
               userbank?.map((walletDetails) => (
                 <div
                   className="d-flex  justify-content-lg-between  mr-4"

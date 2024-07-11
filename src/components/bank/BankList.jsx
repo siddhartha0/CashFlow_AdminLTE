@@ -43,31 +43,33 @@ class BankList extends Component {
 
     return (
       <>
-        <h3 className="card-title mb-3">Bank Totals</h3>
-        {Object.keys(totals).length === 0 ? (
-          <h3>No transactions available</h3>
-        ) : (
-          <table className="table table-responsive-sm">
-            <thead>
-              <tr>
-                <th>Bank</th>
-                <th>Account</th>
-                <th>Total Deposit</th>
-                <th>Total Withdraw</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(totals).map((bank) => (
-                <tr key={bank}>
-                  <td>{bank}</td>
-                  <td>{totals[bank].account}</td>
-                  <td>{totals[bank].deposit}</td>
-                  <td>{totals[bank].withdraw}</td>
+        <div className="card-header">
+          <h3 className="card-title">Bank Totals</h3>
+        </div>
+        <div className="card-body p-0">
+          {Object.keys(totals).length === 0 ? (
+            <div className="p-4 text-center">No transactions found</div>
+          ) : (
+            <table className="table table-responsive-sm">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Bank</th>
+                  <th>Current Balance</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {Object.keys(totals).map((bank) => (
+                  <tr key={bank}>
+                    <td>{totals[bank].account}</td>
+                    <td>{bank}</td>
+                    <td>{totals[bank].deposit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </>
     );
   }

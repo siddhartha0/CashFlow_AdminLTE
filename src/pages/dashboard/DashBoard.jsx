@@ -49,7 +49,6 @@ export default function Dashboard() {
     let combo = [];
     if (user_Bank_Data) {
       user_Bank_Data?.map((bank, i) => {
-        console.log(bank);
         const toStore = {
           id: bank.id,
           title: `Bank ${i + 1}`,

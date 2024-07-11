@@ -4,10 +4,6 @@ import { useGetAllWalletQuery } from "../../slices/api/admin/finance/WalletApi";
 import { useGetAllLinkBankQuery } from "../../slices/api/bank/UserBankApi";
 import { useGetUsersAllWalletQuery } from "../../slices/api/wallet/UserWalletApi";
 import { userToken } from "../../slices/slice/auth/AuthSlice";
-import { storeBankData } from "../../slices/slice/bank/BankSlice";
-import { storeWalletData } from "../../slices/slice/wallet/WalletSlice";
-import { storeUserWalletData } from "../../slices/slice/wallet/UserWalletSlice";
-import LocalData from "./LocalData";
 
 const LocalStorageInitData = () => {
   const token = useSelector(userToken);
