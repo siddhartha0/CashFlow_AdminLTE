@@ -1,26 +1,107 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 import BalanceStats from "../../components/Dashboard/stats/BalanceStats";
 import BalanceTrends from "../../components/Dashboard/BalanceTrends";
 import BalanceSummary from "../../components/Dashboard/balanceSummary/summary/BalanceSummary";
 import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
-import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import { useSelector } from "react-redux";
-import { userDetails } from "../../slices/slice/auth/AuthSlice";
 import PropTypes from "prop-types";
+import HeadController from "../../behindTheScene/helper/HeadController";
+import TransactionDataHandler from "../../behindTheScene/helper/TransactionDataHandler";
 
 export default function Dashboard() {
-  const userDetail = useSelector(userDetails);
+  const {
+    user_data,
+    user_Bank_Data,
+    user_wallet_Data,
+    loadTime_DataSession,
+    transactionFetchLoading,
+    depositHistory,
+    withdrawHistory,
+    totalDeposits,
+    totalWithdraw,
+  } = HeadController();
 
-  return <DashBoardWrapped userDetail={userDetail} />;
+  const [userLinkAccount, setUserLinkAccount] = useState();
+  const init = {
+    ...loadTime_DataSession,
+    title: "bank",
+  };
+  const [selectedPlatform, setSelectedPatform] = useState(init ?? null);
+  const {
+    bankdepositHistory,
+    bankdepositLoading,
+    bankwithdrawHistory,
+    bankwithdrawLoading,
+  } = TransactionDataHandler(selectedPlatform);
+
+  const selectPlatform = (e) => {
+    const value = e.target.value;
+    const getSelectedData = userLinkAccount?.filter(
+      (account) => account.value === value
+    );
+    setSelectedPatform(getSelectedData[0]);
+  };
+
+  useEffect(() => {
+    let combo = [];
+    if (user_Bank_Data) {
+      user_Bank_Data?.map((bank, i) => {
+        console.log(bank);
+        const toStore = {
+          id: bank.id,
+          title: `Bank ${i + 1}`,
+          value: bank.bankName,
+        };
+        combo.push(toStore);
+      });
+    }
+
+    if (user_wallet_Data) {
+      user_wallet_Data?.map((wallet, i) => {
+        const toStore = {
+          id: wallet?.id,
+          title: `Wallet ${i + 1}`,
+          value: wallet?.walletName,
+        };
+        combo.push(toStore);
+      });
+    }
+    setUserLinkAccount(combo);
+  }, [user_Bank_Data, user_wallet_Data]);
+
+  return (
+    <DashBoardWrapped
+      userDetail={user_data}
+      userLinkAccount={userLinkAccount}
+      selectPlatform={selectPlatform}
+      selectedPlatform={selectedPlatform ?? ""}
+      depositHistory={depositHistory ?? null}
+      depositLoading={transactionFetchLoading}
+      withdrawHistory={withdrawHistory}
+      totalDeposits={totalDeposits}
+      totalWithdraw={totalWithdraw}
+      bankdepositHistory={bankdepositHistory}
+      bankdepositLoading={bankdepositLoading}
+      bankwithdrawHistory={bankwithdrawHistory}
+      bankwithdrawLoading={bankwithdrawLoading}
+    />
+  );
 }
 
 class DashBoardWrapped extends Component {
   static propTypes = {
     userDetail: PropTypes.object,
+    userLinkAccount: PropTypes.array,
+    selectPlatform: PropTypes.func,
+    selectedPlatform: PropTypes.object,
+    depositHistory: PropTypes.array,
+    depositLoading: PropTypes.bool,
+    withdrawHistory: PropTypes.array,
+    totalDeposits: PropTypes.number,
+    totalWithdraw: PropTypes.number,
   };
 
   constructor() {
@@ -38,7 +119,6 @@ class DashBoardWrapped extends Component {
       overAllSelected: true,
     };
 
-    this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
     this.selectMonth = this.selectMonth.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
@@ -47,14 +127,6 @@ class DashBoardWrapped extends Component {
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
-    });
-  }
-
-  selectPlatform(e) {
-    const value = e.target.value;
-    this.setState({
-      ...this.state,
-      selectedPlatform: value,
     });
   }
 
@@ -106,7 +178,20 @@ class DashBoardWrapped extends Component {
   };
 
   render() {
-    const { userDetail } = this.props;
+    const {
+      userDetail,
+      userLinkAccount,
+      selectPlatform,
+      selectedPlatform,
+      totalDeposits,
+      totalWithdraw,
+      bankdepositHistory,
+      bankdepositLoading,
+      bankwithdrawHistory,
+      bankwithdrawLoading,
+    } = this.props;
+
+    console.log(selectedPlatform);
 
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
@@ -180,7 +265,6 @@ class DashBoardWrapped extends Component {
                 "
                   style={{
                     maxWidth: "480px",
-                    //   marginTop: "20px",
                     overflowX: "scroll",
                     scrollbarWidth: "none",
                   }}
@@ -206,14 +290,29 @@ class DashBoardWrapped extends Component {
               className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
               id="sortable"
             >
-              <div className="d-flex w-25">
-                <MenuOptionModel
-                  className="breadcrumb float-sm-right"
-                  option={PickPlatform}
-                  PickPlatform={this.selectPlatform}
-                  selectedPlatform={this.state.selectedPlatform}
-                  id="indi_Wallet_Bank"
-                />
+              <div
+                className="d-flex align-items-center justify-content-around "
+                style={{
+                  width: "100%",
+                }}
+              >
+                <div className="d-flex w-25">
+                  <MenuOptionModel
+                    className="breadcrumb float-sm-right"
+                    option={userLinkAccount}
+                    PickPlatform={selectPlatform}
+                    selectedPlatform={this.state.selectedPlatform}
+                    id="indi_Wallet_Bank"
+                  />
+                </div>
+                <div
+                  className="d-flex justify-content-xl-end"
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <header>{selectedPlatform.value}</header>
+                </div>
               </div>
               <div className=" container mb-2 mt-4 text-capitalize ">
                 <IncomeExpenseStats
@@ -231,6 +330,7 @@ class DashBoardWrapped extends Component {
               style={{
                 height: "640px",
                 overflowY: "scroll",
+                scrollbarWidth: "none",
               }}
             >
               <div className="col-md-5 ">
@@ -244,7 +344,13 @@ class DashBoardWrapped extends Component {
                 <div className="mt-4">
                   <IncomeExpenseHistory
                     label={this.state.transactionType}
-                    header={this.state.selectedPlatform}
+                    totalDeposits={totalDeposits}
+                    totalWithdraw={totalWithdraw}
+                    header={selectedPlatform}
+                    bankdepositHistory={bankdepositHistory}
+                    bankdepositLoading={bankdepositLoading}
+                    bankwithdrawHistory={bankwithdrawHistory}
+                    bankwithdrawLoading={bankwithdrawLoading}
                   />
                 </div>
               </div>

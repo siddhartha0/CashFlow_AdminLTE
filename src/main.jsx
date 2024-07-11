@@ -21,7 +21,7 @@ import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
 import store from "./store/index.js";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import HomeLayout from "./landingPage/pages/HomeLayout.jsx";
 import HomePage from "./landingPage/pages/HomePage.jsx";
 import "./index.css";
@@ -30,6 +30,7 @@ import SignupPage from "./landingPage/pages/SignupPage.jsx";
 import LinkBanks from "./pages/bank/LinkBanks.jsx";
 import CreateDeposit from "./components/bank/CreateDeposit.jsx";
 import CreateWithdraw from "./components/bank/CreateWithdraw.jsx";
+import BankCalender from "./pages/bank/BankCalender.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -51,6 +52,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="deposit" element={<DepositPage />} />
               <Route path="withdraw" element={<Withdraw />} />
               <Route path="linkBank" element={<LinkBanks />} />
+              <Route path="calender" element={<BankCalender />} />
 
               <Route path="deposit/new" element={<CreateDeposit />} />
 

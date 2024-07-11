@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bankDetails } from "../../slices/slice/bank/BankSlice";
 import { userDetails } from "../../slices/slice/auth/AuthSlice";
 import { useLinkUserBankMutation } from "../../slices/api/bank/UserBankApi";
+import PropTypes from "prop-types";
 import {
   storeUserBankData,
   userbankDetails,
@@ -82,6 +83,14 @@ function LinkBanks() {
 export default LinkBanks;
 
 class LinkBankWrapped extends Component {
+  static propTypes = {
+    data: PropTypes.array,
+    handleSubmit: PropTypes.func,
+    handleInputChange: PropTypes.func,
+    userProfile: PropTypes.object,
+    isLoading: PropTypes.bool,
+    err: PropTypes.string,
+  };
   render() {
     const {
       data,
