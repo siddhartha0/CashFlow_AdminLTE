@@ -3,10 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import {
-  useGetAllTransactionQuery,
-  useGetTransactionByMonthQuery,
-} from "../../slices/api/transaction/TransactionApi";
+import { useGetAllTransactionQuery } from "../../slices/api/transaction/TransactionApi";
 import "./CalendarPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -19,22 +16,24 @@ const CalendarPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useGetAllTransactionQuery();
-  const { data: monthly } = useGetTransactionByMonthQuery(2024);
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
       const transformedEvents = data?.entities.map((item) => ({
         id: item.id,
-        title: `${item.remarks}`,
+        title: `${item.source}`,
         start: new Date(item.issuedAt),
-        className: item.type === "withdraw" ? "bg-danger" : "bg-warning",
+        className:
+          item.type === "withdraw"
+            ? "bg-danger"
+            : item.type === "deposit"
+            ? "bg-warning"
+            : "bg-primary",
       }));
 
       const upcomingTrans = data.entities.filter(
         (item) => new Date(item.issuedAt) > new Date()
       );
-
-      // console.log("Monthly: ", monthly);
 
       setEvents(transformedEvents);
       setUpcomingTransactions(upcomingTrans);
@@ -97,7 +96,7 @@ const CalendarPage = () => {
                     key={index}
                     className={`list-group-item ${transaction.type}`}
                   >
-                    {transaction.remarks} -{" "}
+                    {transaction.source} -{" "}
                     {transaction.type.charAt(0).toUpperCase() +
                       transaction.type.slice(1)}
                     <br />
@@ -142,7 +141,7 @@ const CalendarPage = () => {
                       key={index}
                       className={`list-group-item ${transaction.type}`}
                     >
-                      {transaction.remarks} -{" "}
+                      {transaction.source} -{" "}
                       {transaction.type.charAt(0).toUpperCase() +
                         transaction.type.slice(1)}
                       <br />

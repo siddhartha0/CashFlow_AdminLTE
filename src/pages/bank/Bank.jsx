@@ -8,69 +8,37 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
 import {
-  useGetDepositOfUserBankByIdQuery,
-  useGetWithdrawsOfUserBankByIdQuery,
+  useGetTransactionByMonthQuery,
+  useGetTransactionByUserBankIdQuery,
 } from "../../slices/api/transaction/TransactionApi";
 
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
-  const [bankDepositHistory, setBankDepositHistory] = useState([]);
-  const [bankWithdrawHistory, setBankWithdrawHistory] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [monthly, setMonthly] = useState([]);
 
-  const { data: depositHistory, isLoading: depositLoading } =
-    useGetDepositOfUserBankByIdQuery(getSelectedBank?.id);
-  const { data: withdrawHistory, isLoading: withdrawLoading } =
-    useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
-
-  const selectBank = (bank = userbank[0]) => {
-    setSelectedBank(bank);
-    let depositsData = depositHistory?.entities ?? null;
-    console.log(depositsData);
-    const storeBoth = {
-      bankName: bank.bankName,
-      accountId: bank.accountId,
-      currentAmount: bank.currentAmount,
-    };
-    let bank_and_deposit_data = [];
-
-    depositsData?.map((data) => {
-      const mix = {
-        ...data,
-        ...storeBoth,
-      }));
-      setBankDepositHistory(bank_and_deposit_data);
-    }
-  }, [depositHistory, getSelectedBank]);
+  const { data: monthlyTransaction, isLoading: monthlyTransactionLoading } =
+    useGetTransactionByMonthQuery({ year: 2024 });
+  const { data: transaction, isLoading: transactionLoading } =
+    useGetTransactionByUserBankIdQuery({ id: getSelectedBank.id });
 
   useEffect(() => {
-    if (withdrawHistory?.entities) {
-      const withdrawalsData = withdrawHistory.entities;
-      const storeBoth = {
-        bankName: getSelectedBank.bankName,
-        accountId: getSelectedBank.accountId,
-        currentAmount: getSelectedBank.currentAmount,
-      };
-      const bank_and_withdraw_data = withdrawalsData.map((data) => ({
-        ...data,
-        ...storeBoth,
-      }));
-      setBankWithdrawHistory(bank_and_withdraw_data);
+    setMonthly(monthlyTransaction);
+    if (transaction?.entities) {
+      setTransactions(transaction?.entities);
     }
-  }, [withdrawHistory, getSelectedBank]);
+  }, [monthlyTransaction, transaction]);
 
   const selectBank = (bank) => {
     setSelectedBank(bank);
   };
 
   const getTotalTransaction = (type) => {
-    const transactions =
-      type === "deposit"
-        ? bankDepositHistory
-        : type === "withdraw"
-        ? bankWithdrawHistory
-        : [];
-    const total = transactions.reduce(
+    const filteredTransactions = transactions.filter(
+      (transaction) => transaction.type === type
+    );
+    const total = filteredTransactions.reduce(
       (sum, transaction) => sum + transaction.amount,
       0
     );
@@ -81,35 +49,36 @@ export default function Bank() {
     <BankWrapped
       userbank={userbank}
       selectBank={selectBank}
-      depositLoading={depositLoading}
-      withdrawLoading={withdrawLoading}
       getSelectedBank={getSelectedBank}
-      bankDepositHistory={bankDepositHistory}
-      bankWithdrawHistory={bankWithdrawHistory}
-      getTotalTransaction={getTotalTransaction}
+      getTotalTransaction={getTotalTransaction} // Pass the function as a prop
+      monthlyTransaction={monthly}
+      transactions={transactions}
+      transactionLoading={transactionLoading}
     />
   );
 }
 
 class BankWrapped extends React.Component {
   static propTypes = {
-    userbank: PropTypes.object,
+    userbank: PropTypes.array,
     selectBank: PropTypes.func,
-    depositLoading: PropTypes.bool,
-    bankDepositHistory: PropTypes.array,
+    getSelectedBank: PropTypes.object,
+    monthlyTransaction: PropTypes.array,
+    getTotalTransaction: PropTypes.func,
+    transactions: PropTypes.array,
+    transactionLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
-    $(function () {
-      $("#sortable").sortable();
-    });
-  }
-
   render() {
-    const { userbank, selectBank, depositLoading, bankDepositHistory } =
-      this.props;
-
-    console.log("Transaction:", bankWithdrawHistory);
+    const {
+      userbank,
+      selectBank,
+      depositLoading,
+      getSelectedBank,
+      getTotalTransaction,
+      transactions,
+      transactionLoading,
+    } = this.props;
 
     const totalList = [
       {
@@ -134,27 +103,27 @@ class BankWrapped extends React.Component {
 
     return (
       <div className="bank p-3">
-        {depositLoading && <div>Data is loading....</div>}
-        <div className="row mb-2">
+        {transactionLoading && <div>Data is loading....</div>}
+        <div className="row mb-2 flex-nowrap">
           {userbank.map((bank) => (
             <div
-              className="custom-card p-3 mr-4"
+              className={
+                "custom-card p-3 mr-4" +
+                (bank === getSelectedBank ? " bg-primary" : "")
+              }
               key={bank.bankName}
               onClick={() => selectBank(bank)}
             >
               <header className="text-bold">{bank.bankName}</header>
-              <p className="text-success mt-1">Rs. {bank.currentAmount}</p>
             </div>
           ))}
         </div>
         <div className="row">
           <div className="col-lg-3">
             <TotalView
-              data={
-                getTotalTransaction("deposit") + getTotalTransaction("withdraw")
-              }
+              data={getSelectedBank.currentAmount}
               title="Bank Balance"
-              color="primary"
+              color="dark"
               icon="fa-solid fa-building-columns"
               design="info-box"
             />
@@ -177,17 +146,15 @@ class BankWrapped extends React.Component {
               <BarChart />
             </div>
           </div>
-          <div className="col-lg-6">
-            <div className="custom-card">
-              <BankList
-                transactions={bankDepositHistory.concat(bankWithdrawHistory)}
-              />
+          {/* <div className="col-lg-6">
+            <div className="custom-card p-3">
+              <BankList transactions={transactions} />
             </div>
-          </div>
+          </div> */}
           <div className="col-lg-6">
             <div className="custom-card p-3">
               <TransactionChart
-                transactions={bankDepositHistory.concat(bankWithdrawHistory)}
+                transactions={transactions}
                 type="all"
                 title="Remarks"
               />
@@ -195,15 +162,15 @@ class BankWrapped extends React.Component {
           </div>
           <div className="col-lg-6">
             <TransactionTable
-              transactions={bankDepositHistory}
-              status="deposit"
+              transactions={transactions}
+              type="deposit"
               title="Deposit History"
             />
           </div>
           <div className="col-lg-6">
             <TransactionTable
-              transactions={bankWithdrawHistory}
-              status="withdraw"
+              transactions={transactions}
+              type="withdraw"
               title="Withdraw History"
             />
           </div>

@@ -15,12 +15,12 @@ class TransactionTable extends Component {
 
   static propTypes = {
     transactions: PropTypes.array,
-    status: PropTypes.string,
+    type: PropTypes.string,
     title: PropTypes.string,
   };
 
   getFilteredTransactions = () => {
-    const { transactions, status } = this.props;
+    const { transactions, type } = this.props;
     const { selectedOption } = this.state;
 
     const today = new Date();
@@ -28,7 +28,7 @@ class TransactionTable extends Component {
     yesterday.setDate(today.getDate() - 1);
 
     return transactions.filter((transaction) => {
-      const transactionDate = new Date(transaction.date);
+      const transactionDate = new Date(transaction.issuedAt);
       const isToday = transactionDate.toDateString() === today.toDateString();
       const isYesterday =
         transactionDate.toDateString() === yesterday.toDateString();
@@ -36,7 +36,7 @@ class TransactionTable extends Component {
         (selectedOption === "option1" && isToday) ||
         (selectedOption === "option2" && isYesterday);
 
-      return isSelectedDate && transaction.status === status;
+      return isSelectedDate && transaction.type === type;
     });
   };
 
@@ -46,11 +46,10 @@ class TransactionTable extends Component {
     const filteredTransactions = this.getFilteredTransactions();
 
     const headers = [
-      { key: "account", label: "Account" },
-      { key: "bank", label: "Bank" },
+      { key: "toBankAccountId", label: "Account" },
       { key: "amount", label: "Amount" },
       { key: "type", label: "Type" },
-      { key: "remarks", label: "Remarks" },
+      { key: "source", label: "Source" },
     ];
 
     return (
