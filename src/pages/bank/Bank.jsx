@@ -6,28 +6,21 @@ import TransactionChart from "../../components/bank/TransactionChart";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
-import {
-  useGetTransactionByMonthQuery,
-  useGetTransactionByUserBankIdQuery,
-} from "../../slices/api/transaction/TransactionApi";
+import { useGetTransactionByUserBankIdQuery } from "../../slices/api/transaction/TransactionApi";
 
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
   const [transactions, setTransactions] = useState([]);
-  const [monthly, setMonthly] = useState([]);
 
-  const { data: monthlyTransaction, isLoading: monthlyTransactionLoading } =
-    useGetTransactionByMonthQuery({ year: 2024 });
   const { data: transaction, isLoading: transactionLoading } =
     useGetTransactionByUserBankIdQuery({ id: getSelectedBank.id });
 
   useEffect(() => {
-    setMonthly(monthlyTransaction);
     if (transaction?.entities) {
       setTransactions(transaction?.entities);
     }
-  }, [monthlyTransaction, transaction]);
+  }, [transaction]);
 
   const selectBank = (bank) => {
     setSelectedBank(bank);
@@ -50,7 +43,6 @@ export default function Bank() {
       selectBank={selectBank}
       getSelectedBank={getSelectedBank}
       getTotalTransaction={getTotalTransaction} // Pass the function as a prop
-      monthlyTransaction={monthly}
       transactions={transactions}
       transactionLoading={transactionLoading}
     />
@@ -68,11 +60,16 @@ class BankWrapped extends React.Component {
     transactionLoading: PropTypes.bool,
   };
 
+  componentDidMount() {
+    $(function () {
+      $("#sortable").sortable();
+    });
+  }
+
   render() {
     const {
       userbank,
       selectBank,
-      depositLoading,
       getSelectedBank,
       getTotalTransaction,
       transactions,
@@ -139,10 +136,10 @@ class BankWrapped extends React.Component {
             </div>
           ))}
         </div>
-        <div className="row">
+        <div className="row" id="sortable">
           <div className="col-lg-12">
             <div className="custom-card p-3">
-              <BarChart />
+              <BarChart bankId={getSelectedBank.id} year={2024} />
             </div>
           </div>
           {/* <div className="col-lg-6">

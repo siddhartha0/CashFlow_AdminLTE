@@ -55,6 +55,26 @@ const TransactionApi = MainApi.injectEndpoints({
       }),
     }),
 
+    getDepositOfUserBankById: builder.query({
+      query: (userBankid) => ({
+        url: `${Transaction}/getDepositOfUserBankById/${userBankid}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
+    getWithdrawsOfUserBankById: builder.query({
+      query: (userBankid) => ({
+        url: `${Transaction}/getWithdrawOfUserBankById/${userBankid}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
     getTransactionByUserBankId: builder.query({
       query: ({ id }) => ({
         url: `${Transaction}/userBank`,
@@ -68,9 +88,9 @@ const TransactionApi = MainApi.injectEndpoints({
     }),
 
     getTransactionByMonth: builder.query({
-      query: ({ year }) => ({
+      query: ({ year, bankId }) => ({
         url: `${Transaction}/monthwise`,
-        params: { year },
+        params: { year, bankId }, // Correctly passing year and bankId as query parameters
         method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
