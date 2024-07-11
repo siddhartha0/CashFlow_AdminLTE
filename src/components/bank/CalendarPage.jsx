@@ -3,7 +3,10 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { useGetAllTransactionQuery } from "../../slices/api/transaction/TransactionApi";
+import {
+  useGetAllTransactionQuery,
+  useGetTransactionByMonthQuery,
+} from "../../slices/api/transaction/TransactionApi";
 import "./CalendarPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +19,7 @@ const CalendarPage = () => {
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useGetAllTransactionQuery();
+  const { data: monthly } = useGetTransactionByMonthQuery(2024);
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
