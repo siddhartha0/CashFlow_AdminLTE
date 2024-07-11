@@ -21,7 +21,7 @@ import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
 import store from "./store/index.js";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import HomeLayout from "./landingPage/pages/HomeLayout.jsx";
 import HomePage from "./landingPage/pages/HomePage.jsx";
 import "./index.css";

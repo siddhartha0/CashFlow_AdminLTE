@@ -7,40 +7,41 @@ import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import { useSelector } from "react-redux";
-import { userDetails } from "../../slices/slice/auth/AuthSlice";
 import PropTypes from "prop-types";
-import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
-import { userWalletDetail } from "../../slices/slice/wallet/UserWalletSlice";
-import { useGetDepositOfUserBankByIdQuery } from "../../slices/api/transaction/TransactionApi";
 import HeadController from "../../behindTheScene/helper/HeadController";
+import TransactionDataHandler from "../../behindTheScene/helper/TransactionDataHandler";
 
 export default function Dashboard() {
   const {
     user_data,
     user_Bank_Data,
     user_wallet_Data,
-    transactionHistory,
     loadTime_DataSession,
-    transactionFetchError,
     transactionFetchLoading,
+    depositHistory,
+    withdrawHistory,
+    totalDeposits,
+    totalWithdraw,
   } = HeadController();
 
   const [userLinkAccount, setUserLinkAccount] = useState();
-  const [selectedPlatform, setSelectedPatform] = useState(
-    loadTime_DataSession ?? null
-  );
-
-  const { data: depositHistory, isLoading: depositLoading } =
-    useGetDepositOfUserBankByIdQuery(selectedPlatform?.id);
+  const init = {
+    ...loadTime_DataSession,
+    title: "bank",
+  };
+  const [selectedPlatform, setSelectedPatform] = useState(init ?? null);
+  const {
+    bankdepositHistory,
+    bankdepositLoading,
+    bankwithdrawHistory,
+    bankwithdrawLoading,
+  } = TransactionDataHandler(selectedPlatform);
 
   const selectPlatform = (e) => {
     const value = e.target.value;
     const getSelectedData = userLinkAccount?.filter(
       (account) => account.value === value
     );
-
-    // console.log(getSelectedData[0])
     setSelectedPatform(getSelectedData[0]);
   };
 
@@ -48,6 +49,7 @@ export default function Dashboard() {
     let combo = [];
     if (user_Bank_Data) {
       user_Bank_Data?.map((bank, i) => {
+        console.log(bank);
         const toStore = {
           id: bank.id,
           title: `Bank ${i + 1}`,
@@ -77,7 +79,14 @@ export default function Dashboard() {
       selectPlatform={selectPlatform}
       selectedPlatform={selectedPlatform ?? ""}
       depositHistory={depositHistory ?? null}
-      depositLoading={depositLoading}
+      depositLoading={transactionFetchLoading}
+      withdrawHistory={withdrawHistory}
+      totalDeposits={totalDeposits}
+      totalWithdraw={totalWithdraw}
+      bankdepositHistory={bankdepositHistory}
+      bankdepositLoading={bankdepositLoading}
+      bankwithdrawHistory={bankwithdrawHistory}
+      bankwithdrawLoading={bankwithdrawLoading}
     />
   );
 }
@@ -90,6 +99,9 @@ class DashBoardWrapped extends Component {
     selectedPlatform: PropTypes.object,
     depositHistory: PropTypes.array,
     depositLoading: PropTypes.bool,
+    withdrawHistory: PropTypes.array,
+    totalDeposits: PropTypes.number,
+    totalWithdraw: PropTypes.number,
   };
 
   constructor() {
@@ -171,11 +183,15 @@ class DashBoardWrapped extends Component {
       userLinkAccount,
       selectPlatform,
       selectedPlatform,
-      depositHistory,
-      depositLoading,
+      totalDeposits,
+      totalWithdraw,
+      bankdepositHistory,
+      bankdepositLoading,
+      bankwithdrawHistory,
+      bankwithdrawLoading,
     } = this.props;
 
-    console.log(depositHistory);
+    console.log(selectedPlatform);
 
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
@@ -249,7 +265,6 @@ class DashBoardWrapped extends Component {
                 "
                   style={{
                     maxWidth: "480px",
-                    //   marginTop: "20px",
                     overflowX: "scroll",
                     scrollbarWidth: "none",
                   }}
@@ -315,6 +330,7 @@ class DashBoardWrapped extends Component {
               style={{
                 height: "640px",
                 overflowY: "scroll",
+                scrollbarWidth: "none",
               }}
             >
               <div className="col-md-5 ">
@@ -328,7 +344,13 @@ class DashBoardWrapped extends Component {
                 <div className="mt-4">
                   <IncomeExpenseHistory
                     label={this.state.transactionType}
-                    header={this.state.selectedPlatform}
+                    totalDeposits={totalDeposits}
+                    totalWithdraw={totalWithdraw}
+                    header={selectedPlatform}
+                    bankdepositHistory={bankdepositHistory}
+                    bankdepositLoading={bankdepositLoading}
+                    bankwithdrawHistory={bankwithdrawHistory}
+                    bankwithdrawLoading={bankwithdrawLoading}
                   />
                 </div>
               </div>

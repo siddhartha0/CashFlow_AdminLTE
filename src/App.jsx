@@ -4,71 +4,68 @@ import { Outlet, useNavigate } from "react-router-dom";
 import CashFlow from "./behindTheScene/CashFlow";
 import Header from "./components/common/header/Header";
 import NewSideBar from "./components/common/sidebar/NewSideBar";
-import { useDispatch, useSelector } from "react-redux";
-import { userToken } from "./slices/slice/auth/AuthSlice";
-import { useGetAllBanksQuery } from "./slices/api/admin/finance/BankApi";
-import { useGetAllWalletQuery } from "./slices/api/admin/finance/WalletApi";
-import LocalData from "./behindTheScene/helper/LocalData";
-import { storeBankData } from "./slices/slice/bank/BankSlice";
-import { useGetAllLinkBankQuery } from "./slices/api/bank/UserBankApi";
-import { useGetUsersAllWalletQuery } from "./slices/api/wallet/UserWalletApi";
-
-import { storeWalletData } from "./slices/slice/wallet/WalletSlice";
+import { useDispatch } from "react-redux";
+import LocalStorageInitData from "./behindTheScene/helper/LocalStorageInitData";
 import { storeUserWalletData } from "./slices/slice/wallet/UserWalletSlice";
+import { storeBankData } from "./slices/slice/bank/BankSlice";
+import { storeWalletData } from "./slices/slice/wallet/WalletSlice";
 import { storeUserBankData } from "./slices/slice/bank/UserBankSlice";
 
 export default function App() {
-  const token = useSelector(userToken);
   const nav = useNavigate();
   const dispatch = useDispatch();
-  const { data: allBankData } = useGetAllBanksQuery();
-  const { data: allWalletData } = useGetAllWalletQuery();
-  const { data: userBank } = useGetAllLinkBankQuery();
-  const { data: userWallet } = useGetUsersAllWalletQuery();
+
+  const {
+    allBankData,
+    allWalletData,
+    token,
+    userBank,
+    userWallet,
+    allbankFetchError,
+    allbankFetchLoading,
+    allwalletFetchError,
+    allwalletFetchLoading,
+    userbankFetchError,
+    userbankFetchLoading,
+    userwalletFetchError,
+    userwalletFetchLoading,
+  } = LocalStorageInitData();
 
   useEffect(() => {
-    const bankDataExists = LocalData.checkStorageExists("bank");
-
-    const userBankDataExists = LocalData.checkStorageExists("userbank");
-
-    const walletDataExists = LocalData.checkStorageExists("wallet");
-
-    const userWalletDataExists = LocalData.checkStorageExists("userbank");
-
     if (!token) {
       nav("/");
     }
 
-    if (!walletDataExists) {
-      if (allWalletData) {
-        dispatch(storeWalletData(allWalletData?.entities));
-      }
-      // dispatch();
+    if (!allbankFetchLoading && !allbankFetchError) {
+      dispatch(storeBankData(allBankData?.entities ?? null));
     }
 
-    if (!userWalletDataExists) {
-      // dispatch();
-      if (userWallet) {
-        dispatch(storeUserWalletData(userWallet));
-      }
+    if (!allwalletFetchLoading && !allwalletFetchError) {
+      dispatch(storeWalletData(allWalletData?.entities ?? null));
     }
 
-    if (!bankDataExists) {
-      if (allBankData)
-        if (allBankData) dispatch(storeBankData(allBankData?.entities));
+    if (!userbankFetchLoading && !userbankFetchError) {
+      dispatch(storeUserBankData(userBank ?? null));
     }
-    if (!userBankDataExists) {
-      if (userBank) dispatch(storeUserBankData(userBank));
+    if (!userwalletFetchLoading && !userwalletFetchError) {
+      dispatch(storeUserWalletData(userWallet ?? null));
     }
   }, [
-    token,
-    nav,
-    dispatch,
-    allBankData?.entities,
-    userBank,
-    allWalletData,
-    userWallet,
     allBankData,
+    allWalletData,
+    allbankFetchError,
+    allbankFetchLoading,
+    allwalletFetchError,
+    allwalletFetchLoading,
+    dispatch,
+    nav,
+    token,
+    userBank,
+    userWallet,
+    userbankFetchError,
+    userbankFetchLoading,
+    userwalletFetchError,
+    userwalletFetchLoading,
   ]);
   return <AppWrapped />;
 }
