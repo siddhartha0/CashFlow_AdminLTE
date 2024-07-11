@@ -91,44 +91,48 @@ class DynamicTable extends Component {
           )}
         </table>
 
-        <ul className="pagination justify-content-end mr-5">
-          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-            <a
-              className="page-link"
-              href="#"
-              onClick={(e) => this.handleNavigationClick(e, "prev")}
-            >
-              «
-            </a>
-          </li>
-          {pageNumbers.map((number) => (
+        {data.length > this.state.itemsPerPage && (
+          <ul className="pagination justify-content-end mr-5">
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <a
+                className="page-link"
+                href="#"
+                onClick={(e) => this.handleNavigationClick(e, "prev")}
+              >
+                «
+              </a>
+            </li>
+            {pageNumbers.map((number) => (
+              <li
+                className={`page-item ${
+                  currentPage === number ? "active" : ""
+                }`}
+                key={number}
+              >
+                <a
+                  className="page-link"
+                  id={number}
+                  onClick={(e) => this.handleClick(e)}
+                >
+                  {number}
+                </a>
+              </li>
+            ))}
             <li
-              className={`page-item ${currentPage === number ? "active" : ""}`}
-              key={number}
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
             >
               <a
                 className="page-link"
-                id={number}
-                onClick={(e) => this.handleClick(e)}
+                href="#"
+                onClick={(e) => this.handleNavigationClick(e, "next")}
               >
-                {number}
+                »
               </a>
             </li>
-          ))}
-          <li
-            className={`page-item ${
-              currentPage === totalPages ? "disabled" : ""
-            }`}
-          >
-            <a
-              className="page-link"
-              href="#"
-              onClick={(e) => this.handleNavigationClick(e, "next")}
-            >
-              »
-            </a>
-          </li>
-        </ul>
+          </ul>
+        )}
       </>
     );
   }

@@ -1,18 +1,28 @@
 import { Component } from "react";
-import BalanceStats from "../../components/Dashboard/BalanceStats";
+import BalanceStats from "../../components/Dashboard/stats/BalanceStats";
 import BalanceTrends from "../../components/Dashboard/BalanceTrends";
-import BalanceSummary from "../../components/Dashboard/BalanceSummary";
+import BalanceSummary from "../../components/Dashboard/balanceSummary/summary/BalanceSummary";
 import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickPlatform } from "../../const/PickPlatForm";
 import { PickDate } from "../../const/PickDate";
 import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
-import MoreOptionalAccordianModel from "../../const/widget_component_model/components/MoreOptionalAccordianModel";
-import Activities from "../../components/Dashboard/activities/Activities";
-// import { $ } from "jquery";
+import { useSelector } from "react-redux";
+import { userDetails } from "../../slices/slice/auth/AuthSlice";
+import PropTypes from "prop-types";
 
-export default class DashBoard extends Component {
+export default function Dashboard() {
+  const userDetail = useSelector(userDetails);
+
+  return <DashBoardWrapped userDetail={userDetail} />;
+}
+
+class DashBoardWrapped extends Component {
+  static propTypes = {
+    userDetail: PropTypes.object,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -20,10 +30,17 @@ export default class DashBoard extends Component {
       selectedPlatform: "Bank",
       selectedDate: "overall",
       transactionType: "income",
+      currentBankAmount: 0,
+      currentWalletAmount: 0,
+      id: 0,
+      bankEachMonthHistory: [],
+      walletEachDayHistory: [],
+      overAllSelected: true,
     };
 
     this.selectPlatform = this.selectPlatform.bind(this);
     this.pickDate = this.pickDate.bind(this);
+    this.selectMonth = this.selectMonth.bind(this);
     this.selectTransactionTypes = this.selectTransactionTypes.bind(this);
   }
 
@@ -57,9 +74,42 @@ export default class DashBoard extends Component {
     });
   }
 
+  selectMonth = (key) => {
+    const localvalue = JSON.parse(localStorage.getItem("dashboard"));
+    this.setState({
+      id: key,
+    });
+    if (key !== 0) {
+      this.setState({
+        overAllSelected: false,
+      });
+    }
+    if (key === 0) {
+      this.setState({
+        overAllSelected: true,
+      });
+    }
+    const bankAmount = localvalue.bankFullYearHistory;
+    const walletAmount = localvalue.walletFullYearHistory;
+
+    // console.log(this.localValue);
+
+    const getBank = bankAmount.filter((bank, i) => i + 1 === key);
+    const getWallet = walletAmount.filter((wallet, i) => i + 1 === key);
+
+    this.setState({
+      bankEachMonthHistory: getBank[0].eachDaysAmount,
+      walletEachDayHistory: getWallet[0].eachDaysAmount,
+      currentBankAmount: getBank[0].currentAmount,
+      currentWalletAmount: getWallet[0].currentAmount,
+    });
+  };
+
   render() {
+    const { userDetail } = this.props;
+
     return (
-      <div className="p-1 ml-3" id="dashboard_parentDiv">
+      <div className="p-1 ml-3 " id="dashboard_parentDiv">
         <div
           className="d-flex flex-column gap-4  text-black "
           // id="dashboard_Wrapper"
@@ -67,7 +117,7 @@ export default class DashBoard extends Component {
         >
           <div
             className=" d-flex justify-content-between"
-            // id="dashboard_header_ParentDiv"
+            id="dashboard_header_ParentDiv"
             // id="sortable"
           >
             <div
@@ -81,14 +131,14 @@ export default class DashBoard extends Component {
                   color: "#9B4078",
                 }}
               >
-                DashBoard
+                {userDetail?.username}
               </strong>
               <span id="Greeting" className="text-md">
                 {this.state.date.getHours() < 12
-                  ? "Good Morning !!"
+                  ? `Good Morning  !!`
                   : this.state.date.getHours() <= 18
-                  ? "Good Afternoon !!"
-                  : "Good Evening !!"}
+                  ? `Good Afternoon  !!`
+                  : `Good Evening  !!`}
               </span>
             </div>
 
@@ -105,7 +155,7 @@ export default class DashBoard extends Component {
           </div>
 
           <div className="d-flex flex-column" id="sortable">
-            <div className="row ">
+            <div className=" d-flex ">
               <div
                 className="d-flex flex-column"
                 style={{
@@ -113,20 +163,40 @@ export default class DashBoard extends Component {
                 }}
               >
                 <div
-                  className=" custom-card card"
+                  className=" custom-card  card"
                   style={{
                     width: "100%",
                   }}
                 >
-                  <BalanceStats pickDate={this.state.selectedDate} />
+                  <BalanceStats
+                    pickDate={this.state.selectedDate}
+                    currentBankAmount={this.state.currentBankAmount}
+                    currentWalletAmount={this.state.currentWalletAmount}
+                    overAllSelected={this.state.overAllSelected}
+                  />
                 </div>
-                <div className=" d-flex p-3 mt-2 custom-card card">
+                <div
+                  className=" d-flex p-3 mt-2  custom-card  
+                "
+                  style={{
+                    maxWidth: "480px",
+                    //   marginTop: "20px",
+                    overflowX: "scroll",
+                    scrollbarWidth: "none",
+                  }}
+                >
                   <BalanceTrends />
                 </div>
               </div>
 
-              <div className="container card col-md-6 p-4 text-capitalize custom-card ">
-                <BalanceSummary />
+              <div className="container card col-md-6  p-4 text-capitalize custom-card ">
+                <BalanceSummary
+                  selectMonth={this.selectMonth}
+                  currentId={this.state.id}
+                  bankEachDaysAmount={this.state.bankEachMonthHistory}
+                  walletEachDayAmount={this.state.walletEachDayHistory}
+                  overAllSelected={this.state.id !== 0 ? false : true}
+                />
               </div>
             </div>
           </div>
@@ -146,7 +216,12 @@ export default class DashBoard extends Component {
                 />
               </div>
               <div className=" container mb-2 mt-4 text-capitalize ">
-                <IncomeExpenseStats label={this.state.selectedPlatform} />
+                <IncomeExpenseStats
+                  label={this.state.selectedPlatform}
+                  bankOneMonthHistory={this.state.bankEachMonthHistory}
+                  walletOneMonthHistory={this.state.walletEachDayHistory}
+                  overAllSelected={this.state.overAllSelected}
+                />
               </div>
             </div>
 
@@ -177,11 +252,11 @@ export default class DashBoard extends Component {
           </section>
 
           <div className=" p-3 mt-3 connectedSortable" id="sortable">
-            <MoreOptionalAccordianModel title="Activities">
+            {/* <MoreOptionalAccordianModel title="Activities">
               <div className=" d-flex  flex-column   ">
                 <Activities />
               </div>
-            </MoreOptionalAccordianModel>
+            </MoreOptionalAccordianModel> */}
           </div>
         </div>
       </div>

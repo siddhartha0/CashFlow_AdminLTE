@@ -48,7 +48,7 @@ class TransactionChart extends Component {
     return (
       <div>
         <div className="d-flex justify-content-between">
-          <h3>{title}</h3>
+          <h3 className="card-title">{title}</h3>
           {type === "all" && (
             <div className="d-flex">
               <select

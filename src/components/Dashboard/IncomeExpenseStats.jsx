@@ -10,19 +10,31 @@ export default class IncomeExpenseStats extends Component {
   }
   static propTypes = {
     label: PropTypes.string,
+    currentMonth: PropTypes.string,
+    overAllSelected: PropTypes.bool,
   };
 
   render() {
-    const { label } = this.props;
+    const {
+      label,
+      bankOneMonthHistory,
+      overAllSelected,
+      walletOneMonthHistory,
+    } = this.props;
+
     const localValue = JSON.parse(localStorage.getItem("dashboard"));
+
     const cashFlow = new Balance();
     label === "Bank"
       ? cashFlow.calculate_Income_Expense(localValue.bankhistory, "bank")
       : cashFlow.calculate_Income_Expense(localValue.walletHistory, "wallet");
+
+    // console.log(oneMonthExpense);
     const bankColors = new PickColors()
       .income_Expense_Dashboard_BANK_Data_Colors;
     const walletColors = new PickColors()
       .income_Expense_Dashboard_WALLET_Data_Colors;
+
     return (
       <div className="d-flex flex-column  ">
         <div>
