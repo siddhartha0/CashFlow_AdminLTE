@@ -30,7 +30,6 @@ export default function Bank() {
   const selectBank = (bank = userbank[0]) => {
     setSelectedBank(bank);
     let depositsData = depositHistory?.entities ?? null;
-    console.log(depositsData);
     const storeBoth = {
       bankName: bank.bankName,
       accountId: bank.accountId,
