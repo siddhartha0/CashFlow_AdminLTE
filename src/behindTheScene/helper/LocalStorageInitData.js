@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useGetAllBanksQuery } from "../../slices/api/admin/finance/BankApi";
 import { useGetAllWalletQuery } from "../../slices/api/admin/finance/WalletApi";
 import { useGetAllLinkBankQuery } from "../../slices/api/bank/UserBankApi";

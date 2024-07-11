@@ -20,7 +20,7 @@ export default class TransactionHistory extends Component {
       depositHistory,
       withdrawHistory,
     } = this.props;
-
+    console.log(depositHistory);
     return (
       <div>
         {label === "income" && (
@@ -35,8 +35,8 @@ export default class TransactionHistory extends Component {
 
             <div className="d-flex flex-column mt-5">
               {depositHistory ? (
-                depositHistory?.map((source) => (
-                  <div key={source.source} className="d-flex my-2 ">
+                depositHistory?.map((source, i) => (
+                  <div key={source.source + i} className="d-flex my-2 ">
                     <ColorBarModel
                       title={source?.source ?? "others"}
                       totalAmount={incomeAmount ?? 0}
@@ -63,8 +63,8 @@ export default class TransactionHistory extends Component {
 
             <div className="d-flex flex-column mt-5">
               {withdrawHistory ? (
-                withdrawHistory?.map((source) => (
-                  <div key={source.source} className="d-flex my-2">
+                withdrawHistory?.map((source, i) => (
+                  <div key={source.source + i} className="d-flex my-2">
                     <ColorBarModel
                       title={source.source}
                       totalAmount={expenseAmount}

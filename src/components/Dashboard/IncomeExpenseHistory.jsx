@@ -9,7 +9,7 @@ export default class IncomeExpenseHistory extends Component {
     header: PropTypes.string,
     bankdepositHistory: PropTypes.array,
     bankdepositLoading: PropTypes.bool,
-    bankwithdrawHistor: PropTypes.array,
+    bankwithdrawHistory: PropTypes.array,
     bankwithdrawLoading: PropTypes.array,
   };
 

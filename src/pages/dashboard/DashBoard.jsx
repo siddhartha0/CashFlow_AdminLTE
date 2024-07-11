@@ -101,6 +101,10 @@ class DashBoardWrapped extends Component {
     withdrawHistory: PropTypes.array,
     totalDeposits: PropTypes.number,
     totalWithdraw: PropTypes.number,
+    bankdepositHistory: PropTypes.array,
+    bankdepositLoading: PropTypes.bool,
+    bankwithdrawHistory: PropTypes.array,
+    bankwithdrawLoading: PropTypes.bool,
   };
 
   constructor() {

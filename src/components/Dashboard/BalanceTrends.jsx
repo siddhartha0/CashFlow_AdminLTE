@@ -53,7 +53,8 @@ class BalanceTrendsWrapped extends Component {
 
         <div className="d-flex justify-content-between overflow-x-scroll mt-4">
           <div className="d-flex   ">
-            {userbank.length &&
+            {userbank &&
+              userbank?.length &&
               userbank?.map((bankDetails) => (
                 <div
                   className="d-flex
@@ -84,7 +85,8 @@ class BalanceTrendsWrapped extends Component {
                 </div>
               ))}
 
-            {userwallet.length &&
+            {userwallet &&
+              userwallet.length &&
               userbank?.map((walletDetails) => (
                 <div
                   className="d-flex  justify-content-lg-between  mr-4"
@@ -114,25 +116,42 @@ class BalanceTrendsWrapped extends Component {
                 </div>
               ))}
 
-            <div
-              style={{
-                minWidth: "120px",
-              }}
-            >
-              <DisplayTrends
-                icon={
-                  <TbView360
-                    className="text-xl place-self-start "
-                    style={{
-                      color: "#9B4078",
-                    }}
-                  />
-                }
-                status={overallStatus}
-                trend={overallTrend}
-                label="Overall"
-              />
-            </div>
+            {userbank &&
+              !userbank.length &&
+              userwallet &&
+              !userwallet.length && (
+                <div
+                  className="text-black  text-md  "
+                  style={{
+                    minWidth: "15rem",
+                  }}
+                >
+                  No data to render
+                </div>
+              )}
+
+            {((userbank && userbank.length) ||
+              (userwallet && userwallet.length)) && (
+              <div
+                style={{
+                  minWidth: "120px",
+                }}
+              >
+                <DisplayTrends
+                  icon={
+                    <TbView360
+                      className="text-xl place-self-start "
+                      style={{
+                        color: "#9B4078",
+                      }}
+                    />
+                  }
+                  status={overallStatus}
+                  trend={overallTrend}
+                  label="Overall"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import TransactionTable from "../../components/bank/TransactionTable";
 import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
-import BankList from "../../components/bank/BankList";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
