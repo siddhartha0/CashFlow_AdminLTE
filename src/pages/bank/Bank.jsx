@@ -23,15 +23,19 @@ export default function Bank() {
   const { data: withdrawHistory, isLoading: withdrawLoading } =
     useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
 
-  useEffect(() => {
-    if (depositHistory?.entities) {
-      const depositsData = depositHistory.entities;
-      const storeBoth = {
-        bankName: getSelectedBank.bankName,
-        accountId: getSelectedBank.accountId,
-        currentAmount: getSelectedBank.currentAmount,
-      };
-      const bank_and_deposit_data = depositsData.map((data) => ({
+  const selectBank = (bank = userbank[0]) => {
+    setSelectedBank(bank);
+    let depositsData = depositHistory?.entities ?? null;
+    console.log(depositsData);
+    const storeBoth = {
+      bankName: bank.bankName,
+      accountId: bank.accountId,
+      currentAmount: bank.currentAmount,
+    };
+    let bank_and_deposit_data = [];
+
+    depositsData?.map((data) => {
+      const mix = {
         ...data,
         ...storeBoth,
       }));
@@ -89,27 +93,21 @@ export default function Bank() {
 
 class BankWrapped extends React.Component {
   static propTypes = {
-    userbank: PropTypes.array.isRequired,
-    selectBank: PropTypes.func.isRequired,
-    depositLoading: PropTypes.bool.isRequired,
-    withdrawLoading: PropTypes.bool.isRequired,
-    getSelectedBank: PropTypes.object.isRequired,
-    bankDepositHistory: PropTypes.array.isRequired,
-    bankWithdrawHistory: PropTypes.array.isRequired,
-    getTotalTransaction: PropTypes.func.isRequired,
+    userbank: PropTypes.object,
+    selectBank: PropTypes.func,
+    depositLoading: PropTypes.bool,
+    bankDepositHistory: PropTypes.array,
   };
 
+  componentDidMount() {
+    $(function () {
+      $("#sortable").sortable();
+    });
+  }
+
   render() {
-    const {
-      userbank,
-      selectBank,
-      depositLoading,
-      withdrawLoading,
-      getSelectedBank,
-      bankDepositHistory,
-      bankWithdrawHistory,
-      getTotalTransaction,
-    } = this.props;
+    const { userbank, selectBank, depositLoading, bankDepositHistory } =
+      this.props;
 
     console.log("Transaction:", bankWithdrawHistory);
 
