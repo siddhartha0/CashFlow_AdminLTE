@@ -1,20 +1,20 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
+import { useGetTransactionByMonthQuery } from "../../../slices/api/transaction/TransactionApi";
 
-export default class SingleBarChart extends Component {
+class SingleBarChart extends Component {
   constructor(props) {
     super(props);
-    const { data, label, name } = this.props;
     this.state = {
       series: [
         {
-          name: name,
-          data: data,
+          name: "Deposit",
+          data: [],
         },
       ],
       options: {
         title: {
-          text: `Monthly Total ${name}`,
+          text: `Monthly Total Deposit`,
           floating: true,
           align: "left",
           style: {
@@ -44,9 +44,8 @@ export default class SingleBarChart extends Component {
             colors: ["#304758"],
           },
         },
-
         xaxis: {
-          categories: label,
+          categories: [],
           position: "bottom",
           axisBorder: {
             show: false,
@@ -88,6 +87,56 @@ export default class SingleBarChart extends Component {
     };
   }
 
+  componentDidMount() {
+    const { year, bankId } = this.props;
+    const {
+      data: monthlyTransaction,
+      error,
+      isLoading,
+    } = useGetTransactionByMonthQuery({ year, bankId });
+
+    if (monthlyTransaction) {
+      const months = monthlyTransaction.map((item) => {
+        const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        return monthNames[item.month - 1];
+      });
+
+      const depositAmounts = monthlyTransaction.map(
+        (item) => item.total_deposit_amount
+      );
+
+      this.setState({
+        series: [
+          {
+            name: "Deposit",
+            data: depositAmounts,
+          },
+        ],
+        options: {
+          ...this.state.options,
+          xaxis: {
+            ...this.state.options.xaxis,
+            categories: months,
+          },
+        },
+      });
+    }
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Error loading data</p>;
+  }
   render() {
     return (
       <div className="custom-card">
@@ -104,3 +153,5 @@ export default class SingleBarChart extends Component {
     );
   }
 }
+
+export default SingleBarChart;
