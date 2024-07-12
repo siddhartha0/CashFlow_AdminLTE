@@ -100,6 +100,12 @@ const RoutesPath = [
       },
     ],
   },
+  {
+    id: 6,
+    title: "Assets",
+    path: "/dashboard/asset",
+    icons: business,
+  },
 ];
 
 export default RoutesPath;

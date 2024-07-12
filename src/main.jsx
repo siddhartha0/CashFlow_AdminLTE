@@ -22,6 +22,9 @@ import WalletDeposit from "./pages/wallet/WalletDeposit.jsx";
 import { WalletTransfer } from "./pages/wallet/WalletTransfer.jsx";
 import { WalletWithdraw } from "./pages/wallet/WalletWithdraw.jsx";
 import store from "./store/index.js";
+import Asset from "./pages/asset/Asset.jsx";
+import CreateAsset from "./pages/asset/CreateAsset.jsx";
+import UpdateAsset from "./pages/asset/UpdateAsset.jsx";
 import { Provider } from "react-redux";
 import HomeLayout from "./landingPage/pages/HomeLayout.jsx";
 import HomePage from "./landingPage/pages/HomePage.jsx";
@@ -42,7 +45,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
           <Route path="/dashboard" element={<App />}>
             <Route index element={<DashBoard />} />
-
             <Route path="bank" element={<Banklayout />}>
               <Route index element={<Bank />} />
               <Route path="transfer" element={<Transfer />} />
@@ -51,16 +53,23 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="withdraw" element={<Withdraw />} />
               <Route path="withdraw/new" element={<CreateWithdraw />} />
             </Route>
-
             <Route path="wallet" element={<WalletLayout />}>
               <Route index element={<Wallet />} />
               <Route path="deposit" element={<WalletDeposit />} />
               <Route path="transfer" element={<WalletTransfer />} />
               <Route path="withdraw" element={<WalletWithdraw />} />
             </Route>
-
             <Route path="business" element={<Business />} />
-
+            <Route path="asset" element={<Asset />} />
+            <Route path="asset/new" element={<CreateAsset />} />{" "}
+            {/* Add this route */}
+            <Route path="asset/update/:id" element={<UpdateAsset />} />
+            <Route path="profile" element={<ProfileLayout />}>
+              <Route index element={<Profile />} />
+              <Route path="bank" element={<BankProfileDetails />} />
+              <Route path="wallet" element={<WalletProfileDetails />} />
+              <Route path="edit-profile" element={<EditProfile />} />
+            </Route>
             <Route path="profile" element={<ProfileLayout />}>
               <Route index element={<Profile />} />
               <Route path="bank" element={<BankProfileDetails />} />
