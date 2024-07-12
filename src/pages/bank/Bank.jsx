@@ -99,7 +99,7 @@ class BankWrapped extends React.Component {
 
     return (
       <div className="bank p-3">
-        {transactionLoading && <div>Data is loading....</div>}
+        {transactionLoading ?? <div>Data is loading....</div>}
         <div className="row mb-2 flex-nowrap">
           {userbank.map((bank) => (
             <div
