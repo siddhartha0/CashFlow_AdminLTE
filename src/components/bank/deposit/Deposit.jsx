@@ -143,15 +143,11 @@ class DepositWrapped extends Component {
 
           <div className="row">
             <div className="col-lg-6">
-              <SingleBarChart label={value.label} name={"Deposit"} />
+              <SingleBarChart name={"Deposit"} />
             </div>
 
             <div className="col-lg-6">
-              <SingleLineChart
-                data={value.bankhistory}
-                label={value.label}
-                name={"Deposit"}
-              />
+              <SingleLineChart name={"Deposit"} />
             </div>
             <div className="col-12 mt-4 card">
               <h2 className="text-center">Total Deposits</h2>
