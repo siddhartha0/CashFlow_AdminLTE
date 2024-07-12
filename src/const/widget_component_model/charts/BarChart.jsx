@@ -9,8 +9,6 @@ const BarChart = ({ year, bankId }) => {
     isLoading,
   } = useGetTransactionByMonthQuery({ year, bankId });
 
-  console.log(monthlyTransaction);
-
   const [chartData, setChartData] = useState({
     series: [
       { name: "Deposit", data: [] },

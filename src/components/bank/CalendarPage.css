@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+.modal {
+  overflow: auto;
+}
+
 .custom-card {
   width: 100%;
 }

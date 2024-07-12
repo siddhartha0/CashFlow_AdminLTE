@@ -17,7 +17,6 @@ class TransactionChart extends Component {
   getFilteredData = () => {
     const { selectedOption } = this.state;
     const filteredTransactions = this.filterTransactions(selectedOption);
-    console.log(filteredTransactions);
     const remarkAmounts = filteredTransactions.reduce((acc, transaction) => {
       acc[transaction.source] =
         (acc[transaction.source] || 0) + transaction.amount;
