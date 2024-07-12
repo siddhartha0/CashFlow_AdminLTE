@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -21,7 +21,7 @@ const CalendarPage = () => {
     if (!isLoading && !isError && data) {
       const transformedEvents = data?.entities.map((item) => ({
         id: item.id,
-        title: `${item.source}`,
+        title: `${item.source || item.remarks}`,
         start: new Date(item.issuedAt),
         className:
           item.type === "withdraw"

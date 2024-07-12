@@ -5,13 +5,18 @@ import {
 } from "../../slices/api/transaction/TransactionApi";
 
 const TransactionDataHandler = (selectedPlatform) => {
-  const { data: bankdepositHistory, isLoading: bankdepositLoading } =
-    useGetDepositOfUserBankByIdQuery(selectedPlatform?.id);
+  const {
+    data: bankdepositHistory,
+    isLoading: bankdepositLoading,
+    isError: bankdepositError,
+  } = useGetDepositOfUserBankByIdQuery(selectedPlatform?.id);
 
-  const { data: bankwithdrawHistory, isLoading: bankwithdrawLoading } =
-    useGetWithdrawsOfUserBankByIdQuery(selectedPlatform?.id);
+  const {
+    data: bankwithdrawHistory,
+    isLoading: bankwithdrawLoading,
+    isError: bankwithdrawError,
+  } = useGetWithdrawsOfUserBankByIdQuery(selectedPlatform?.id);
 
-  console.log(bankwithdrawHistory);
   const [userbankDepositsData, setuserbankDepositsData] = useState();
 
   const [depositTotalAmount, setDepositTotalAmount] = useState();
@@ -30,13 +35,17 @@ const TransactionDataHandler = (selectedPlatform) => {
         },
         {}
       );
-      setuserbankDepositsData(remarkAmounts);
+      bankdepositError
+        ? setuserbankDepositsData()
+        : setuserbankDepositsData(remarkAmounts);
 
       const totalDeposit = bankdepositHistory.entities.reduce(
         (sum, deposit) => sum + deposit.amount,
         0
       );
-      setDepositTotalAmount(totalDeposit);
+      bankdepositError
+        ? setDepositTotalAmount(0)
+        : setDepositTotalAmount(totalDeposit);
     }
 
     if (bankwithdrawHistory) {
@@ -48,16 +57,24 @@ const TransactionDataHandler = (selectedPlatform) => {
         },
         {}
       );
-
-      setuserbankWithdrawData(remarkAmounts);
+      bankwithdrawError
+        ? setuserbankWithdrawData()
+        : setuserbankWithdrawData(remarkAmounts);
 
       const totalWithdraw = bankwithdrawHistory.entities.reduce(
         (sum, Withdraw) => sum + Withdraw.amount,
         0
       );
-      setWithdrawTotalAmount(totalWithdraw);
+      bankwithdrawError
+        ? setWithdrawTotalAmount(0)
+        : setWithdrawTotalAmount(totalWithdraw);
     }
-  }, [bankdepositHistory, bankwithdrawHistory]);
+  }, [
+    bankdepositError,
+    bankdepositHistory,
+    bankwithdrawError,
+    bankwithdrawHistory,
+  ]);
 
   return {
     bankdepositHistory,

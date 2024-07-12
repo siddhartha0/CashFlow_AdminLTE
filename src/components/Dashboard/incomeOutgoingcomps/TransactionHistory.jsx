@@ -10,6 +10,7 @@ export default class TransactionHistory extends Component {
     expenseAmount: PropTypes.number,
     withdrawHistory: PropTypes.array,
     userbankDepositsData: PropTypes.object,
+    userbankWithdrawData: PropTypes.object,
   };
 
   render() {
@@ -17,12 +18,10 @@ export default class TransactionHistory extends Component {
       label,
       incomeAmount,
       expenseAmount,
-      withdrawHistory,
       userbankDepositsData,
       userbankWithdrawData,
     } = this.props;
 
-    console.log(userbankWithdrawData);
     const depositsSource = userbankDepositsData
       ? Object.keys(userbankDepositsData)
       : [];
@@ -67,14 +66,14 @@ export default class TransactionHistory extends Component {
         )}
         {label === "expense" && (
           <div>
-            {withdrawSource ? (
+            {userbankWithdrawData ? (
               <PieChartModel source={withdrawSource} amount={withdrawAmount} />
             ) : (
               <div className="text-black text-bold text-md">Empty!!!</div>
             )}
 
             <div className="d-flex flex-column mt-5">
-              {withdrawSource ? (
+              {userbankWithdrawData ? (
                 withdrawSource?.map((source, i) => (
                   <div key={source + i} className="d-flex my-2">
                     <ColorBarModel

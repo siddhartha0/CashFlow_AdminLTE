@@ -1,5 +1,4 @@
 import { Component } from "react";
-import Balance from "../../behindTheScene/balance/Balance";
 import PropTypes from "prop-types";
 import TransactionHistory from "./incomeOutgoingcomps/TransactionHistory";
 
