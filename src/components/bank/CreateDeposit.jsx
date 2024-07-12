@@ -13,6 +13,8 @@ export default function CreateDeposit() {
   const userBanks = useSelector(userbankDetails);
   const [createDeposit, { isLoading }] = useCreateTransactionMutation();
 
+  console.log(userBanks);
+
   const [depositTransaction, setDepositTransaction] = useState({
     cashType: "",
     chequeIssueDate: "",

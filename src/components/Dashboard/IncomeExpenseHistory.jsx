@@ -24,7 +24,7 @@ export default class IncomeExpenseHistory extends Component {
       userbankDepositsData,
       userbankWithdrawData,
     } = this.props;
-
+    console.log(userbankWithdrawData);
     return (
       <div className="d-flex flex-column">
         {header?.title?.toLowerCase().includes("bank") && (
@@ -33,6 +33,7 @@ export default class IncomeExpenseHistory extends Component {
             incomeAmount={totalDeposits}
             expenseAmount={totalWithdraw}
             userbankDepositsData={userbankDepositsData}
+            userbankWithdrawData={userbankWithdrawData}
             withdrawHistory={bankwithdrawHistory?.entities}
           />
         )}

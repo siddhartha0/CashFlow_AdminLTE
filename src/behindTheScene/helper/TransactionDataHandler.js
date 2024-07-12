@@ -11,6 +11,7 @@ const TransactionDataHandler = (selectedPlatform) => {
   const { data: bankwithdrawHistory, isLoading: bankwithdrawLoading } =
     useGetWithdrawsOfUserBankByIdQuery(selectedPlatform?.id);
 
+  console.log(bankwithdrawHistory);
   const [userbankDepositsData, setuserbankDepositsData] = useState();
 
   const [depositTotalAmount, setDepositTotalAmount] = useState();
@@ -41,12 +42,13 @@ const TransactionDataHandler = (selectedPlatform) => {
     if (bankwithdrawHistory) {
       const remarkAmounts = bankwithdrawHistory.entities.reduce(
         (acc, transaction) => {
-          acc[transaction.source] =
-            (acc[transaction.source] || 0) + transaction.amount;
+          acc[transaction.remarks] =
+            (acc[transaction.remarks] || 0) + transaction.amount;
           return acc;
         },
         {}
       );
+
       setuserbankWithdrawData(remarkAmounts);
 
       const totalWithdraw = bankwithdrawHistory.entities.reduce(

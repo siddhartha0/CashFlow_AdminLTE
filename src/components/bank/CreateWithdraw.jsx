@@ -68,23 +68,23 @@ export default function CreateWithdraw() {
         ? checkDepost.chequeIssueDate_isToday
           ? formatDate(currentDate)
           : withdrawTransaction.chequeIssueDate
-        : "",
+        : null,
 
       chequeCashoutDate: cashTypeisCheque()
         ? checkDepost.checkCashoutDate_isToday
           ? formatDate(currentDate)
           : withdrawTransaction.chequeCashoutDate
-        : "",
+        : null,
 
       chequeCashoutAvailableData: cashTypeisCheque()
         ? checkDepost.checkCashoutAvailableDate_isToday
           ? formatDate(currentDate)
           : withdrawTransaction.chequeCashoutAvailableData
-        : "",
+        : null,
 
       amount: withdrawTransaction.amount,
-      fromBankAccountId: withdrawTransaction.fromAccountId,
-      source: withdrawTransaction.source,
+      fromBankAccountId: parseInt(withdrawTransaction.fromAccountId),
+      remarks: withdrawTransaction.remarks,
       alert: withdrawTransaction.cashType === "cheque" ? true : false,
     };
     console.log(withdrawDetails);
@@ -98,7 +98,7 @@ export default function CreateWithdraw() {
           toast.error(resp?.error?.data?.message);
       }
       if (resp.data) {
-        console.log(resp?.data);
+        toast.success("Succesfully created!!!");
       }
     });
   };
@@ -265,7 +265,7 @@ class CreateWithdrawWrapped extends Component {
             >
               <option value="">Select Banks</option>
               {userBanks?.map((value) => (
-                <option key={value?.bankName} value={value?.bankId}>
+                <option key={value?.bankName} value={value?.id}>
                   {value?.bankName}
                 </option>
               ))}
