@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { useState, useEffect } from "react";
 import DynamicTable from "../../../const/widget_component_model/table/DynamicTable";
 import { generateRandomTransactions } from "../../../behindTheScene/api/bank";
 import SingleBarChart from "../../../const/widget_component_model/charts/SingleBarChart";
@@ -9,42 +9,96 @@ import TransactionChart from "../TransactionChart";
 import DownloadButton from "../../../const/DownloadButton";
 import { Link } from "react-router-dom";
 
-export default class Deposit extends Component {
-  render() {
-    const headers = [
-      { key: "account", label: "Account" },
-      { key: "bank", label: "Bank" },
-      { key: "type", label: "Type" },
-      { key: "amount", label: "Amount" },
-    ];
+function Deposit() {
+  const headers = [
+    { key: "account", label: "Account" },
+    { key: "bank", label: "Bank" },
+    { key: "type", label: "Type" },
+    { key: "amount", label: "Amount" },
+  ];
 
-    const transaction = generateRandomTransactions(100);
-    const value = JSON.parse(localStorage.getItem("dashboard"));
-    const filterData = transaction.filter((transaction) => {
-      return transaction.status === "deposit";
+  const userbank = useSelector(userbankDetails);
+  const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
+  const [transactions, setTransactions] = useState([]);
+
+  const { data: transaction, isLoading: transactionLoading } =
+    useGetTransactionByUserBankIdQuery({ id: getSelectedBank.id });
+
+  useEffect(() => {
+    if (transaction?.entities) {
+      setTransactions(transaction?.entities);
+    }
+  }, [transaction]);
+
+  const selectBank = (bank) => {
+    setSelectedBank(bank);
+  };
+
+  const getTotalTransaction = (type) => {
+    const filteredTransactions = transactions.filter(
+      (transaction) => transaction.type === type
+    );
+    const total = filteredTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+    return total;
+  };
+  return (
+    <DepositWrapped
+      userbank={userbank}
+      selectBank={selectBank}
+      getSelectedBank={getSelectedBank}
+      getTotalTransaction={getTotalTransaction} // Pass the function as a prop
+      transactions={transactions}
+      transactionLoading={transactionLoading}
+    />
+  );
+}
+
+class DepositWrapped extends React.Component {
+  static propTypes = {
+    userbank: PropTypes.array,
+    selectBank: PropTypes.func,
+    getSelectedBank: PropTypes.object,
+    monthlyTransaction: PropTypes.array,
+    getTotalTransaction: PropTypes.func,
+    transactions: PropTypes.array,
+    transactionLoading: PropTypes.bool,
+  };
+
+  componentDidMount() {
+    $(function () {
+      $("#sortable").sortable();
     });
-
-    const getTotalTransaction = (status) => {
-      let total = transaction
-        .filter((transaction) => transaction.status === status)
-        .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-      return total.toLocaleString();
-    };
-
+  }
+  render() {
+    const {
+      userbank,
+      selectBank,
+      getSelectedBank,
+      getTotalTransaction,
+      transactions,
+      transactionLoading,
+    } = this.props;
     return (
       <div className="container-fluid">
-        <div className="mb-3">
-          <Link to="/dashboard/bank/deposit/new" className="btn btn-primary">
-            Create Deposit
-          </Link>
-        </div>
-
         <div className="w-100">
-          <div className="d-flex justify-content-end mb-2">
-            <DownloadButton />
+          <div className="col-lg-12 d-flex justify-content-between mb-2">
+            <div>
+              <Link
+                to="/dashboard/bank/deposit/new"
+                className="btn btn-primary"
+              >
+                Create Deposit
+              </Link>
+            </div>
+            <div>
+              <DownloadButton />
+            </div>
           </div>
-          <div className="d-flex ">
+
+          <div className="d-flex">
             <div className="col-lg-4">
               <TotalView
                 data={getTotalTransaction("deposit")}
@@ -84,11 +138,11 @@ export default class Deposit extends Component {
             </div>
 
             <div className="col-lg-6">
-              <SingleLineChart
-                data={value.bankhistory}
-                label={value.label}
-                name={"Deposit"}
-              />
+              {/* <SingleLineChart
+              data={value.bankhistory}
+              label={value.label}
+              name={"Deposit"}
+            /> */}
             </div>
             <div className="col-12 mt-4 card">
               <h2 className="text-center">Total Deposits</h2>
@@ -125,3 +179,5 @@ export default class Deposit extends Component {
     );
   }
 }
+
+export default Deposit;
