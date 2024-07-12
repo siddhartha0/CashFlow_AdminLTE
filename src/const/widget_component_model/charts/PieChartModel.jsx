@@ -2,7 +2,7 @@ import ReactApexChart from "react-apexcharts";
 
 export default function PieChartModel(source) {
   const init_State = {
-    series: source?.source?.map((s) => s.amount),
+    series: source?.amount.map((s) => s),
     options: {
       chart: {
         width: 10,
@@ -12,7 +12,7 @@ export default function PieChartModel(source) {
         show: true,
         position: "bottom",
       },
-      labels: source?.source?.map((source) => source.source),
+      labels: source?.source?.map((source) => source),
       responsive: [
         {
           breakpoint: 10,

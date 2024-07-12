@@ -7,22 +7,20 @@ import TripleBarChart from "../../../const/widget_component_model/charts/TripleB
 export default class TransactionStats extends Component {
   static propTypes = {
     label: PropTypes.string,
-    incomeAmount: PropTypes.number,
-    expenseAmount: PropTypes.number,
-    total_Income_Amount: PropTypes.array,
-    total_expense_Amount: PropTypes.array,
     history: PropTypes.array,
     colors: PropTypes.array,
+    totalDeposits: PropTypes.number,
+    totalWithdraw: PropTypes.number,
+    overAllTransactionData: PropTypes.array,
   };
   render() {
     const {
       label,
-      incomeAmount,
-      expenseAmount,
-      total_Income_Amount,
-      total_expense_Amount,
+      totalDeposits,
+      totalWithdraw,
       history,
       colors,
+      overAllTransactionData,
     } = this.props;
     const value = JSON.parse(localStorage.getItem("dashboard"));
 
@@ -32,11 +30,17 @@ export default class TransactionStats extends Component {
           <div>
             <StatsComps
               title="Total Incoming "
-              amount={incomeAmount}
+              amount={totalDeposits}
               color="#FFCB30"
             >
               <SmallLineChart
-                data={total_Income_Amount}
+                data={
+                  overAllTransactionData
+                    ? overAllTransactionData?.map(
+                        (transaction) => transaction.total_deposit_amount
+                      )
+                    : []
+                }
                 label={label}
                 color="#FFCB30"
               />
@@ -57,10 +61,16 @@ export default class TransactionStats extends Component {
             <StatsComps
               title="Total Expense "
               color="#DC3545"
-              amount={expenseAmount}
+              amount={totalWithdraw}
             >
               <SmallLineChart
-                data={total_expense_Amount}
+                data={
+                  overAllTransactionData
+                    ? overAllTransactionData?.map(
+                        (transaction) => transaction.total_withdraw_amount
+                      )
+                    : []
+                }
                 label={label}
                 color="#DC3545"
               />
@@ -70,9 +80,21 @@ export default class TransactionStats extends Component {
         <div>
           <TripleBarChart
             title1="Income"
-            data1={total_Income_Amount}
+            data1={
+              overAllTransactionData
+                ? overAllTransactionData?.map(
+                    (transaction) => transaction.total_deposit_amount
+                  )
+                : []
+            }
             title2="Expense"
-            data2={total_expense_Amount}
+            data2={
+              overAllTransactionData
+                ? overAllTransactionData?.map(
+                    (transaction) => transaction.total_withdraw_amount
+                  )
+                : []
+            }
             title3="Current Balance"
             data3={history}
             label={value.label}

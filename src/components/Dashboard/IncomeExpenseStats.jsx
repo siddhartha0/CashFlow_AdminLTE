@@ -1,5 +1,4 @@
 import { Component } from "react";
-import Balance from "../../behindTheScene/balance/Balance";
 import PropTypes from "prop-types";
 import TransactionStats from "./incomeOutgoingcomps/TransactionStats";
 import PickColors from "../../const/PickColors";
@@ -12,22 +11,16 @@ export default class IncomeExpenseStats extends Component {
     label: PropTypes.string,
     currentMonth: PropTypes.string,
     overAllSelected: PropTypes.bool,
+    totalDeposits: PropTypes.number,
+    totalWithdraw: PropTypes.number,
+    overAllTransactionData: PropTypes.array,
   };
 
   render() {
-    const {
-      label,
-      bankOneMonthHistory,
-      overAllSelected,
-      walletOneMonthHistory,
-    } = this.props;
+    const { label, totalDeposits, totalWithdraw, overAllTransactionData } =
+      this.props;
 
     const localValue = JSON.parse(localStorage.getItem("dashboard"));
-
-    const cashFlow = new Balance();
-    label === "Bank"
-      ? cashFlow.calculate_Income_Expense(localValue.bankhistory, "bank")
-      : cashFlow.calculate_Income_Expense(localValue.walletHistory, "wallet");
 
     // console.log(oneMonthExpense);
     const bankColors = new PickColors()
@@ -44,24 +37,18 @@ export default class IncomeExpenseStats extends Component {
         {label === "Bank" && (
           <TransactionStats
             label={label}
-            cashFlow={cashFlow}
-            incomeAmount={cashFlow.totalIncoming}
-            expenseAmount={cashFlow.totalOutgoing}
-            total_Income_Amount={cashFlow.total_bank_Incoming_Amount}
-            total_expense_Amount={cashFlow.total_bank_Spent_Amount}
+            totalDeposits={totalDeposits ?? 0}
+            totalWithdraw={totalWithdraw ?? 0}
             history={localValue.bankhistory}
             colors={bankColors}
+            overAllTransactionData={overAllTransactionData}
           />
         )}
 
+        {/* TODO:: */}
         {label === "Wallet" && (
           <TransactionStats
             label={label}
-            cashFlow={cashFlow}
-            incomeAmount={cashFlow.totalIncoming}
-            expenseAmount={cashFlow.totalOutgoing}
-            total_Income_Amount={cashFlow.total_wallet_Incoming_Amount}
-            total_expense_Amount={cashFlow.total_wallet_Spent_Amount}
             history={localValue.walletHistory}
             colors={walletColors}
           />

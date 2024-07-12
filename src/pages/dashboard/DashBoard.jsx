@@ -10,6 +10,7 @@ import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistor
 import PropTypes from "prop-types";
 import HeadController from "../../behindTheScene/helper/HeadController";
 import TransactionDataHandler from "../../behindTheScene/helper/TransactionDataHandler";
+import BarChartDataHandler from "../../behindTheScene/helper/BarChartDataHandler";
 
 export default function Dashboard() {
   const {
@@ -18,10 +19,7 @@ export default function Dashboard() {
     user_wallet_Data,
     loadTime_DataSession,
     transactionFetchLoading,
-    depositHistory,
     withdrawHistory,
-    totalDeposits,
-    totalWithdraw,
   } = HeadController();
 
   const [userLinkAccount, setUserLinkAccount] = useState();
@@ -29,13 +27,24 @@ export default function Dashboard() {
     ...loadTime_DataSession,
     title: "bank",
   };
+
   const [selectedPlatform, setSelectedPatform] = useState(init ?? null);
+
   const {
     bankdepositHistory,
     bankdepositLoading,
     bankwithdrawHistory,
     bankwithdrawLoading,
+    WithdrawTotalAmount,
+    depositTotalAmount,
+    userbankDepositsData,
+    userbankWithdrawData,
   } = TransactionDataHandler(selectedPlatform);
+
+  const { monthlyTransaction } = BarChartDataHandler(
+    2024,
+    selectedPlatform?.id
+  );
 
   const selectPlatform = (e) => {
     const value = e.target.value;
@@ -77,15 +86,17 @@ export default function Dashboard() {
       userLinkAccount={userLinkAccount}
       selectPlatform={selectPlatform}
       selectedPlatform={selectedPlatform ?? ""}
-      depositHistory={depositHistory ?? null}
       depositLoading={transactionFetchLoading}
       withdrawHistory={withdrawHistory}
-      totalDeposits={totalDeposits}
-      totalWithdraw={totalWithdraw}
       bankdepositHistory={bankdepositHistory}
       bankdepositLoading={bankdepositLoading}
       bankwithdrawHistory={bankwithdrawHistory}
       bankwithdrawLoading={bankwithdrawLoading}
+      WithdrawTotalAmount={WithdrawTotalAmount}
+      depositTotalAmount={depositTotalAmount}
+      userbankDepositsData={userbankDepositsData}
+      userbankWithdrawData={userbankWithdrawData}
+      overAllTransactionData={monthlyTransaction}
     />
   );
 }
@@ -105,6 +116,7 @@ class DashBoardWrapped extends Component {
     bankdepositLoading: PropTypes.bool,
     bankwithdrawHistory: PropTypes.array,
     bankwithdrawLoading: PropTypes.bool,
+    overAllTransactionData: PropTypes.array,
   };
 
   constructor() {
@@ -186,188 +198,191 @@ class DashBoardWrapped extends Component {
       userLinkAccount,
       selectPlatform,
       selectedPlatform,
-      totalDeposits,
-      totalWithdraw,
-      bankdepositHistory,
       bankdepositLoading,
       bankwithdrawHistory,
       bankwithdrawLoading,
+      WithdrawTotalAmount,
+      depositTotalAmount,
+      userbankDepositsData,
+      userbankWithdrawData,
+      overAllTransactionData,
     } = this.props;
-
-    console.log(selectedPlatform);
 
     return (
       <div className="p-1 ml-3 " id="dashboard_parentDiv">
-        <div
-          className="d-flex flex-column gap-4  text-black "
-          // id="dashboard_Wrapper"
-          id="sortable"
-        >
+        {(bankdepositLoading || bankwithdrawLoading) && <div>Loading...</div>}
+
+        {!(bankdepositLoading && bankwithdrawLoading) && (
           <div
-            className=" d-flex justify-content-between"
-            id="dashboard_header_ParentDiv"
-            // id="sortable"
+            className="d-flex flex-column gap-4  text-black "
+            // id="dashboard_Wrapper"
+            id="sortable"
           >
             <div
-              className="d-flex flex-column mb-4"
-              id="dashboard_Greeting_Info"
+              className=" d-flex justify-content-between"
+              id="dashboard_header_ParentDiv"
+              // id="sortable"
             >
-              <strong
-                id="Info"
-                className="text-lg text-uppercase"
-                style={{
-                  color: "#9B4078",
-                }}
-              >
-                {userDetail?.username}
-              </strong>
-              <span id="Greeting" className="text-md">
-                {this.state.date.getHours() < 12
-                  ? `Good Morning  !!`
-                  : this.state.date.getHours() <= 18
-                  ? `Good Afternoon  !!`
-                  : `Good Evening  !!`}
-              </span>
-            </div>
-
-            <div
-              className="col-sm-2 float-sm-right"
-              id="dashboard_Date_selector"
-            >
-              <MenuOptionModel
-                className="breadcrumb float-sm-right"
-                option={PickDate}
-                PickPlatform={this.pickDate}
-              />
-            </div>
-          </div>
-
-          <div className="d-flex flex-column" id="sortable">
-            <div className=" d-flex ">
               <div
-                className="d-flex flex-column"
-                style={{
-                  minWidth: "480px",
-                }}
+                className="d-flex flex-column mb-4"
+                id="dashboard_Greeting_Info"
               >
-                <div
-                  className=" custom-card  card"
+                <strong
+                  id="Info"
+                  className="text-lg text-uppercase"
                   style={{
-                    width: "100%",
+                    color: "#9B4078",
                   }}
                 >
-                  <BalanceStats
-                    pickDate={this.state.selectedDate}
-                    currentBankAmount={this.state.currentBankAmount}
-                    currentWalletAmount={this.state.currentWalletAmount}
-                    overAllSelected={this.state.overAllSelected}
-                  />
-                </div>
+                  {userDetail?.username}
+                </strong>
+                <span id="Greeting" className="text-md">
+                  {this.state.date.getHours() < 12
+                    ? `Good Morning  !!`
+                    : this.state.date.getHours() <= 18
+                    ? `Good Afternoon  !!`
+                    : `Good Evening  !!`}
+                </span>
+              </div>
+
+              <div
+                className="col-sm-2 float-sm-right"
+                id="dashboard_Date_selector"
+              >
+                <MenuOptionModel
+                  className="breadcrumb float-sm-right"
+                  option={PickDate}
+                  PickPlatform={this.pickDate}
+                />
+              </div>
+            </div>
+
+            <div className="d-flex flex-column" id="sortable">
+              <div className=" d-flex ">
                 <div
-                  className=" d-flex p-3 mt-2  custom-card  
+                  className="d-flex flex-column"
+                  style={{
+                    minWidth: "480px",
+                  }}
+                >
+                  <div
+                    className=" custom-card  card"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <BalanceStats
+                      pickDate={this.state.selectedDate}
+                      currentBankAmount={this.state.currentBankAmount}
+                      currentWalletAmount={this.state.currentWalletAmount}
+                      overAllSelected={this.state.overAllSelected}
+                    />
+                  </div>
+                  <div
+                    className=" d-flex p-3 mt-2  custom-card  
                 "
-                  style={{
-                    maxWidth: "480px",
-                    overflowX: "scroll",
-                    scrollbarWidth: "none",
-                  }}
-                >
-                  <BalanceTrends />
+                    style={{
+                      maxWidth: "480px",
+                      overflowX: "scroll",
+                      scrollbarWidth: "none",
+                    }}
+                  >
+                    <BalanceTrends />
+                  </div>
                 </div>
-              </div>
 
-              <div className="container card col-md-6  p-4 text-capitalize custom-card ">
-                <BalanceSummary
-                  selectMonth={this.selectMonth}
-                  currentId={this.state.id}
-                  bankEachDaysAmount={this.state.bankEachMonthHistory}
-                  walletEachDayAmount={this.state.walletEachDayHistory}
-                  overAllSelected={this.state.id !== 0 ? false : true}
-                />
-              </div>
-            </div>
-          </div>
-
-          <section className="d-flex mt-3 connectedSortable " id="sort">
-            <div
-              className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
-              id="sortable"
-            >
-              <div
-                className="d-flex align-items-center justify-content-around "
-                style={{
-                  width: "100%",
-                }}
-              >
-                <div className="d-flex w-25">
-                  <MenuOptionModel
-                    className="breadcrumb float-sm-right"
-                    option={userLinkAccount}
-                    PickPlatform={selectPlatform}
-                    selectedPlatform={this.state.selectedPlatform}
-                    id="indi_Wallet_Bank"
+                <div className="container card col-md-6  p-4 text-capitalize custom-card ">
+                  <BalanceSummary
+                    selectMonth={this.selectMonth}
+                    currentId={this.state.id}
+                    bankEachDaysAmount={this.state.bankEachMonthHistory}
+                    walletEachDayAmount={this.state.walletEachDayHistory}
+                    overAllSelected={this.state.id !== 0 ? false : true}
                   />
                 </div>
+              </div>
+            </div>
+
+            <section className="d-flex mt-3 connectedSortable " id="sort">
+              <div
+                className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
+                id="sortable"
+              >
                 <div
-                  className="d-flex justify-content-xl-end"
+                  className="d-flex align-items-center justify-content-around "
                   style={{
                     width: "100%",
                   }}
                 >
-                  <header>{selectedPlatform.value}</header>
+                  <div className="d-flex w-25">
+                    <MenuOptionModel
+                      className="breadcrumb float-sm-right"
+                      option={userLinkAccount}
+                      PickPlatform={selectPlatform}
+                      selectedPlatform={this.state.selectedPlatform}
+                      id="indi_Wallet_Bank"
+                    />
+                  </div>
+                  <div
+                    className="d-flex justify-content-xl-end"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <header>{selectedPlatform.value}</header>
+                  </div>
                 </div>
-              </div>
-              <div className=" container mb-2 mt-4 text-capitalize ">
-                <IncomeExpenseStats
-                  label={this.state.selectedPlatform}
-                  bankOneMonthHistory={this.state.bankEachMonthHistory}
-                  walletOneMonthHistory={this.state.walletEachDayHistory}
-                  overAllSelected={this.state.overAllSelected}
-                />
-              </div>
-            </div>
-
-            <div
-              className="container  card d-flex flex-column  p-4  ml-3 custom-card card-header ui-sortable-handle"
-              id="sortable"
-              style={{
-                height: "640px",
-                overflowY: "scroll",
-                scrollbarWidth: "none",
-              }}
-            >
-              <div className="col-md-5 ">
-                <div>
-                  <MenuOptionModel
-                    className="breadcrumb float-sm-right"
-                    option={TransactionTypes}
-                    PickPlatform={this.selectTransactionTypes}
-                  />
-                </div>
-                <div className="mt-4">
-                  <IncomeExpenseHistory
-                    label={this.state.transactionType}
-                    totalDeposits={totalDeposits}
-                    totalWithdraw={totalWithdraw}
-                    header={selectedPlatform}
-                    bankdepositHistory={bankdepositHistory}
-                    bankdepositLoading={bankdepositLoading}
-                    bankwithdrawHistory={bankwithdrawHistory}
-                    bankwithdrawLoading={bankwithdrawLoading}
+                <div className=" container mb-2 mt-4 text-capitalize ">
+                  <IncomeExpenseStats
+                    label={this.state.selectedPlatform}
+                    totalDeposits={depositTotalAmount}
+                    totalWithdraw={WithdrawTotalAmount}
+                    overAllTransactionData={overAllTransactionData}
                   />
                 </div>
               </div>
-            </div>
-          </section>
 
-          <div className=" p-3 mt-3 connectedSortable" id="sortable">
-            {/* <MoreOptionalAccordianModel title="Activities">
+              <div
+                className="container  card d-flex flex-column  p-4  ml-3 custom-card card-header ui-sortable-handle"
+                id="sortable"
+                style={{
+                  height: "640px",
+                  overflowY: "scroll",
+                  scrollbarWidth: "none",
+                }}
+              >
+                <div className="col-md-5 ">
+                  <div>
+                    <MenuOptionModel
+                      className="breadcrumb float-sm-right"
+                      option={TransactionTypes}
+                      PickPlatform={this.selectTransactionTypes}
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <IncomeExpenseHistory
+                      label={this.state.transactionType}
+                      totalDeposits={depositTotalAmount}
+                      totalWithdraw={WithdrawTotalAmount}
+                      header={selectedPlatform}
+                      bankwithdrawHistory={bankwithdrawHistory}
+                      userbankDepositsData={userbankDepositsData}
+                      userbankWithdrawData={userbankWithdrawData}
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className=" p-3 mt-3 connectedSortable" id="sortable">
+              {/* <MoreOptionalAccordianModel title="Activities">
               <div className=" d-flex  flex-column   ">
                 <Activities />
               </div>
             </MoreOptionalAccordianModel> */}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }

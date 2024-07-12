@@ -26,7 +26,7 @@ export default class ColorBarModel extends Component {
             <div
               className="progress-bar"
               style={{
-                width: `${(actualAmount / totalAmount) * 100}px`,
+                width: `${(actualAmount / totalAmount) * 150}px`,
                 background: color,
               }}
             ></div>

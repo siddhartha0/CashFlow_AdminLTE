@@ -2,17 +2,17 @@ import { Component } from "react";
 import { CiBank, CiWallet } from "react-icons/ci";
 import DisplayTrends from "./trendComps/DisplayTrends";
 import { TbView360 } from "react-icons/tb";
-import { useSelector } from "react-redux";
-import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
 import PropTypes from "prop-types";
-import { userWalletDetail } from "../../slices/slice/wallet/UserWalletSlice";
+import HeadController from "../../behindTheScene/helper/HeadController";
 
 export default function BalanceTrends() {
-  const userbank = useSelector(userbankDetails);
-
-  const userwallet = useSelector(userWalletDetail);
-
-  return <BalanceTrendsWrapped userbank={userbank} userwallet={userwallet} />;
+  const { user_Bank_Data, user_wallet_Data } = HeadController();
+  return (
+    <BalanceTrendsWrapped
+      userbank={user_Bank_Data}
+      userwallet={user_wallet_Data}
+    />
+  );
 }
 
 class BalanceTrendsWrapped extends Component {

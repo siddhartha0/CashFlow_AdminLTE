@@ -7,10 +7,11 @@ export default class IncomeExpenseHistory extends Component {
   static propTypes = {
     label: PropTypes.string,
     header: PropTypes.string,
-    bankdepositHistory: PropTypes.array,
-    bankdepositLoading: PropTypes.bool,
     bankwithdrawHistory: PropTypes.array,
-    bankwithdrawLoading: PropTypes.array,
+    totalDeposits: PropTypes.number,
+    totalWithdraw: PropTypes.number,
+    userbankDepositsData: PropTypes.object,
+    userbankWithdrawData: PropTypes.object,
   };
 
   render() {
@@ -19,61 +20,29 @@ export default class IncomeExpenseHistory extends Component {
       header,
       totalDeposits,
       totalWithdraw,
-      bankdepositHistory,
-      bankdepositLoading,
       bankwithdrawHistory,
-      bankwithdrawLoading,
+      userbankDepositsData,
+      userbankWithdrawData,
     } = this.props;
-
-    var bankIncomeAmount = 0;
-    var bankexpenseAmount = 0;
-
-    var walletIncomeAmount = 0;
-    var walletExpenseAmount = 0;
-
-    if (header?.title?.toLowerCase().includes("bank")) {
-      if (label === "income") {
-        const totalAmount = bankdepositHistory?.entities?.map(
-          (entity) => entity.amount
-        );
-        if (totalAmount) {
-          const sumofAmount = totalAmount.reduce((a, b) => a + b);
-          bankIncomeAmount = sumofAmount;
-        }
-      } else {
-        const totalAmount = bankwithdrawHistory?.entities?.map(
-          (entity) => entity.amount
-        );
-        if (totalAmount) {
-          const sumofAmount = totalAmount.reduce((a, b) => a + b);
-          bankexpenseAmount = sumofAmount;
-        }
-      }
-    } else {
-      if (label === "income") {
-        walletIncomeAmount = totalDeposits;
-      } else {
-        walletExpenseAmount = totalWithdraw;
-      }
-    }
 
     return (
       <div className="d-flex flex-column">
         {header?.title?.toLowerCase().includes("bank") && (
           <TransactionHistory
             label={label}
-            incomeAmount={bankIncomeAmount}
-            expenseAmount={bankexpenseAmount}
-            depositHistory={bankdepositHistory?.entities}
+            incomeAmount={totalDeposits}
+            expenseAmount={totalWithdraw}
+            userbankDepositsData={userbankDepositsData}
             withdrawHistory={bankwithdrawHistory?.entities}
           />
         )}
 
+        {/* TODO: */}
         {header === "Wallet" && (
           <TransactionHistory
             label={label}
-            incomeAmount={walletIncomeAmount}
-            expenseAmount={walletExpenseAmount}
+            incomeAmount={totalDeposits}
+            expenseAmount={totalWithdraw}
           />
         )}
       </div>

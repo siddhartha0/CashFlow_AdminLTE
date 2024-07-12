@@ -8,8 +8,8 @@ export default class TransactionHistory extends Component {
     label: PropTypes.string,
     incomeAmount: PropTypes.number,
     expenseAmount: PropTypes.number,
-    depositHistory: PropTypes.array,
     withdrawHistory: PropTypes.array,
+    userbankDepositsData: PropTypes.object,
   };
 
   render() {
@@ -17,30 +17,35 @@ export default class TransactionHistory extends Component {
       label,
       incomeAmount,
       expenseAmount,
-      depositHistory,
       withdrawHistory,
+      userbankDepositsData,
     } = this.props;
-    console.log(depositHistory);
+
+    const depositsSource = userbankDepositsData
+      ? Object.keys(userbankDepositsData)
+      : [];
+    const depositsAmount = userbankDepositsData
+      ? Object.values(userbankDepositsData)
+      : [];
+
     return (
       <div>
         {label === "income" && (
           <div>
-            {depositHistory ? (
-              <PieChartModel
-                source={depositHistory?.map((history) => history)}
-              />
+            {userbankDepositsData ? (
+              <PieChartModel source={depositsSource} amount={depositsAmount} />
             ) : (
               <div>Empty!!!</div>
             )}
 
             <div className="d-flex flex-column mt-5">
-              {depositHistory ? (
-                depositHistory?.map((source, i) => (
-                  <div key={source.source + i} className="d-flex my-2 ">
+              {depositsSource ? (
+                depositsSource?.map((source, i) => (
+                  <div key={source + i} className="d-flex my-2 ">
                     <ColorBarModel
-                      title={source?.source ?? "others"}
+                      title={source ?? "others"}
                       totalAmount={incomeAmount ?? 0}
-                      actualAmount={source?.amount ?? 0}
+                      actualAmount={depositsAmount[i] ?? 0}
                       color="#FFCB30"
                     />
                   </div>
