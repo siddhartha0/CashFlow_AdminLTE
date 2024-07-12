@@ -8,7 +8,6 @@ import ChartComponent from "../Chart";
 import TransactionChart from "../TransactionChart";
 import DownloadButton from "../../../const/DownloadButton";
 import { Link } from "react-router-dom";
-import ChartComponent from "../Chart";
 
 export default class Deposit extends Component {
   render() {

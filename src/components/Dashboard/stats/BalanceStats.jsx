@@ -15,16 +15,17 @@ export default function BalanceStats() {
   const [walletCurrentAmount, setWalletCurrentAmount] = useState();
 
   useEffect(() => {
-    if (userbank) {
+    if (userbank && userbank.length) {
       const bankamount = userbank?.map((banks) => banks?.currentAmount);
       if (bankamount) {
         const totalCurrentBankAmount = bankamount?.reduce((a, b) => a + b);
-        setBankCurrentAmount(totalCurrentBankAmount ?? 0);
+        setBankCurrentAmount(
+          totalCurrentBankAmount ? totalCurrentBankAmount : 0
+        );
       }
     }
 
-    console.log(userwallet);
-    if (userwallet) {
+    if (userwallet && userwallet.length) {
       const walletamounts = userwallet?.entities?.map(
         (wallet) => wallet?.currentAmount
       );
@@ -32,7 +33,9 @@ export default function BalanceStats() {
       // console.log(walletamounts);
       if (walletamounts) {
         const totalwalletCurrentAmount = walletamounts?.reduce((a, b) => a + b);
-        setWalletCurrentAmount(totalwalletCurrentAmount ?? 0);
+        setWalletCurrentAmount(
+          totalwalletCurrentAmount ? totalwalletCurrentAmount : 0
+        );
       }
     }
   }, [userbank, userwallet]);

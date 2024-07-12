@@ -15,6 +15,36 @@ const TransactionApi = MainApi.injectEndpoints({
       }),
     }),
 
+    getDepositOfUserBankById: builder.query({
+      query: (id) => ({
+        url: `${Transaction}/getDepositOfUserBankById/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
+    getWithdrawsOfUserBankById: builder.query({
+      query: (id) => ({
+        url: `${Transaction}/getWithdrawOfUserBankById/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
+    getUserTransaction: builder.query({
+      query: (id) => ({
+        url: `${Transaction}/userAccountTransaction`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
     getTransactionById: builder.query({
       query: (id) => ({
         url: `${Transaction}/${id}`,
@@ -45,9 +75,22 @@ const TransactionApi = MainApi.injectEndpoints({
       }),
     }),
 
+    getTransactionByUserBankId: builder.query({
+      query: ({ id }) => ({
+        url: `${Transaction}/userBank`,
+        method: "GET",
+        params: { id },
+
+        headers: {
+          Authorization: `Bearer ${LocalData.getStorageData("token")}`,
+        },
+      }),
+    }),
+
     getTransactionByMonth: builder.query({
-      query: () => ({
+      query: ({ year, bankId }) => ({
         url: `${Transaction}/monthwise`,
+        params: { year, bankId }, // Correctly passing year and bankId as query parameters
         method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
@@ -59,6 +102,7 @@ const TransactionApi = MainApi.injectEndpoints({
       query: () => ({
         url: `${Transaction}/getAllTransaction`,
         method: "GET",
+
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
@@ -92,7 +136,9 @@ export const {
   useGetAllTransactionQuery,
   useGetTransactionByIdQuery,
   useUpdateTransactionMutation,
+  useGetTransactionByUserBankIdQuery,
   useGetTransactionByMonthQuery,
   useGetDepositOfUserBankByIdQuery,
   useGetWithdrawsOfUserBankByIdQuery,
+  useGetUserTransactionQuery,
 } = TransactionApi;

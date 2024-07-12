@@ -1,219 +1,152 @@
-import { Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TransactionTable from "../../components/bank/TransactionTable";
-import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import TotalView from "../../components/bank/TotalView";
 import BarChart from "../../const/widget_component_model/charts/BarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
-import BankList from "../../components/bank/BankList";
 import PropTypes from "prop-types";
-// import withQuery from "../../components/bank/withQuery";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
-import {
-  useGetDepositOfUserBankByIdQuery,
-  useGetWithdrawsOfUserBankByIdQuery,
-} from "../../slices/api/transaction/TransactionApi";
-
-const transactions = generateRandomTransactions(10000);
-
-// const fetchUsers = async () => {
-//   const { data } = await axios.get("http://localhost:3000/bank?pageNo=100");
-//   console.log(data);
-//   return data;
-// };
+import { useGetTransactionByUserBankIdQuery } from "../../slices/api/transaction/TransactionApi";
 
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
-  const [bankDepositHistory, setBankDepositHistory] = useState();
+  const [transactions, setTransactions] = useState([]);
 
-  const { data: depositHistory, isLoading: depositLoading } =
-    useGetDepositOfUserBankByIdQuery(getSelectedBank?.id);
-  // console.log(depositHistory.entities);
+  const { data: transaction, isLoading: transactionLoading } =
+    useGetTransactionByUserBankIdQuery({ id: getSelectedBank.id });
 
-  const { data: withdrawHistory, isLoading: withdrawLoading } =
-    useGetWithdrawsOfUserBankByIdQuery(getSelectedBank?.id);
-  const selectBank = (bank = userbank[0]) => {
+  useEffect(() => {
+    if (transaction?.entities) {
+      setTransactions(transaction?.entities);
+    }
+  }, [transaction]);
+
+  const selectBank = (bank) => {
     setSelectedBank(bank);
-    let depositsData = depositHistory.entities;
-    console.log(depositsData);
-    const storeBoth = {
-      bankName: bank.bankName,
-      accountId: bank.accountId,
-      currentAmount: bank.currentAmount,
-    };
-    let bank_and_deposit_data = [];
+  };
 
-    depositsData?.map((data) => {
-      const mix = {
-        ...data,
-        ...storeBoth,
-      };
-      bank_and_deposit_data.push(mix);
-    });
-    console.log(bank_and_deposit_data);
-    setBankDepositHistory(bank_and_deposit_data);
+  const getTotalTransaction = (type) => {
+    const filteredTransactions = transactions.filter(
+      (transaction) => transaction.type === type
+    );
+    const total = filteredTransactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+    return total;
   };
 
   return (
     <BankWrapped
       userbank={userbank}
       selectBank={selectBank}
-      depositHistory={depositHistory ?? null}
-      depositLoading={depositLoading}
-      withdrawHistory={withdrawHistory ?? null}
-      withdrawLoading={withdrawLoading}
       getSelectedBank={getSelectedBank}
-      bankDepositHistory={bankDepositHistory}
-      // getSelectedBank={getSelectedBank}
+      getTotalTransaction={getTotalTransaction} // Pass the function as a prop
+      transactions={transactions}
+      transactionLoading={transactionLoading}
     />
   );
 }
 
-class BankWrapped extends Component {
+class BankWrapped extends React.Component {
   static propTypes = {
-    userbank: PropTypes.object,
+    userbank: PropTypes.array,
     selectBank: PropTypes.func,
-    depositHistory: PropTypes.array,
-    depositLoading: PropTypes.bool,
-    withdrawHistory: PropTypes.array,
-    withdrawLoading: PropTypes.bool,
     getSelectedBank: PropTypes.object,
-    bankDepositHistory: PropTypes.array,
+    monthlyTransaction: PropTypes.array,
+    getTotalTransaction: PropTypes.func,
+    transactions: PropTypes.array,
+    transactionLoading: PropTypes.bool,
   };
 
   componentDidMount() {
     $(function () {
       $("#sortable").sortable();
     });
-    // const getData = async () => {
-    //   const res = await fetch("http://localhost:3000/bank?pageNo=100");
-    //   const resJson = await res.json();
-    //   this.setState({ transactions: resJson });
-    //   // console.log(resJson);
-    // };
-    // getData();
-    // const { data, error, isLoading, isError } = this.props;
-    // if (!isLoading) {
-    //   this.setState({ transactions: data });
-    //   localStorage.setItem("bank", JSON.stringify(data));
-    // }
   }
 
   render() {
     const {
       userbank,
       selectBank,
-      depositHistory,
-      depositLoading,
-      withdrawHistory,
-      withdrawLoading,
       getSelectedBank,
-      bankDepositHistory,
+      getTotalTransaction,
+      transactions,
+      transactionLoading,
     } = this.props;
 
-    const calculateTotals = () => {
-      const { transactions } = this.state;
-      const totals = {};
-
-      transactions.forEach((transaction) => {
-        if (!totals[transaction.bank]) {
-          totals[transaction.bank] = {
-            deposit: 0,
-            withdraw: 0,
-            account: transaction.account,
-          };
-        }
-
-        if (transaction.status === "deposit") {
-          totals[transaction.bank].deposit += transaction.amount;
-        } else if (transaction.status === "withdraw") {
-          totals[transaction.bank].withdraw += transaction.amount;
-        }
-      });
-
-      this.setState({ totals });
-    };
     const totalList = [
       {
-        data: "deposit",
-        title: "Bank Balance",
-        color: "primary",
-        icon: "fa-solid fa-building-columns",
-      },
-      {
-        data: "deposit",
+        type: "deposit",
         title: "Total Deposit",
         color: "warning",
         icon: "fa fa-heart",
       },
       {
-        data: "withdraw",
+        type: "withdraw",
         title: "Total Withdraw",
         color: "danger",
         icon: "fa-solid fa-arrow-up-from-bracket",
       },
       {
-        data: "transfer",
+        type: "transfer",
         title: "Total Transfer",
         color: "secondary",
         icon: "fa-solid fa-money-bill-transfer",
       },
     ];
 
-    const getTotalTransaction = (status) => {
-      let total = transactions
-        .filter((transaction) => transaction.status === status)
-        .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-      return total.toLocaleString();
-    };
-
-    console.log(bankDepositHistory);
-
     return (
       <div className="bank p-3">
-        {depositLoading && <div>Data is loading....</div>}
-
-        <div className="row mb-2" id="sortable">
-          {userbank &&
-            userbank.map((bank) => (
-              <div
-                className="custom-card p-3 mr-4 "
-                key={bank.bankName}
-                onClick={() => selectBank(bank)}
-              >
-                <header className="text-bold">{bank.bankName}</header>
-                <p className="text-success mt-1">Rs. {bank.currentAmount}</p>
-              </div>
-            ))}
+        {transactionLoading && <div>Data is loading....</div>}
+        <div className="row mb-2 flex-nowrap">
+          {userbank.map((bank) => (
+            <div
+              className={
+                "custom-card p-3 mr-4" +
+                (bank === getSelectedBank ? " bg-primary" : "")
+              }
+              key={bank.bankName}
+              onClick={() => selectBank(bank)}
+            >
+              <header className="text-bold">{bank.bankName}</header>
+            </div>
+          ))}
         </div>
-
         <div className="row">
+          <div className="col-lg-3">
+            <TotalView
+              data={getSelectedBank.currentAmount}
+              title="Bank Balance"
+              color="dark"
+              icon="fa-solid fa-building-columns"
+              design="info-box"
+            />
+          </div>
           {totalList.map((value, index) => (
             <div className="col-lg-3" key={index}>
               <TotalView
-                data={getTotalTransaction(value.data)}
+                data={getTotalTransaction(value.type)}
                 title={value.title}
                 color={value.color}
                 icon={value.icon}
-                key={index}
-                design="info-box-2"
+                design="info-box"
               />
             </div>
           ))}
         </div>
         <div className="row" id="sortable">
           <div className="col-lg-12">
-            <div className="custom-card p-3 ">
-              <BarChart />
+            <div className="custom-card p-3">
+              <BarChart bankId={getSelectedBank.id} year={2024} />
             </div>
           </div>
-          <div className="col-lg-6">
+          {/* <div className="col-lg-6">
             <div className="custom-card p-3">
               <BankList transactions={transactions} />
             </div>
-          </div>
+          </div> */}
           <div className="col-lg-6">
             <div className="custom-card p-3">
               <TransactionChart
@@ -226,14 +159,14 @@ class BankWrapped extends Component {
           <div className="col-lg-6">
             <TransactionTable
               transactions={transactions}
-              status="deposit"
+              type="deposit"
               title="Deposit History"
             />
           </div>
           <div className="col-lg-6">
             <TransactionTable
               transactions={transactions}
-              status="withdraw"
+              type="withdraw"
               title="Withdraw History"
             />
           </div>

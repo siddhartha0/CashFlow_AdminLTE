@@ -15,6 +15,7 @@ export default class MenuOptionModel extends Component {
 
   render() {
     const { option, PickPlatform, selectedPlatform, id } = this.props;
+
     return (
       <div className="input-group ">
         <select
@@ -29,7 +30,7 @@ export default class MenuOptionModel extends Component {
           onChange={(e) => PickPlatform(e)}
         >
           {option?.map((opt) => (
-            <option value={opt.value} key={opt?.title} className="bg-white ">
+            <option value={opt?.value} key={opt?.title} className="bg-white ">
               {opt.title}
             </option>
           ))}

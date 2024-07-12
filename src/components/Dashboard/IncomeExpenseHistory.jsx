@@ -7,10 +7,23 @@ export default class IncomeExpenseHistory extends Component {
   static propTypes = {
     label: PropTypes.string,
     header: PropTypes.string,
+    bankdepositHistory: PropTypes.array,
+    bankdepositLoading: PropTypes.bool,
+    bankwithdrawHistory: PropTypes.array,
+    bankwithdrawLoading: PropTypes.array,
   };
 
   render() {
-    const { label, header } = this.props;
+    const {
+      label,
+      header,
+      totalDeposits,
+      totalWithdraw,
+      bankdepositHistory,
+      bankdepositLoading,
+      bankwithdrawHistory,
+      bankwithdrawLoading,
+    } = this.props;
 
     var bankIncomeAmount = 0;
     var bankexpenseAmount = 0;
@@ -18,33 +31,41 @@ export default class IncomeExpenseHistory extends Component {
     var walletIncomeAmount = 0;
     var walletExpenseAmount = 0;
 
-    const localValue = JSON.parse(localStorage.getItem("dashboard"));
-    const cashFlow = new Balance();
-
-    if (header === "Bank") {
-      cashFlow.calculate_Income_Expense(localValue.bankhistory);
+    if (header?.title?.toLowerCase().includes("bank")) {
       if (label === "income") {
-        bankIncomeAmount = cashFlow.totalIncoming;
+        const totalAmount = bankdepositHistory?.entities?.map(
+          (entity) => entity.amount
+        );
+        if (totalAmount) {
+          const sumofAmount = totalAmount.reduce((a, b) => a + b);
+          bankIncomeAmount = sumofAmount;
+        }
       } else {
-        bankexpenseAmount = cashFlow.totalOutgoing;
+        const totalAmount = bankwithdrawHistory?.entities?.map(
+          (entity) => entity.amount
+        );
+        if (totalAmount) {
+          const sumofAmount = totalAmount.reduce((a, b) => a + b);
+          bankexpenseAmount = sumofAmount;
+        }
       }
     } else {
-      cashFlow.calculate_Income_Expense(localValue.walletHistory);
       if (label === "income") {
-        walletIncomeAmount = cashFlow.totalIncoming;
+        walletIncomeAmount = totalDeposits;
       } else {
-        walletExpenseAmount = cashFlow.totalOutgoing;
+        walletExpenseAmount = totalWithdraw;
       }
     }
 
     return (
       <div className="d-flex flex-column">
-        {header === "Bank" && (
+        {header?.title?.toLowerCase().includes("bank") && (
           <TransactionHistory
             label={label}
             incomeAmount={bankIncomeAmount}
             expenseAmount={bankexpenseAmount}
-            cashFlow={cashFlow}
+            depositHistory={bankdepositHistory?.entities}
+            withdrawHistory={bankwithdrawHistory?.entities}
           />
         )}
 
@@ -53,7 +74,6 @@ export default class IncomeExpenseHistory extends Component {
             label={label}
             incomeAmount={walletIncomeAmount}
             expenseAmount={walletExpenseAmount}
-            cashFlow={cashFlow}
           />
         )}
       </div>
