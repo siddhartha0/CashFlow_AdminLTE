@@ -141,7 +141,7 @@ const CalendarPage = () => {
                       key={index}
                       className={`list-group-item ${transaction.type}`}
                     >
-                      {transaction.source} -{" "}
+                      {transaction.source || transaction.remarks} -{" "}
                       {transaction.type.charAt(0).toUpperCase() +
                         transaction.type.slice(1)}
                       <br />

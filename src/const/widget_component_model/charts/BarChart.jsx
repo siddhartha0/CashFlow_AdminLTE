@@ -72,7 +72,7 @@ const BarChart = ({ year, bankId }) => {
         },
       });
     }
-  }, [monthlyTransaction]);
+  }, [chartData.options, monthlyTransaction]);
 
   if (isLoading) return <p>Loading...</p>;
   if (!monthlyTransaction) return <p>No Data were Found !!</p>;
