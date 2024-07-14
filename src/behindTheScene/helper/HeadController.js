@@ -55,6 +55,26 @@ const HeadController = () => {
     }
   }, [transactionHistory]);
 
+  const [userbankDataExists, setUserBankDataExists] = useState(false);
+  const [userwalletDataExists, setUserWalletDataExists] = useState(false);
+
+  useEffect(() => {
+    if (user_Bank_Data) {
+      if (user_Bank_Data.length) {
+        setUserBankDataExists(true);
+      } else {
+        setUserBankDataExists(false);
+      }
+    }
+    if (user_wallet_Data) {
+      if (user_wallet_Data.length) {
+        setUserWalletDataExists(true);
+      } else {
+        setUserWalletDataExists(false);
+      }
+    }
+  }, [user_Bank_Data, user_wallet_Data]);
+
   return {
     user_data,
     user_Bank_Data,
@@ -67,6 +87,8 @@ const HeadController = () => {
     withdrawHistory,
     totalDeposits,
     totalWithdraw,
+    userbankDataExists,
+    userwalletDataExists,
   };
 };
 

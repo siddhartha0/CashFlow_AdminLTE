@@ -6,11 +6,19 @@ import PropTypes from "prop-types";
 import HeadController from "../../behindTheScene/helper/HeadController";
 
 export default function BalanceTrends() {
-  const { user_Bank_Data, user_wallet_Data } = HeadController();
+  const {
+    user_Bank_Data,
+    user_wallet_Data,
+    userbankDataExists,
+    userwalletDataExists,
+  } = HeadController();
+
   return (
     <BalanceTrendsWrapped
       userbank={user_Bank_Data}
       userwallet={user_wallet_Data}
+      userbankDataExists={userbankDataExists}
+      userwalletDataExists={userwalletDataExists}
     />
   );
 }
@@ -19,6 +27,8 @@ class BalanceTrendsWrapped extends Component {
   static propTypes = {
     userbank: PropTypes.object,
     userwallet: PropTypes.object,
+    userbankDataExists: PropTypes.bool,
+    userwalletDataExists: PropTypes.bool,
   };
 
   value = {};
@@ -37,7 +47,8 @@ class BalanceTrendsWrapped extends Component {
       overallTrend,
     } = this.value;
 
-    const { userbank, userwallet } = this.props;
+    const { userbank, userwallet, userbankDataExists, userwalletDataExists } =
+      this.props;
 
     return (
       <div className="d-flex  flex-column  ">
@@ -53,14 +64,13 @@ class BalanceTrendsWrapped extends Component {
 
         <div className="d-flex justify-content-between overflow-x-scroll mt-4">
           <div className="d-flex   ">
-            {userbank &&
-              userbank?.length &&
+            {userbankDataExists &&
               userbank?.map((bankDetails) => (
                 <div
                   className="d-flex
                     justify-content-lg-between   mr-4"
                   style={{
-                    minWidth: "180px",
+                    minWidth: "200px",
                   }}
                   key={bankDetails?.bankName}
                 >
@@ -85,14 +95,13 @@ class BalanceTrendsWrapped extends Component {
                 </div>
               ))}
 
-            {userwallet &&
-              userwallet.length &&
-              userbank?.map((walletDetails) => (
+            {userwalletDataExists &&
+              userwallet?.map((walletDetails) => (
                 <div
                   className="d-flex  justify-content-lg-between  mr-4"
                   key={walletDetails.bankName}
                   style={{
-                    minWidth: "180px",
+                    minWidth: "200px",
                   }}
                 >
                   <DisplayTrends
@@ -116,22 +125,18 @@ class BalanceTrendsWrapped extends Component {
                 </div>
               ))}
 
-            {userbank &&
-              !userbank.length &&
-              userwallet &&
-              !userwallet.length && (
-                <div
-                  className="text-black  text-md  "
-                  style={{
-                    minWidth: "15rem",
-                  }}
-                >
-                  No data to render
-                </div>
-              )}
+            {!userbankDataExists && !userwalletDataExists && (
+              <div
+                className="text-black  text-md  "
+                style={{
+                  minWidth: "15rem",
+                }}
+              >
+                No data to render
+              </div>
+            )}
 
-            {((userbank && userbank.length) ||
-              (userwallet && userwallet.length)) && (
+            {(userbankDataExists || userwalletDataExists) && (
               <div
                 style={{
                   minWidth: "120px",

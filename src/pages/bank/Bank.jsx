@@ -7,14 +7,16 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { userbankDetails } from "../../slices/slice/bank/UserBankSlice";
 import { useGetTransactionByUserBankIdQuery } from "../../slices/api/transaction/TransactionApi";
+import HeadController from "../../behindTheScene/helper/HeadController";
 
 export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
   const [transactions, setTransactions] = useState([]);
 
+  const { userbankDataExists } = HeadController();
   const { data: transaction, isLoading: transactionLoading } =
-    useGetTransactionByUserBankIdQuery({ id: getSelectedBank.id });
+    useGetTransactionByUserBankIdQuery({ id: getSelectedBank?.id });
 
   useEffect(() => {
     if (transaction?.entities) {
@@ -27,13 +29,17 @@ export default function Bank() {
   };
 
   const getTotalTransaction = (type) => {
-    const filteredTransactions = transactions.filter(
-      (transaction) => transaction.type === type
-    );
-    const total = filteredTransactions.reduce(
-      (sum, transaction) => sum + transaction.amount,
-      0
-    );
+    let total = 0;
+    if (transactions) {
+      const filteredTransactions = transactions?.filter(
+        (transaction) => transaction?.type === type
+      );
+      total = filteredTransactions?.reduce(
+        (sum, transaction) => sum + transaction?.amount,
+        0
+      );
+    }
+
     return total;
   };
 
@@ -45,6 +51,7 @@ export default function Bank() {
       getTotalTransaction={getTotalTransaction} // Pass the function as a prop
       transactions={transactions}
       transactionLoading={transactionLoading}
+      userbankDataExists={userbankDataExists}
     />
   );
 }
@@ -58,6 +65,7 @@ class BankWrapped extends React.Component {
     getTotalTransaction: PropTypes.func,
     transactions: PropTypes.array,
     transactionLoading: PropTypes.bool,
+    userbankDataExists: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -74,6 +82,7 @@ class BankWrapped extends React.Component {
       getTotalTransaction,
       transactions,
       transactionLoading,
+      userbankDataExists,
     } = this.props;
 
     const totalList = [
@@ -102,24 +111,28 @@ class BankWrapped extends React.Component {
         {transactionLoading && <div>Data is loading....</div>}
         {!transactionLoading && (
           <div className="bank p-3">
-            <div className="row mb-2 flex-nowrap">
-              {userbank.map((bank) => (
-                <div
-                  className={
-                    "custom-card p-3 mr-4" +
-                    (bank === getSelectedBank ? " bg-primary" : "")
-                  }
-                  key={bank.bankName}
-                  onClick={() => selectBank(bank)}
-                >
-                  <header className="text-bold">{bank.bankName}</header>
-                </div>
-              ))}
-            </div>
+            {userbankDataExists ? (
+              <div className="row mb-2 flex-nowrap">
+                {userbank.map((bank) => (
+                  <div
+                    className={
+                      "custom-card p-3 mr-4" +
+                      (bank === getSelectedBank ? " bg-primary" : "")
+                    }
+                    key={bank.bankName}
+                    onClick={() => selectBank(bank)}
+                  >
+                    <header className="text-bold">{bank.bankName}</header>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mb-4">No Data were found !!</div>
+            )}
             <div className="row">
               <div className="col-lg-3">
                 <TotalView
-                  data={getSelectedBank.currentAmount}
+                  data={getSelectedBank?.currentAmount}
                   title="Bank Balance"
                   color="dark"
                   icon="fa-solid fa-building-columns"
@@ -129,7 +142,7 @@ class BankWrapped extends React.Component {
               {totalList.map((value, index) => (
                 <div className="col-lg-3" key={index}>
                   <TotalView
-                    data={getTotalTransaction(value.type)}
+                    data={getTotalTransaction(value?.type)}
                     title={value.title}
                     color={value.color}
                     icon={value.icon}
@@ -141,7 +154,7 @@ class BankWrapped extends React.Component {
             <div className="row" id="sortable">
               <div className="col-lg-12">
                 <div className="custom-card p-3">
-                  <BarChart bankId={getSelectedBank.id} year={2024} />
+                  <BarChart bankId={getSelectedBank?.id} year={2024} />
                 </div>
               </div>
               {/* <div className="col-lg-6">
