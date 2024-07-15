@@ -1,11 +1,13 @@
 import { Component } from "react";
 import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
 import PropTypes from "prop-types";
+
 class TransactionTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption: "option1",
+      selectedOption: "today",
+      selectedType: "deposit", // Default to "deposit"
     };
   }
 
@@ -13,15 +15,18 @@ class TransactionTable extends Component {
     this.setState({ selectedOption: e.target.id });
   };
 
+  handleTypeChange = (e) => {
+    this.setState({ selectedType: e.target.value });
+  };
+
   static propTypes = {
     transactions: PropTypes.array,
-    type: PropTypes.string,
     title: PropTypes.string,
   };
 
   getFilteredTransactions = () => {
-    const { transactions, type } = this.props;
-    const { selectedOption } = this.state;
+    const { transactions } = this.props;
+    const { selectedOption, selectedType } = this.state;
 
     const today = new Date();
     const yesterday = new Date(today);
@@ -33,20 +38,26 @@ class TransactionTable extends Component {
       const isYesterday =
         transactionDate.toDateString() === yesterday.toDateString();
       const isSelectedDate =
-        (selectedOption === "option1" && isToday) ||
-        (selectedOption === "option2" && isYesterday);
+        (selectedOption === "today" && isToday) ||
+        (selectedOption === "yesterday" && isYesterday);
 
-      return isSelectedDate && transaction.type === type;
+      const isSelectedType = transaction.type === selectedType;
+
+      return isSelectedDate && isSelectedType;
     });
   };
 
   render() {
     const { title } = this.props;
-    const { selectedOption } = this.state;
+    const { selectedOption, selectedType } = this.state;
     const filteredTransactions = this.getFilteredTransactions();
 
     const headers = [
-      { key: "toBankAccountId", label: "Account" },
+      {
+        key:
+          selectedType === "deposit" ? "toBankAccountId" : "fromBankAccountId",
+        label: "Account",
+      },
       { key: "amount", label: "Amount" },
       { key: "type", label: "Type" },
       { key: "source", label: "Source" },
@@ -56,34 +67,42 @@ class TransactionTable extends Component {
       <div className="custom-card">
         <div className="card-header">
           <h3 className="card-title mt-2">{title}</h3>
-          <div className="card-tools">
+          <div className="card-tools d-flex">
+            <select
+              className="custom-select mr-2"
+              value={selectedType}
+              onChange={this.handleTypeChange}
+            >
+              <option value="deposit">Deposit</option>
+              <option value="withdraw">Withdraw</option>
+            </select>
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <label
                 className={`btn btn-secondary ${
-                  selectedOption === "option1" ? "active" : ""
+                  selectedOption === "today" ? "active" : ""
                 }`}
               >
                 <input
                   type="radio"
                   name="options"
-                  id="option1"
+                  id="today"
                   autoComplete="off"
-                  checked={selectedOption === "option1"}
+                  checked={selectedOption === "today"}
                   onChange={this.handleOptionChange}
                 />
                 Today
               </label>
               <label
                 className={`btn btn-secondary ${
-                  selectedOption === "option2" ? "active" : ""
+                  selectedOption === "yesterday" ? "active" : ""
                 }`}
               >
                 <input
                   type="radio"
                   name="options"
-                  id="option2"
+                  id="yesterday"
                   autoComplete="off"
-                  checked={selectedOption === "option2"}
+                  checked={selectedOption === "yesterday"}
                   onChange={this.handleOptionChange}
                 />
                 Yesterday

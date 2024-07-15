@@ -160,14 +160,7 @@ class BankWrapped extends React.Component {
             <TransactionTable
               transactions={transactions}
               type="deposit"
-              title="Deposit History"
-            />
-          </div>
-          <div className="col-lg-6">
-            <TransactionTable
-              transactions={transactions}
-              type="withdraw"
-              title="Withdraw History"
+              title="Transaction History"
             />
           </div>
         </div>

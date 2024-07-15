@@ -22,7 +22,7 @@ const BarChart = ({ year, bankId }) => {
       },
       dataLabels: { enabled: false },
       stroke: { curve: "straight" },
-      title: { text: "Balance Summary", align: "left" },
+      title: { text: `Balance Summary of ${year}`, align: "left" },
       grid: {
         row: {
           colors: ["#f3f3f3", "transparent"],
@@ -35,7 +35,14 @@ const BarChart = ({ year, bankId }) => {
 
   useEffect(() => {
     if (monthlyTransaction) {
-      const months = monthlyTransaction.map((item) => {
+      const currentMonth = new Date().getMonth() + 1; // getMonth() returns 0-indexed month, so +1 to match 1-12
+
+      // Filter transactions up to the current month
+      const filteredTransaction = monthlyTransaction.filter(
+        (item) => item.month <= currentMonth
+      );
+
+      const months = filteredTransaction.map((item) => {
         // Assuming item.month is a numeric value representing month (1 for Jan, 2 for Feb, etc.)
         const monthNames = [
           "Jan",
@@ -54,10 +61,10 @@ const BarChart = ({ year, bankId }) => {
         return monthNames[item.month - 1]; // Adjust for zero-indexed array
       });
 
-      const depositAmounts = monthlyTransaction.map(
+      const depositAmounts = filteredTransaction.map(
         (item) => item.total_deposit_amount
       );
-      const withdrawAmounts = monthlyTransaction.map(
+      const withdrawAmounts = filteredTransaction.map(
         (item) => item.total_withdraw_amount
       );
 
