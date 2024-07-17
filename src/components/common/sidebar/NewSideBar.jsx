@@ -39,23 +39,24 @@ export default class NewSideBar extends Component {
         </Link>
 
         <div className="sidebar">
-          <nav className="mt-4">
+          <nav className="mt-4  ">
             <ul
-              className="nav nav-pills nav-sidebar flex-column "
+              className="
+              nav nav-treeview
+                nav-sidebar flex-column "
               data-widget="treeview"
               role="menu"
               data-accordion="false"
             >
               {RoutesPath.map((routes) => (
                 <li
-                  className="place-items-center  nav-item  mt-4"
+                  className={` ${
+                    routes.id === this.state.id ? " nav-pills" : "text-white"
+                  }  place-items-center  nav-item  mt-4 `}
                   key={routes.id}
+                  onClick={this.activeLink.bind(this, routes.id)}
                 >
-                  <NavLink
-                    to={routes.path}
-                    className="nav-link "
-                    onClick={this.activeLink.bind(this, routes.id)}
-                  >
+                  <NavLink to={routes.path} className="nav-link ">
                     <img
                       src={routes.icons}
                       className="fas nav-icon  "
