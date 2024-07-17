@@ -13,8 +13,8 @@ export default function Bank() {
   const userbank = useSelector(userbankDetails);
   const [getSelectedBank, setSelectedBank] = useState(userbank[0]);
   const [transactions, setTransactions] = useState([]);
-
   const { userbankDataExists } = HeadController();
+
   const { data: transaction, isLoading: transactionLoading } =
     useGetTransactionByUserBankIdQuery({ id: getSelectedBank?.id });
 
@@ -39,7 +39,6 @@ export default function Bank() {
         0
       );
     }
-
     return total;
   };
 
@@ -49,9 +48,9 @@ export default function Bank() {
       selectBank={selectBank}
       getSelectedBank={getSelectedBank}
       getTotalTransaction={getTotalTransaction} // Pass the function as a prop
+      userbankDataExists={userbankDataExists}
       transactions={transactions}
       transactionLoading={transactionLoading}
-      userbankDataExists={userbankDataExists}
     />
   );
 }
@@ -107,87 +106,78 @@ class BankWrapped extends React.Component {
     ];
 
     return (
-      <div>
-        {transactionLoading && <div>Data is loading....</div>}
-        {!transactionLoading && (
-          <div className="bank p-3">
-            {userbankDataExists ? (
-              <div className="row mb-2 flex-nowrap">
-                {userbank.map((bank) => (
-                  <div
-                    className={
-                      "custom-card p-3 mr-4" +
-                      (bank === getSelectedBank ? " bg-primary" : "")
-                    }
-                    key={bank.bankName}
-                    onClick={() => selectBank(bank)}
-                  >
-                    <header className="text-bold">{bank.bankName}</header>
-                  </div>
-                ))}
+      <div className="bank p-3">
+        {transactionLoading ?? <div>Data is loading....</div>}
+
+        {userbankDataExists ? (
+          <div className="row mb-2 flex-nowrap">
+            {userbank.map((bank) => (
+              <div
+                className={
+                  "custom-card p-3 mr-4" +
+                  (bank === getSelectedBank ? " bg-primary" : "")
+                }
+                key={bank.bankName}
+                onClick={() => selectBank(bank)}
+              >
+                <header className="text-bold">{bank.bankName}</header>
               </div>
-            ) : (
-              <div className="mb-4">No Data were found !!</div>
-            )}
-            <div className="row">
-              <div className="col-lg-3">
-                <TotalView
-                  data={getSelectedBank?.currentAmount}
-                  title="Bank Balance"
-                  color="dark"
-                  icon="fa-solid fa-building-columns"
-                  design="info-box"
-                />
-              </div>
-              {totalList.map((value, index) => (
-                <div className="col-lg-3" key={index}>
-                  <TotalView
-                    data={getTotalTransaction(value?.type)}
-                    title={value.title}
-                    color={value.color}
-                    icon={value.icon}
-                    design="info-box"
-                  />
-                </div>
-              ))}
+            ))}
+          </div>
+        ) : (
+          <div className="mb-4">No Data were found !!</div>
+        )}
+
+        <div className="row">
+          <div className="col-lg-3">
+            <TotalView
+              data={getSelectedBank?.currentAmount}
+              title="Bank Balance"
+              color="dark"
+              icon="fa-solid fa-building-columns"
+              design="info-box"
+            />
+          </div>
+          {totalList.map((value, index) => (
+            <div className="col-lg-3" key={index}>
+              <TotalView
+                data={getTotalTransaction(value?.type)}
+                title={value?.title}
+                color={value?.color}
+                icon={value?.icon}
+                design="info-box"
+              />
             </div>
-            <div className="row" id="sortable">
-              <div className="col-lg-12">
-                <div className="custom-card p-3">
-                  <BarChart bankId={getSelectedBank?.id} year={2024} />
-                </div>
-              </div>
-              {/* <div className="col-lg-6">
+          ))}
+        </div>
+        <div className="row" id="sortable">
+          <div className="col-lg-12">
+            <div className="custom-card p-3">
+              <BarChart bankId={getSelectedBank?.id} year={2024} />
+            </div>
+          </div>
+          {/* <div className="col-lg-6">
             <div className="custom-card p-3">
               <BankList transactions={transactions} />
             </div>
           </div> */}
-              <div className="col-lg-6">
-                <div className="custom-card p-3">
-                  <TransactionChart
-                    transactions={transactions}
-                    type="all"
-                    title="Remarks"
-                  />
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <TransactionTable
-                  transactions={transactions}
-                  type="deposit"
-                  title="Deposit History"
-                />
-              </div>
-              <div className="col-lg-6">
-                <TransactionTable
-                  transactions={transactions}
-                  type="withdraw"
-                  title="Withdraw History"
-                />
-              </div>
+          <div className="col-lg-6">
+            <div className="custom-card p-3">
+              <TransactionChart
+                transactions={transactions}
+                type="all"
+                title="Remarks"
+              />
             </div>
           </div>
-        )}
+          <div className="col-lg-6">
+            <TransactionTable
+              transactions={transactions}
+              type="deposit"
+              title="Transaction History"
+            />
+          </div>
+        </div>
       </div>
     );
   }
