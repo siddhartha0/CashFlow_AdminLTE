@@ -32,7 +32,7 @@ export default function Deposit() {
 
   const getTotalTransaction = (type) => {
     const filteredTransactions = transactions.filter(
-      (transaction) => transaction.type === "deposits"
+      (transaction) => transaction.type === "deposit"
     );
     const total = filteredTransactions.reduce(
       (sum, transaction) => sum + transaction.amount,
