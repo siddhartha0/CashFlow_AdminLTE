@@ -8,44 +8,93 @@ export default class TransactionHistory extends Component {
     label: PropTypes.string,
     incomeAmount: PropTypes.number,
     expenseAmount: PropTypes.number,
-    cashFlow: PropTypes.any,
+    withdrawHistory: PropTypes.array,
+    userbankDepositsData: PropTypes.object,
+    userbankWithdrawData: PropTypes.object,
   };
 
   render() {
-    const { label, incomeAmount, expenseAmount, cashFlow } = this.props;
+    const {
+      label,
+      incomeAmount,
+      expenseAmount,
+      userbankDepositsData,
+      userbankWithdrawData,
+    } = this.props;
+
+    const depositsSource = userbankDepositsData
+      ? Object.keys(userbankDepositsData)
+      : [];
+    const depositsAmount = userbankDepositsData
+      ? Object.values(userbankDepositsData)
+      : [];
+
+    const withdrawSource = userbankWithdrawData
+      ? Object.keys(userbankWithdrawData)
+      : [];
+    const withdrawAmount = userbankWithdrawData
+      ? Object.values(userbankWithdrawData)
+      : [];
+
     return (
       <div>
         {label === "income" && (
           <div>
-            <PieChartModel source={cashFlow.mapIncomeSource(incomeAmount)} />
+            {userbankDepositsData ? (
+              <PieChartModel source={depositsSource} amount={depositsAmount} />
+            ) : (
+              <div>Empty!!!</div>
+            )}
+
             <div className="d-flex flex-column mt-5">
-              {cashFlow.mapIncomeSource(incomeAmount).map((source) => (
-                <div key={source.source} className="d-flex my-2 ">
-                  <ColorBarModel
-                    title={source.source}
-                    totalAmount={incomeAmount}
-                    actualAmount={source.amount}
-                    color="#FFCB30"
-                  />
-                </div>
-              ))}
+              {depositsSource ? (
+                depositsSource?.map((source, i) => (
+                  <div key={source + i} className="d-flex my-2 ">
+                    <ColorBarModel
+                      title={source ?? "others"}
+                      totalAmount={incomeAmount ?? 0}
+                      actualAmount={depositsAmount[i] ?? 0}
+                      color="#FFCB30"
+                    />
+                  </div>
+                ))
+              ) : (
+                <div>No data to render</div>
+              )}
             </div>
           </div>
         )}
         {label === "expense" && (
           <div>
-            <PieChartModel source={cashFlow.mapExpenseSource(expenseAmount)} />
+            {userbankWithdrawData ? (
+              <PieChartModel source={withdrawSource} amount={withdrawAmount} />
+            ) : (
+              <div className="text-black text-bold text-md">Empty!!!</div>
+            )}
+
             <div className="d-flex flex-column mt-5">
-              {cashFlow.mapExpenseSource(expenseAmount).map((source) => (
-                <div key={source.source} className="d-flex my-2">
-                  <ColorBarModel
-                    title={source.source}
-                    totalAmount={expenseAmount}
-                    actualAmount={source.amount}
-                    color="#DC3545"
-                  />
+              {userbankWithdrawData ? (
+                withdrawSource?.map((source, i) => (
+                  <div key={source + i} className="d-flex my-2">
+                    <ColorBarModel
+                      title={source ?? "others"}
+                      totalAmount={expenseAmount}
+                      actualAmount={withdrawAmount[i] ?? 0}
+                      color="#DC3545"
+                    />
+                  </div>
+                ))
+              ) : (
+                <div
+                  className="text-black  text-md  "
+                  style={{
+                    marginTop: "-2.6rem",
+                    minWidth: "15rem",
+                  }}
+                >
+                  No data to render
                 </div>
-              ))}
+              )}
             </div>
           </div>
         )}

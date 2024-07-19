@@ -1,0 +1,15 @@
+.calendar-container {
+  width: 100%;
+}
+
+.modal {
+  overflow: auto;
+}
+
+.custom-card {
+  width: 100%;
+}
+
+.fc {
+  width: 100% !important;
+}

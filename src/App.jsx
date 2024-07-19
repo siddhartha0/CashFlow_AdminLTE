@@ -1,20 +1,20 @@
 import { Component, useEffect } from "react";
-
 import { Outlet, useNavigate } from "react-router-dom";
 import CashFlow from "./behindTheScene/CashFlow";
 import Header from "./components/common/header/Header";
 import NewSideBar from "./components/common/sidebar/NewSideBar";
-import { useSelector } from "react-redux";
-import { userToken } from "./slices/slice/auth/AuthSlice";
+import LocalStorageInitData from "./behindTheScene/helper/LocalStorageInitData.js";
 
 export default function App() {
-  const token = useSelector(userToken);
   const nav = useNavigate();
+
+  const { token } = LocalStorageInitData();
+
   useEffect(() => {
     if (!token) {
       nav("/");
     }
-  }, [token, nav]);
+  }, [nav, token]);
   return <AppWrapped />;
 }
 

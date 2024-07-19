@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "../../slices/api/auth/AuthApi";
+import LoaderSpinner from "../../const/widget_component_model/LoaderSpinner";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +14,11 @@ const SignupPage = () => {
   });
 
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
   const navigate = useNavigate();
 
-  const [createUser] = useSignUpMutation();
+  const [createUser, { isLoading, isSuccess }] = useSignUpMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,13 +52,18 @@ const SignupPage = () => {
         setError(res.error.data.message);
       }
       if (res.data) {
-        navigate("/login");
+        setSuccess(res?.data?.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3500);
+        // navigate("/login");
       }
     });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      {isLoading && <LoaderSpinner />}
       <div
         className="card shadow p-4"
         style={{ maxWidth: "350px", width: "100%" }}
@@ -147,6 +155,10 @@ const SignupPage = () => {
             />
           </div>
           {error && <div className="alert alert-danger">{error}</div>}
+
+          {isSuccess && (
+            <div className="success alert-success p-3 mb-3">{success}</div>
+          )}
           <button type="submit" className="btn btn-primary w-100">
             Signup
           </button>

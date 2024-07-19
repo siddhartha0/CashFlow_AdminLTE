@@ -13,3 +13,7 @@ export const Transaction = "transaction";
 export const Country = "country";
 
 export const Currency = "currency";
+
+export const UserBank = "userbank";
+
+export const UserWallet = "userwallet";

@@ -5,6 +5,7 @@ import { generateRandomTransactions } from "../../behindTheScene/api/bank";
 import DynamicTable from "../../const/widget_component_model/table/DynamicTable";
 import WithdrawBarChart from "../../const/widget_component_model/WithdrawBarChart";
 import TransactionChart from "../../components/bank/TransactionChart";
+import { Link } from "react-router-dom";
 
 export default class Withdraw extends Component {
   render() {
@@ -53,6 +54,12 @@ export default class Withdraw extends Component {
 
     return (
       <div>
+        <div className="col-lg-12">
+          <Link to="/dashboard/bank/withdraw/new" className="btn btn-primary">
+            Create Withdraw
+          </Link>
+        </div>
+
         <div className="row">
           {totalList.map((value, index) => (
             <div className="col-lg-3">

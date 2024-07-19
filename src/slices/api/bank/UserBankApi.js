@@ -1,12 +1,12 @@
-import LocalData from "../../../../behindTheScene/helper/LocalData";
-import { wallet } from "../../../../const/Url";
-import { MainApi } from "../../MainApi";
+import { MainApi } from "../MainApi";
+import { UserBank } from "../../../const/Url";
+import LocalData from "../../../behindTheScene/helper/LocalData";
 
-const WalletApi = MainApi.injectEndpoints({
+const UserBankApi = MainApi.injectEndpoints({
   endpoints: (builder) => ({
-    createWallet: builder.mutation({
+    linkUserBank: builder.mutation({
       query: (data) => ({
-        url: `${wallet}`,
+        url: `${UserBank}/`,
         method: "POST",
         body: data,
         headers: {
@@ -15,39 +15,39 @@ const WalletApi = MainApi.injectEndpoints({
       }),
     }),
 
-    getWalletById: builder.query({
+    getLinkBankById: builder.query({
       query: (id) => ({
-        url: `${wallet}/${id}`,
+        url: `${UserBank}/${id}`,
+        method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
       }),
     }),
 
-    getAllWallet: builder.query({
+    getAllLinkBank: builder.query({
       query: () => ({
-        url: `${wallet}/getAllWallet`,
+        url: `${UserBank}/`,
+        method: "GET",
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
       }),
     }),
-
-    updateWallet: builder.mutation({
-      query: (data, id) => ({
+    updateLinkBank: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `${UserBank}/${id}`,
         method: "PUT",
-        body: data,
-        url: `${wallet}/${id}`,
+        body: body,
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
       }),
     }),
-
-    deleteWallet: builder.mutation({
+    deleteLinkBank: builder.mutation({
       query: (id) => ({
+        url: `${UserBank}/${id}`,
         method: "DELETE",
-        url: `${wallet}/${id}`,
         headers: {
           Authorization: `Bearer ${LocalData.getStorageData("token")}`,
         },
@@ -57,9 +57,9 @@ const WalletApi = MainApi.injectEndpoints({
 });
 
 export const {
-  useCreateWalletMutation,
-  useDeleteWalletMutation,
-  useGetAllWalletQuery,
-  useGetWalletByIdQuery,
-  useUpdateWalletMutation,
-} = WalletApi;
+  useDeleteLinkBankMutation,
+  useGetAllLinkBankQuery,
+  useGetLinkBankByIdQuery,
+  useLinkUserBankMutation,
+  useUpdateLinkBankMutation,
+} = UserBankApi;

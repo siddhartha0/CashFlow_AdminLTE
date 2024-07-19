@@ -1,15 +1,60 @@
-import { Component } from "react";
+import { Component, useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { CiBank, CiWallet } from "react-icons/ci";
 import PropTypes from "prop-types";
 import DounoughtProps from "./DonoughtProps";
+import { useSelector } from "react-redux";
+import { userbankDetails } from "../../../slices/slice/bank/UserBankSlice";
+import { userWalletDetail } from "../../../slices/slice/wallet/UserWalletSlice";
 
-export default class BalanceStats extends Component {
+export default function BalanceStats() {
+  const userbank = useSelector(userbankDetails);
+  const userwallet = useSelector(userWalletDetail);
+
+  const [bankCurrentAmount, setBankCurrentAmount] = useState();
+  const [walletCurrentAmount, setWalletCurrentAmount] = useState();
+
+  useEffect(() => {
+    if (userbank && userbank.length) {
+      const bankamount = userbank?.map((banks) => banks?.currentAmount);
+      if (bankamount) {
+        const totalCurrentBankAmount = bankamount?.reduce((a, b) => a + b);
+        setBankCurrentAmount(
+          totalCurrentBankAmount ? totalCurrentBankAmount : 0
+        );
+      }
+    }
+
+    if (userwallet && userwallet.length) {
+      const walletamounts = userwallet?.entities?.map(
+        (wallet) => wallet?.currentAmount
+      );
+
+      // console.log(walletamounts);
+      if (walletamounts) {
+        const totalwalletCurrentAmount = walletamounts?.reduce((a, b) => a + b);
+        setWalletCurrentAmount(
+          totalwalletCurrentAmount ? totalwalletCurrentAmount : 0
+        );
+      }
+    }
+  }, [userbank, userwallet]);
+
+  return (
+    <BalanceStatsWrapped
+      bankCurrentAmount={bankCurrentAmount}
+      walletCurrentAmount={walletCurrentAmount}
+    />
+  );
+}
+
+class BalanceStatsWrapped extends Component {
   value = {};
 
   static propTypes = {
+    bankCurrentAmount: PropTypes.number,
+    walletCurrentAmount: PropTypes.number,
     pickDate: PropTypes.string,
-    currentBankAmount: PropTypes.number,
     currentWalletAmount: PropTypes.number,
     overAllSelected: PropTypes.bool,
   };
@@ -19,22 +64,14 @@ export default class BalanceStats extends Component {
     const { pickDate } = props;
     console.log(pickDate);
     this.value = JSON.parse(localStorage.getItem("dashboard"));
-
-    // const currentMonth = this.value.bankFullYearHistory.filter(
-    //   (value) => value.month.toLowerCase() === pickDate.toLowerCase()
-    // );
-    // console.log(this.value.bankFullYearHistory);
-    // console.log(currentMonth);
   }
 
   render() {
-    const { currentBankBalance, currentWalletBalance, totalAmount } =
-      this.value;
-
-    const { currentBankAmount, currentWalletAmount, overAllSelected } =
+    const { walletCurrentAmount, overAllSelected, bankCurrentAmount } =
       this.props;
 
-    const currentTotal = currentBankAmount + currentWalletAmount;
+    const currentTotal =
+      parseInt(bankCurrentAmount ?? 0) + parseInt(walletCurrentAmount ?? 0);
 
     const getDonoughtProps = new DounoughtProps();
 
@@ -47,8 +84,8 @@ export default class BalanceStats extends Component {
                 options={getDonoughtProps.genLabel()}
                 series={getDonoughtProps.genData(
                   overAllSelected,
-                  currentBankAmount,
-                  currentWalletAmount
+                  bankCurrentAmount,
+                  walletCurrentAmount
                 )}
                 type="donut"
                 width="260"
@@ -65,9 +102,7 @@ export default class BalanceStats extends Component {
                 Total Amount
               </article>
               <span className="font-semibold text-dark text-lg text-opacity-50">
-                {overAllSelected
-                  ? totalAmount
-                  : currentTotal ?? "Data is loading"}
+                {currentTotal}
               </span>
             </div>
           </div>
@@ -92,7 +127,7 @@ export default class BalanceStats extends Component {
             <strong className="text-primary  mt-3  ">Bank Balance:</strong>
 
             <span className="font-semibold text-primary  text-opacity-55 ">
-              {overAllSelected ? currentBankBalance : currentBankAmount ?? 0}
+              {overAllSelected ? bankCurrentAmount : bankCurrentAmount ?? 0}
             </span>
           </div>
           <hr
@@ -116,8 +151,8 @@ export default class BalanceStats extends Component {
 
               <span className="font-semibold text-success text-opacity-[0.8]">
                 {overAllSelected
-                  ? currentWalletBalance
-                  : currentWalletAmount ?? 0}
+                  ? walletCurrentAmount
+                  : walletCurrentAmount ?? 0}
               </span>
             </div>
           </div>

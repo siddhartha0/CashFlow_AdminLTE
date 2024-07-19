@@ -36,6 +36,18 @@ const RoutesPath = [
         path: "/dashboard/bank/transfer",
         icons: bank,
       },
+      {
+        id: 23,
+        title: "Link Banks",
+        path: "/dashboard/bank/linkBank",
+        icons: bank,
+      },
+      {
+        id: 24,
+        title: "Calender",
+        path: "/dashboard/bank/calender",
+        icons: bank,
+      },
     ],
   },
   {

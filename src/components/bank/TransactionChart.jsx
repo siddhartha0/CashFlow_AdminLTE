@@ -11,15 +11,15 @@ class TransactionChart extends Component {
 
   filterTransactions = (option) => {
     const { transactions } = this.props;
-    return transactions.filter((transaction) => transaction.status === option);
+    return transactions.filter((transaction) => transaction.type === option);
   };
 
   getFilteredData = () => {
     const { selectedOption } = this.state;
     const filteredTransactions = this.filterTransactions(selectedOption);
     const remarkAmounts = filteredTransactions.reduce((acc, transaction) => {
-      acc[transaction.remarks] =
-        (acc[transaction.remarks] || 0) + transaction.amount;
+      acc[transaction.source] =
+        (acc[transaction.source] || 0) + transaction.amount;
       return acc;
     }, {});
     return {
