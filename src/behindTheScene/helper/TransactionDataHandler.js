@@ -25,6 +25,20 @@ const TransactionDataHandler = (selectedPlatform) => {
 
   const [WithdrawTotalAmount, setWithdrawTotalAmount] = useState();
 
+  const depositsSource = userbankDepositsData
+    ? Object.keys(userbankDepositsData)
+    : [];
+  const depositsAmount = userbankDepositsData
+    ? Object.values(userbankDepositsData)
+    : [];
+
+  const withdrawSource = userbankWithdrawData
+    ? Object.keys(userbankWithdrawData)
+    : [];
+  const withdrawAmount = userbankWithdrawData
+    ? Object.values(userbankWithdrawData)
+    : [];
+
   useEffect(() => {
     if (bankdepositHistory) {
       const remarkAmounts = bankdepositHistory.entities.reduce(
@@ -85,6 +99,10 @@ const TransactionDataHandler = (selectedPlatform) => {
     depositTotalAmount,
     WithdrawTotalAmount,
     userbankWithdrawData,
+    depositsSource,
+    depositsAmount,
+    withdrawSource,
+    withdrawAmount,
   };
 };
 

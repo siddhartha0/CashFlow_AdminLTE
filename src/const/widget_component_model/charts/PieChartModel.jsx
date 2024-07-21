@@ -31,12 +31,7 @@ export default function PieChartModel(source) {
 
   return (
     <div>
-      <div
-        id="chart"
-        style={{
-          marginLeft: "-30px",
-        }}
-      >
+      <div id="chart">
         <ReactApexChart
           options={init_State.options}
           series={init_State.series}

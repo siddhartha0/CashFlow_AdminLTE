@@ -27,6 +27,34 @@ const HeadController = () => {
     value: user_Bank_Data ? user_Bank_Data[0]?.bankName : "",
   };
 
+  const [userLinkAccount, setUserLinkAccount] = useState([]);
+
+  useEffect(() => {
+    let combo = [];
+    if (user_Bank_Data) {
+      user_Bank_Data?.map((bank, i) => {
+        const toStore = {
+          id: bank.id,
+          title: `Bank ${i + 1}`,
+          value: bank.bankName,
+        };
+        combo.push(toStore);
+      });
+    }
+
+    if (user_wallet_Data) {
+      user_wallet_Data?.map((wallet, i) => {
+        const toStore = {
+          id: wallet?.id,
+          title: `Wallet ${i + 1}`,
+          value: wallet?.walletName,
+        };
+        combo.push(toStore);
+      });
+    }
+    setUserLinkAccount(combo);
+  }, [user_Bank_Data, user_wallet_Data]);
+
   useEffect(() => {
     if (transactionHistory) {
       const depositsData = transactionHistory?.entities?.filter(
@@ -89,6 +117,7 @@ const HeadController = () => {
     totalWithdraw,
     userbankDataExists,
     userwalletDataExists,
+    userLinkAccount,
   };
 };
 

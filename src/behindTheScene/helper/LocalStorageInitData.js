@@ -36,19 +36,19 @@ const LocalStorageInitData = () => {
 
   useEffect(() => {
     if (!allbankFetchLoading && !allbankFetchError) {
-      dispatch(storeBankData(allBankData?.entities));
+      dispatch(storeBankData(allBankData?.entities ?? []));
     }
 
     if (!allwalletFetchError && !allwalletFetchLoading) {
-      dispatch(storeWalletData(allWalletData?.entities));
+      dispatch(storeWalletData(allWalletData?.entities ?? []));
     }
 
     if (!userbankFetchError && !userbankFetchLoading) {
-      dispatch(storeUserBankData(userBank));
+      dispatch(storeUserBankData(userBank ?? []));
     }
 
     if (!userwalletFetchError && !userwalletFetchLoading) {
-      dispatch(storeUserWalletData(userWallet));
+      dispatch(storeUserWalletData(userWallet ?? []));
     }
   }, [
     allBankData,

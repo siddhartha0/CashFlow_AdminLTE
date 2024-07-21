@@ -1,4 +1,5 @@
 import ReactApexChart from "react-apexcharts";
+import PropTypes from "prop-types";
 
 const SmallLineChart = ({ data, label, color }) => {
   const intit_state = {

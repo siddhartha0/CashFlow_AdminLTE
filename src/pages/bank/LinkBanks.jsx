@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bankDetails } from "../../slices/slice/bank/BankSlice";
 import { userDetails } from "../../slices/slice/auth/AuthSlice";
@@ -19,17 +19,35 @@ function LinkBanks() {
   const dispatch = useDispatch();
   const [linkBank, { isLoading }] = useLinkUserBankMutation();
   const [err, setErr] = useState("");
+  const [accountTypes, setAccountTypes] = useState();
 
   const [userProfile, setUserProfile] = useState({
     bankName: "",
     accountId: "",
+    accountTypes: "",
   });
+
+  const [interestRate, setInterestRate] = useState();
 
   const handleInputChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     setUserProfile({ ...userProfile, [name]: value });
   };
+
+  useEffect(() => {
+    const accountDetails = details?.filter(
+      (detail) => detail.bankName === userProfile.bankName
+    );
+    setAccountTypes(accountDetails[0]?.accountAvailable);
+    if (accountDetails) {
+      const interestRateIndex = accountDetails[0]?.accountAvailable?.indexOf(
+        userProfile.accountTypes
+      );
+
+      setInterestRate(accountDetails[0]?.interestRate[interestRateIndex]);
+    }
+  }, [details, userProfile, userProfile.accountTypes]);
 
   const handleSubmit = async (e) => {
     let userBanks = [];
@@ -45,6 +63,8 @@ function LinkBanks() {
       bankId: parseInt(selectedBank[0].id),
       accountId: userProfile.accountId,
       currentAmount: currentAmount,
+      accountType: userProfile.accountTypes,
+      interestRate: interestRate,
     };
 
     if (userbank) {
@@ -76,6 +96,7 @@ function LinkBanks() {
       userProfile={userProfile}
       isLoading={isLoading}
       err={err}
+      accountTypes={accountTypes}
     />
   );
 }
@@ -90,6 +111,7 @@ class LinkBankWrapped extends Component {
     userProfile: PropTypes.object,
     isLoading: PropTypes.bool,
     err: PropTypes.string,
+    accountTypes: PropTypes.array,
   };
   render() {
     const {
@@ -99,6 +121,7 @@ class LinkBankWrapped extends Component {
       userProfile,
       isLoading,
       err,
+      accountTypes,
     } = this.props;
     return (
       <form onSubmit={handleSubmit}>
@@ -131,6 +154,23 @@ class LinkBankWrapped extends Component {
             onChange={handleInputChange}
           />
         </div>
+
+        {userProfile.bankName && (
+          <div className="form-group">
+            <label>Account Types</label>
+            <select
+              className="form-control"
+              name="accountTypes"
+              value={userProfile.accountTypes}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Account Types</option>
+              {accountTypes?.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button type="submit" className="btn btn-primary">
           Link Bank

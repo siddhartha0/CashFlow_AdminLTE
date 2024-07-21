@@ -5,24 +5,24 @@ import BalanceSummary from "../../components/Dashboard/balanceSummary/summary/Ba
 import MenuOptionModel from "../../const/widget_component_model/components/MenuOptionModel";
 import IncomeExpenseStats from "../../components/Dashboard/IncomeExpenseStats";
 import { PickDate } from "../../const/PickDate";
-import { TransactionTypes } from "../../const/TransactionTypes";
 import IncomeExpenseHistory from "../../components/Dashboard/IncomeExpenseHistory";
 import PropTypes from "prop-types";
 import HeadController from "../../behindTheScene/helper/HeadController";
 import TransactionDataHandler from "../../behindTheScene/helper/TransactionDataHandler";
 import BarChartDataHandler from "../../behindTheScene/helper/BarChartDataHandler";
+import Projection from "../../components/Dashboard/projection/Projection";
+import BankRank from "../../components/Dashboard/rank/BankRank";
+import Activites from "../../components/Dashboard/activities/Activities";
 
 export default function Dashboard() {
   const {
     user_data,
-    user_Bank_Data,
-    user_wallet_Data,
     loadTime_DataSession,
     transactionFetchLoading,
     withdrawHistory,
+    userLinkAccount,
   } = HeadController();
 
-  const [userLinkAccount, setUserLinkAccount] = useState();
   const init = {
     ...loadTime_DataSession,
     title: "bank",
@@ -53,32 +53,6 @@ export default function Dashboard() {
     );
     setSelectedPatform(getSelectedData[0]);
   };
-
-  useEffect(() => {
-    let combo = [];
-    if (user_Bank_Data) {
-      user_Bank_Data?.map((bank, i) => {
-        const toStore = {
-          id: bank.id,
-          title: `Bank ${i + 1}`,
-          value: bank.bankName,
-        };
-        combo.push(toStore);
-      });
-    }
-
-    if (user_wallet_Data) {
-      user_wallet_Data?.map((wallet, i) => {
-        const toStore = {
-          id: wallet?.id,
-          title: `Wallet ${i + 1}`,
-          value: wallet?.walletName,
-        };
-        combo.push(toStore);
-      });
-    }
-    setUserLinkAccount(combo);
-  }, [user_Bank_Data, user_wallet_Data]);
 
   return (
     <DashBoardWrapped
@@ -213,7 +187,7 @@ class DashBoardWrapped extends Component {
         {(bankdepositLoading || bankwithdrawLoading) && <div>Loading...</div>}
 
         {!(bankdepositLoading && bankwithdrawLoading) && (
-          <div
+          <section
             className="d-flex flex-column gap-4  text-black "
             // id="dashboard_Wrapper"
             id="sortable"
@@ -343,45 +317,45 @@ class DashBoardWrapped extends Component {
               </div>
 
               <div
-                className="container  card d-flex flex-column  p-4  ml-3 custom-card card-header ui-sortable-handle"
-                id="sortable"
+                className="container  card d-flex flex-column  p-4  ml-2 custom-card col-sm-4 card-header "
                 style={{
-                  height: "640px",
+                  height: "620px",
                   overflowY: "scroll",
                   scrollbarWidth: "none",
                 }}
               >
-                <div className="col-md-5 ">
-                  <div>
-                    <MenuOptionModel
-                      className="breadcrumb float-sm-right"
-                      option={TransactionTypes}
-                      PickPlatform={this.selectTransactionTypes}
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <IncomeExpenseHistory
-                      label={this.state.transactionType}
-                      totalDeposits={depositTotalAmount}
-                      totalWithdraw={WithdrawTotalAmount}
-                      header={selectedPlatform}
-                      bankwithdrawHistory={bankwithdrawHistory}
-                      userbankDepositsData={userbankDepositsData}
-                      userbankWithdrawData={userbankWithdrawData}
-                    />
-                  </div>
-                </div>
+                <Activites selectedPlatform={selectedPlatform} />
               </div>
             </section>
 
-            <div className=" p-3 mt-3 connectedSortable" id="sortable">
-              {/* <MoreOptionalAccordianModel title="Activities">
-              <div className=" d-flex  flex-column   ">
-                <Activities />
+            <section
+              className="container  card d-flex flex-column  p-4  ml-3 custom-card col-md-11 card-header ui-sortable-handle"
+              id="sortable"
+            >
+              <div className="mt-4">
+                <IncomeExpenseHistory
+                  header={selectedPlatform}
+                  initData={selectedPlatform}
+                />
               </div>
-            </MoreOptionalAccordianModel> */}
-            </div>
-          </div>
+            </section>
+
+            <section className="d-flex mt-3 connectedSortable " id="sort">
+              <div
+                className="card col-md-7 mr-4 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
+                id="sortable"
+              >
+                <Projection />
+              </div>
+
+              <div
+                className="card  d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
+                id="sortable"
+              >
+                <BankRank />
+              </div>
+            </section>
+          </section>
         )}
       </div>
     );
