@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from "react";
+import { Component, useState } from "react";
 import BalanceStats from "../../components/Dashboard/stats/BalanceStats";
 import BalanceTrends from "../../components/Dashboard/BalanceTrends";
 import BalanceSummary from "../../components/Dashboard/balanceSummary/summary/BalanceSummary";
@@ -12,16 +12,11 @@ import TransactionDataHandler from "../../behindTheScene/helper/TransactionDataH
 import BarChartDataHandler from "../../behindTheScene/helper/BarChartDataHandler";
 import Projection from "../../components/Dashboard/projection/Projection";
 import BankRank from "../../components/Dashboard/rank/BankRank";
-import Activites from "../../components/Dashboard/activities/Activities";
+import DashboardCalander from "../../components/Dashboard/activities/DashboardCalander";
+import Activity from "../../components/Dashboard/activities/Activity";
 
 export default function Dashboard() {
-  const {
-    user_data,
-    loadTime_DataSession,
-    transactionFetchLoading,
-    withdrawHistory,
-    userLinkAccount,
-  } = HeadController();
+  const { user_data, loadTime_DataSession, userLinkAccount } = HeadController();
 
   const init = {
     ...loadTime_DataSession,
@@ -31,14 +26,10 @@ export default function Dashboard() {
   const [selectedPlatform, setSelectedPatform] = useState(init ?? null);
 
   const {
-    bankdepositHistory,
     bankdepositLoading,
-    bankwithdrawHistory,
     bankwithdrawLoading,
     WithdrawTotalAmount,
     depositTotalAmount,
-    userbankDepositsData,
-    userbankWithdrawData,
   } = TransactionDataHandler(selectedPlatform);
 
   const { monthlyTransaction } = BarChartDataHandler(
@@ -60,16 +51,10 @@ export default function Dashboard() {
       userLinkAccount={userLinkAccount}
       selectPlatform={selectPlatform}
       selectedPlatform={selectedPlatform ?? ""}
-      depositLoading={transactionFetchLoading}
-      withdrawHistory={withdrawHistory}
-      bankdepositHistory={bankdepositHistory}
       bankdepositLoading={bankdepositLoading}
-      bankwithdrawHistory={bankwithdrawHistory}
       bankwithdrawLoading={bankwithdrawLoading}
       WithdrawTotalAmount={WithdrawTotalAmount}
       depositTotalAmount={depositTotalAmount}
-      userbankDepositsData={userbankDepositsData}
-      userbankWithdrawData={userbankWithdrawData}
       overAllTransactionData={monthlyTransaction}
     />
   );
@@ -81,16 +66,11 @@ class DashBoardWrapped extends Component {
     userLinkAccount: PropTypes.array,
     selectPlatform: PropTypes.func,
     selectedPlatform: PropTypes.object,
-    depositHistory: PropTypes.array,
-    depositLoading: PropTypes.bool,
-    withdrawHistory: PropTypes.array,
-    totalDeposits: PropTypes.number,
-    totalWithdraw: PropTypes.number,
-    bankdepositHistory: PropTypes.array,
     bankdepositLoading: PropTypes.bool,
-    bankwithdrawHistory: PropTypes.array,
     bankwithdrawLoading: PropTypes.bool,
     overAllTransactionData: PropTypes.array,
+    WithdrawTotalAmount: PropTypes.number,
+    depositTotalAmount: PropTypes.number,
   };
 
   constructor() {
@@ -173,12 +153,9 @@ class DashBoardWrapped extends Component {
       selectPlatform,
       selectedPlatform,
       bankdepositLoading,
-      bankwithdrawHistory,
       bankwithdrawLoading,
       WithdrawTotalAmount,
       depositTotalAmount,
-      userbankDepositsData,
-      userbankWithdrawData,
       overAllTransactionData,
     } = this.props;
 
@@ -277,11 +254,8 @@ class DashBoardWrapped extends Component {
               </div>
             </div>
 
-            <section className="d-flex mt-3 connectedSortable " id="sort">
-              <div
-                className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
-                id="sortable"
-              >
+            <section className="d-flex mt-3">
+              <div className="card col-md-8 d-flex flex-column  p-4 custom-card card-header ">
                 <div
                   className="d-flex align-items-center justify-content-around "
                   style={{
@@ -324,8 +298,12 @@ class DashBoardWrapped extends Component {
                   scrollbarWidth: "none",
                 }}
               >
-                <Activites selectedPlatform={selectedPlatform} />
+                <Activity selectedPlatform={selectedPlatform} />
               </div>
+            </section>
+
+            <section className="container  card d-flex flex-column  p-4  ml-3 custom-card col-md-11 card-header mt-4">
+              <DashboardCalander />
             </section>
 
             <section
@@ -345,12 +323,17 @@ class DashBoardWrapped extends Component {
                 className="card col-md-7 mr-4 d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
                 id="sortable"
               >
-                <Projection />
+                {userLinkAccount ? <Projection /> : <div></div>}
               </div>
 
               <div
                 className="card  d-flex flex-column  p-4 custom-card card-header ui-sortable-handle"
                 id="sortable"
+                style={{
+                  height: "420px",
+                  overflowY: "scroll",
+                  scrollbarWidth: "none",
+                }}
               >
                 <BankRank />
               </div>

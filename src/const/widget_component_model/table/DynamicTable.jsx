@@ -65,7 +65,7 @@ class DynamicTable extends Component {
           <thead>
             <tr>
               <th style={{ width: "5px" }}>#</th>
-              {headers.map(({ key, label }) => (
+              {headers?.map(({ key, label }) => (
                 <th key={key}>{label}</th>
               ))}
             </tr>

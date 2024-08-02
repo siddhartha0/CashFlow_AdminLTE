@@ -79,10 +79,10 @@ const BarChart = ({ year, bankId }) => {
         },
       });
     }
-  }, [chartData.options, monthlyTransaction]);
+  }, [monthlyTransaction]);
 
   if (isLoading) return <p>Loading...</p>;
-  if (!monthlyTransaction) return <p>No Data were Found !!</p>;
+  if (error) return <p>Error loading data</p>;
 
   return (
     <ReactApexChart

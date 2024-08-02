@@ -1,19 +1,21 @@
-import { Component, useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import ActivityDragger from "./ActivityDragger";
+import ActiveIncome from "./ActiveIncome";
+import { useEffect, useState } from "react";
 import AccordianModel from "../../../const/widget_component_model/components/AccordianModel";
-import { FaPlus } from "react-icons/fa6";
-import PropTypes from "prop-types";
-import { IoChevronBack } from "react-icons/io5";
-import TransactionDataHandler from "../../../behindTheScene/helper/TransactionDataHandler";
 import LocalData from "../../../behindTheScene/helper/LocalData";
-import IncomeGenerator from "./IncomeGenerator";
+import TransactionDataHandler from "../../../behindTheScene/helper/TransactionDataHandler";
+import { FaPlus } from "react-icons/fa6";
+import { IoChevronBack } from "react-icons/io5";
 import EditIncomeGenerator from "./EditIncomeGenerator";
-import DisplayIncomeSource from "./DisplayIncomeSource";
+import IncomeGenerator from "./IncomeGenerator";
 
-export default function Activites({ selectedPlatform }) {
+export default function Activity({ selectedPlatform }) {
   const { bankdepositHistory } = TransactionDataHandler(selectedPlatform);
 
   const getIncomeSource = LocalData.getStorageData("incomesource");
-  // const activeIncomeSource = localeData.getStorageData();
+
   const [getOftenDepositsData, setOftenDepositsData] = useState([]);
 
   const [getWeeklyIncomeSource, setWeeklyIncomeSource] = useState([]);
@@ -26,12 +28,26 @@ export default function Activites({ selectedPlatform }) {
   const [incomeModal, setIncomeModal] = useState(false);
   const [expenseModal, setexpenseModal] = useState(false);
 
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [droppedItems, setDroppedItems] = useState(
+    LocalData.getStorageData("calenderData") || []
+  );
+
+  const handleDrop = (item) => {
+    console.log(item);
+    setDroppedItems((prevItems) => [...prevItems, item]);
+  };
+
+  const handleRemoveItem = (index) => {
+    const updatedItems = [...droppedItems];
+    updatedItems.splice(index, 1);
+    setDroppedItems(updatedItems);
+  };
 
   const [formData, setFormData] = useState({
     source: "",
     amount: 0,
     duration: "",
+    type: "deposit",
   });
 
   const createNewIncomesource = (e) => {
@@ -47,36 +63,24 @@ export default function Activites({ selectedPlatform }) {
       source: source.source,
       amount: source.amount,
       duration: source.duration,
+      type: source.type,
     });
   };
 
   const saveChanges = () => {
-    console.log(selectedItems);
-
-    if (getIncomeSource.length > 0) {
-      const getsource = getIncomeSource.filter(
-        (data, i) => data.source === selectedItems[i]
-      );
-      console.log(getsource);
-    }
-    console.log(getIncomeSource);
-    console.log(getOftenDepositsData);
-    if (getOftenDepositsData.length > 0) {
-      const getOftenSource = getOftenDepositsData.filter(
-        (data, i) => data.source === selectedItems[i]
-      );
-
-      console.log(getOftenSource);
-    }
-  };
-
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    if (checked) {
-      setSelectedItems([...selectedItems, name]);
-    } else {
-      setSelectedItems(selectedItems.filter((item) => item !== name));
-    }
+    const forCalander = droppedItems.map((item, i) => {
+      let forCalander = {
+        source: item.source,
+        amount: item.amount,
+        duration: item.duration,
+        type: item.type,
+      };
+      if (item.duration === "monthly") {
+        forCalander.time = i + 1;
+      }
+      return forCalander;
+    });
+    LocalData.storeData("calenderData", forCalander);
   };
 
   useEffect(() => {
@@ -86,6 +90,7 @@ export default function Activites({ selectedPlatform }) {
           source: deposit.source.toLowerCase(),
           amount: deposit.amount,
           duration: "monthly",
+          type: "deposit",
         };
         return store;
       });
@@ -168,51 +173,7 @@ export default function Activites({ selectedPlatform }) {
     );
 
   return (
-    <ActivitiesWrapped
-      getOftenDepositsData={getOftenDepositsData}
-      selectedItems={selectedItems}
-      handleCheckboxChangefunc={handleCheckboxChange}
-      setIncomeModal={setIncomeModal}
-      setexpenseModal={setexpenseModal}
-      editSource={editSource}
-      weeklyIncome={getWeeklyIncomeSource}
-      hourlyIncome={getHourlyIncomeSource}
-      monthlyIncome={getMonthlyIncomeSource}
-      yearlyIncome={getyearlyIncomeSource}
-      saveChanges={saveChanges}
-    />
-  );
-}
-
-Activites.propTypes = {
-  selectedPlatform: PropTypes.object,
-};
-
-class ActivitiesWrapped extends Component {
-  static propTypes = {
-    getOftenDepositsData: PropTypes.array,
-    handleCheckboxChangefunc: PropTypes.func,
-    selectedItems: PropTypes.array,
-    setIncomeModal: PropTypes.func,
-    setexpenseModal: PropTypes.func,
-    editSource: PropTypes.func,
-  };
-  render() {
-    const {
-      getOftenDepositsData,
-      handleCheckboxChangefunc,
-      selectedItems,
-      setIncomeModal,
-      setexpenseModal,
-      editSource,
-      weeklyIncome,
-      hourlyIncome,
-      monthlyIncome,
-      yearlyIncome,
-      saveChanges,
-    } = this.props;
-
-    return (
+    <DndProvider backend={HTML5Backend}>
       <main className="d-flex flex-column w-100">
         <header className="text-lg">Activity tracker</header>
 
@@ -227,32 +188,50 @@ class ActivitiesWrapped extends Component {
             <AccordianModel title="Income Source">
               <div className="d-flex flex-column">
                 <div className="mb-2">
-                  <header>Currently Active Income Source </header>
-                  {weeklyIncome &&
-                    weeklyIncome?.map((data, i) => (
-                      <div key={data.source + i}>
-                        <DisplayIncomeSource
-                          data={data}
-                          editSource={editSource}
-                          handleCheckboxChangefunc={handleCheckboxChangefunc}
-                          selectedItems={selectedItems}
-                        />
+                  <div
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "10px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <h2>Active Income Source</h2>
+                    <ActiveIncome onDrop={handleDrop} />
+                    {droppedItems.map((item, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          marginTop: "10px",
+                          backgroundColor: "lightblue",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <p>{item.source}</p>
+                        <button onClick={() => handleRemoveItem(index)}>
+                          Remove
+                        </button>
                       </div>
                     ))}
+                  </div>
                 </div>
                 <hr />
 
-                {weeklyIncome.length > 0 && (
+                {getWeeklyIncomeSource.length > 0 && (
                   <div className="mb-2">
                     <header>Weekly Income </header>
-                    {weeklyIncome &&
-                      weeklyIncome?.map((data, i) => (
+                    {getWeeklyIncomeSource &&
+                      getWeeklyIncomeSource?.map((data, i) => (
                         <div key={data.source + i}>
-                          <DisplayIncomeSource
-                            data={data}
-                            editSource={editSource}
-                            handleCheckboxChangefunc={handleCheckboxChangefunc}
-                            selectedItems={selectedItems}
+                          <ActivityDragger
+                            source={data.source}
+                            amount={data.amount}
+                            duration={data.duration}
+                            type={data.type}
                           />
                         </div>
                       ))}
@@ -260,17 +239,17 @@ class ActivitiesWrapped extends Component {
                   </div>
                 )}
 
-                {hourlyIncome.length > 0 && (
+                {getHourlyIncomeSource.length > 0 && (
                   <div className="mb-2">
                     <header>Hourly Income </header>
-                    {hourlyIncome &&
-                      hourlyIncome?.map((data, i) => (
+                    {getHourlyIncomeSource &&
+                      getHourlyIncomeSource?.map((data, i) => (
                         <div key={data.source + i}>
-                          <DisplayIncomeSource
-                            data={data}
-                            editSource={editSource}
-                            handleCheckboxChangefunc={handleCheckboxChangefunc}
-                            selectedItems={selectedItems}
+                          <ActivityDragger
+                            source={data.source}
+                            amount={data.amount}
+                            duration={data.duration}
+                            type={data.type}
                           />
                         </div>
                       ))}
@@ -278,17 +257,20 @@ class ActivitiesWrapped extends Component {
                   </div>
                 )}
 
-                {monthlyIncome.length > 0 && (
+                {getMonthlyIncomeSource.length > 0 && (
                   <div className="mb-2">
                     <header>Monthly Income </header>
-                    {monthlyIncome &&
-                      monthlyIncome?.map((data, i) => (
-                        <div key={data.source + i}>
-                          <DisplayIncomeSource
-                            data={data}
-                            editSource={editSource}
-                            handleCheckboxChangefunc={handleCheckboxChangefunc}
-                            selectedItems={selectedItems}
+                    {getMonthlyIncomeSource &&
+                      getMonthlyIncomeSource?.map((data, i) => (
+                        <div
+                          key={data.source + i}
+                          onClick={() => editSource(data)}
+                        >
+                          <ActivityDragger
+                            source={data.source}
+                            amount={data.amount}
+                            duration={data.duration}
+                            type={data.type}
                           />
                         </div>
                       ))}
@@ -296,24 +278,23 @@ class ActivitiesWrapped extends Component {
                   </div>
                 )}
 
-                {yearlyIncome.length > 0 && (
+                {getyearlyIncomeSource.length > 0 && (
                   <div className="mb-2">
                     <header>yearly Income </header>
-                    {yearlyIncome &&
-                      yearlyIncome?.map((data, i) => (
+                    {getyearlyIncomeSource &&
+                      getyearlyIncomeSource?.map((data, i) => (
                         <div key={data.source + i}>
-                          <DisplayIncomeSource
-                            data={data}
-                            editSource={editSource}
-                            handleCheckboxChangefunc={handleCheckboxChangefunc}
-                            selectedItems={selectedItems}
+                          <ActivityDragger
+                            source={data.source}
+                            amount={data.amount}
+                            duration={data.duration}
+                            type={data.type}
                           />
                         </div>
                       ))}
                     <hr />
                   </div>
                 )}
-
                 <div className="mb-2">
                   {getOftenDepositsData.length > 0 && (
                     <header>Highest Income Source</header>
@@ -323,23 +304,14 @@ class ActivitiesWrapped extends Component {
                       <div
                         key={data.source + i}
                         className="mt-2 d-flex justify-content-between mr-2"
+                        onClick={() => editSource(data)}
                       >
-                        <input
-                          type="checkbox"
-                          name={data.source}
-                          checked={selectedItems.includes(data.source)}
-                          onChange={handleCheckboxChangefunc}
+                        <ActivityDragger
+                          source={data.source}
+                          amount={data.amount}
+                          duration={data.duration}
+                          type={data.type}
                         />
-                        <label
-                          style={{
-                            cursor: "pointer",
-                          }}
-                          onClick={() => editSource(data)}
-                        >
-                          {data.source}
-                        </label>
-
-                        <label>{data.amount}</label>
                       </div>
                     ))}
                 </div>
@@ -373,10 +345,10 @@ class ActivitiesWrapped extends Component {
             </AccordianModel>
           </section>
         </div>
-        <button className="btn btn-primary" onClick={saveChanges}>
+        <button className="btn btn-primary" onClick={() => saveChanges()}>
           save changes
         </button>
       </main>
-    );
-  }
+    </DndProvider>
+  );
 }
