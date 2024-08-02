@@ -1,11 +1,20 @@
 import { useDrag } from "react-dnd";
 
-function ActivityDragger({ source, amount, duration, type }) {
+function ActivityDragger({
+  source,
+  amount,
+  duration,
+  type,
+  recieved,
+  userbankId,
+}) {
   const item = {
     source: source,
     amount: amount,
     duration: duration,
     type: type,
+    recieved: recieved,
+    userbankId: userbankId,
   };
 
   const [{ isDragging }, drag] = useDrag(() => ({

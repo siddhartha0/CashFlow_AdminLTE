@@ -48,6 +48,8 @@ export default function Activity({ selectedPlatform }) {
     amount: 0,
     duration: "",
     type: "deposit",
+    recieved: false,
+    userbankId: selectedPlatform.id,
   });
 
   const createNewIncomesource = (e) => {
@@ -64,6 +66,8 @@ export default function Activity({ selectedPlatform }) {
       amount: source.amount,
       duration: source.duration,
       type: source.type,
+      recieved: false,
+      userbankId: selectedPlatform.id,
     });
   };
 
@@ -74,6 +78,8 @@ export default function Activity({ selectedPlatform }) {
         amount: item.amount,
         duration: item.duration,
         type: item.type,
+        recieved: false,
+        userbankId: selectedPlatform.id,
       };
       if (item.duration === "monthly") {
         forCalander.time = i + 1;
@@ -90,7 +96,9 @@ export default function Activity({ selectedPlatform }) {
           source: deposit.source.toLowerCase(),
           amount: deposit.amount,
           duration: "monthly",
+          userbankId: selectedPlatform.id,
           type: "deposit",
+          recieved: false,
         };
         return store;
       });
@@ -122,7 +130,7 @@ export default function Activity({ selectedPlatform }) {
       );
       setYearlyIncomeSource(yearly);
     }
-  }, [bankdepositHistory]);
+  }, [bankdepositHistory, selectedPlatform]);
 
   if (incomeModal)
     return (
@@ -232,6 +240,8 @@ export default function Activity({ selectedPlatform }) {
                             amount={data.amount}
                             duration={data.duration}
                             type={data.type}
+                            recieved={data.recieved}
+                            userbankId={data.userbankId}
                           />
                         </div>
                       ))}
@@ -250,6 +260,8 @@ export default function Activity({ selectedPlatform }) {
                             amount={data.amount}
                             duration={data.duration}
                             type={data.type}
+                            recieved={data.recieved}
+                            userbankId={data.userbankId}
                           />
                         </div>
                       ))}
@@ -271,6 +283,8 @@ export default function Activity({ selectedPlatform }) {
                             amount={data.amount}
                             duration={data.duration}
                             type={data.type}
+                            recieved={data.recieved}
+                            userbankId={data.userbankId}
                           />
                         </div>
                       ))}
@@ -289,6 +303,8 @@ export default function Activity({ selectedPlatform }) {
                             amount={data.amount}
                             duration={data.duration}
                             type={data.type}
+                            recieved={data.recieved}
+                            userbankId={data.userbankId}
                           />
                         </div>
                       ))}
@@ -311,6 +327,8 @@ export default function Activity({ selectedPlatform }) {
                           amount={data.amount}
                           duration={data.duration}
                           type={data.type}
+                          recieved={data.recieved}
+                          userbankId={data.userbankId}
                         />
                       </div>
                     ))}

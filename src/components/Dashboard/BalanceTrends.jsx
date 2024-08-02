@@ -59,7 +59,7 @@ class BalanceTrendsWrapped extends Component {
             fontWeight: 600,
           }}
         >
-          Balance Trends
+          Linked Accounts
         </header>
 
         <div className="d-flex justify-content-between overflow-x-scroll mt-4">
@@ -136,7 +136,7 @@ class BalanceTrendsWrapped extends Component {
               </div>
             )}
 
-            {(userbankDataExists || userwalletDataExists) && (
+            {/* {(userbankDataExists || userwalletDataExists) && (
               <div
                 style={{
                   minWidth: "120px",
@@ -156,7 +156,7 @@ class BalanceTrendsWrapped extends Component {
                   label="Overall"
                 />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

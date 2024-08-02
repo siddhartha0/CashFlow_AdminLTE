@@ -3,9 +3,9 @@ import LocalData from "../../behindTheScene/helper/LocalData";
 
 function useCalanderData() {
   const [data, setData] = useState();
+
   useEffect(() => {
     const calanderData = LocalData.getStorageData("calenderData");
-
     let currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     if (calanderData) {
@@ -21,6 +21,8 @@ function useCalanderData() {
             amount: data.amount,
             duration: data.duration,
             type: data.type,
+            recieved: data.recieved,
+            userbankId: data.userbankId,
             start: new Date(currentYear, months, data.time),
             end: new Date(currentYear, months, data.time),
           };
