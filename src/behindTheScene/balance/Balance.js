@@ -150,8 +150,7 @@ export default class Balance {
       }
     }
     return monthsAmount;
-    // console.log(monthsAmount);
-  }
+   }
 
   calculateTrends() {
     const prevMonthMoney_Bank =
