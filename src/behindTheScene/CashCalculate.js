@@ -1,6 +1,7 @@
 import Balance from "./balance/Balance.js";
 
 function check() {
+  
   const balance = new Balance();
   balance.stats_Holder();
   const label = balance.duration;
