@@ -29,7 +29,6 @@ function check() {
     });
   }
 
-  console.log(totalHistory_Of_MONEY);
-}
+ }
 
 check();
